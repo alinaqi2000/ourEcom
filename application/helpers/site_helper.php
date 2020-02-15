@@ -93,6 +93,47 @@ function getStatusButton($status, $id, $field, $url)
         ';
     }
 }
+function getOrderButton($status, $id, $field, $url)
+{
+    return '<span class="w-100 orders">' . $status . '</span><input data-id="' . $id . '" data-url="' . $url . '" data-order="' . $field . '" type="number" value="' . $status . '" class="form-control txtedit" style="width:55px;" />';
+}
+function getFeaturedButton($status, $id, $field, $url)
+{
+    if ($status == 0) {
+        return '<div class="btn-group dropdown">
+<button class="btn btn-sm btn-danger">Not Featured</button>
+<button class="btn btn-sm btn-danger dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button" aria-expanded="false">
+    <i class="dropdown-caret"></i>
+</button>
+<ul class="dropdown-menu" style="">
+    <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="1" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Featured</a></li>
+    <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="2" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Rare</a></li>
+</ul>
+</div>';
+    } elseif ($status == 1) {
+        return '<div class="btn-group dropdown">
+        <button class="btn btn-sm btn-success">Featured</button>
+        <button class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button" aria-expanded="false">
+            <i class="dropdown-caret"></i>
+        </button>
+        <ul class="dropdown-menu" style="">
+        <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="0" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Not Featured</a></li>
+        <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="2" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Rare</a></li>
+        </ul>
+        </div>';
+    } else {
+        return '<div class="btn-group dropdown">
+        <button class="btn btn-sm btn-labeled btn-purple"><i class="btn-label demo-psi-star"></i>Rare</button>
+        <button class="btn btn-sm btn-purple dropdown-toggle dropdown-toggle-icon" data-toggle="dropdown" type="button" aria-expanded="false">
+            <i class="dropdown-caret"></i>
+        </button>
+        <ul class="dropdown-menu" style="">    
+        <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="1" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Featured</a></li>
+        <li><a class="labelBtn" role="button" id="pageLabel' . $id . '" data-label="0" data-url="' . $url . '" data-field="' . $field . '" data-value="' . $status . '" data-id="' . $id . '">Not Featured</a></li>
+        </ul>
+        </div>';
+    }
+}
 function getOrderStatus($status)
 {
     if ($status == '1') {
@@ -116,16 +157,16 @@ function showMsg($type = '', $msg = '')
     if ($type != '' && $msg != '') {
         switch ($type) {
             case 'success':
-                return '<div class="alert alert-success margin-bottom-0"><button data-dismiss="alert" class="close"> × </button><strong></strong> ' . $msg . '</div><div class="clearfix"></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-success" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-check-circle fa-2x"></i></span></div><div class="media-body">'.$msg.'</div></div></div> </div></div>';
                 break;
             case 'error':
-                return '<div class="alert alert-danger margin-bottom-0"><button data-dismiss="alert" class="close"> × </button><strong> </strong> ' . $msg . '</div><div class="clearfix"></div>';
-                break;
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-danger" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-times-circle fa-2x"></i></span></div><div class="media-body"> '.$msg.'</div></div></div> </div></div>';
+            break;
             case 'warning':
-                return '<div class="alert alert-warning margin-bottom-0"><button data-dismiss="alert" class="close"> × </button><strong></strong> ' . $msg . '</div><div class="clearfix"></div>';
-                break;
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-warning" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-warning fa-2x"></i></span></div><div class="media-body">'.$msg.'</div></div></div> </div></div>';
+            break;
             default:
-                return '<div class="alert alert-info margin-bottom-0"><button data-dismiss="alert" class="close"> × </button><strong></strong> ' . $msg . '</div><div class="clearfix"></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-info" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-info-circle fa-2x"></i></span></div><div class="media-body">'.$msg.'</div></div></div> </div></div>';
                 break;
         }
     }
@@ -674,12 +715,10 @@ function getMenuSubCats($cat_parent)
                                                                                                                                                                                 }
 
 
-                                                                                                                                                                                function getPaging($table, $where, $order, $limit, $tpage, $seprater, $pager, $spcl_cond = '')
+                                                                                                                                                                                function getPaging($table, $where, $order, $limit, $tpage, $seprater, $pager, $spcl_cond = '', $nxt = '', $prv = '')
                                                                                                                                                                                 {
                                                                                                                                                                                     $CI = get_instance();
 
-                                                                                                                                                                                    $nxt = '';
-                                                                                                                                                                                    $prv = '';
                                                                                                                                                                                     $tbl_name = $table;  //your table name
                                                                                                                                                                                     $adjacents = 3;
                                                                                                                                                                                     //  echo $_REQUEST['page']; 
@@ -823,6 +862,126 @@ function getMenuSubCats($cat_parent)
                                                                                                                                                                                             $pagination .= "<li class=\"page-item\"><a class=\" page-link \" href=\"$targetpage" . $seprator . "pager=$next\">" . $nxt . " &raquo;</a></li>";
                                                                                                                                                                                         else
                                                                                                                                                                                             $pagination .= "<li class=\"page-item disabled\"><a class=\" page-link \" href=\"\">" . $nxt . " &raquo;</a></li>";
+                                                                                                                                                                                        $pagination .= "</ul>\n";
+                                                                                                                                                                                        $pagination .= "</nav>\n";
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                    return array($sql, $pagination);
+                                                                                                                                                                                }
+                                                                                                                                                                                function getPagingSm($table, $where, $order, $limit, $tpage, $seprater, $pager, $spcl_cond = '', $nxt = '', $prv = '')
+                                                                                                                                                                                {
+                                                                                                                                                                                    $CI = get_instance();
+
+                                                                                                                                                                                    $tbl_name = $table;  //your table name
+                                                                                                                                                                                    $adjacents = 3;
+                                                                                                                                                                                    //  echo $_REQUEST['page']; 
+
+                                                                                                                                                                                    // $CI->db->where($where);
+                                                                                                                                                                                    // $query = $CI->db->get($tbl_name);
+                                                                                                                                                                                    // $total_pages_rs = $query->result_array();
+
+                                                                                                                                                                                    // $query = "SELECT COUNT(*) as num FROM $tbl_name $where";
+                                                                                                                                                                                    // $total_pages_ex = $conn->query($query);
+                                                                                                                                                                                    // $total_pages_rs = $total_pages_ex->fetch_array();
+                                                                                                                                                                                    $total_pages = count($total_pages_rs);
+
+                                                                                                                                                                                    $targetpage = $tpage; //your file name  (the name of this file)
+                                                                                                                                                                                    //  $limit = 12;    
+                                                                                                                                                                                    //  $_GET['pager']          //how many items to show per page
+                                                                                                                                                                                    $page = $pager;
+                                                                                                                                                                                    if ($page) {
+                                                                                                                                                                                        $start = ($page - 1) * $limit;    //first item to display on this page
+                                                                                                                                                                                    } else {
+                                                                                                                                                                                        $start = 0;        //if no page var is given, set start to 0
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                    $seprator = $seprater;
+
+                                                                                                                                                                                    $CI->db->where($where);
+                                                                                                                                                                                    $CI->db->order_by($order);
+                                                                                                                                                                                    $CI->db->limit($limit, $start);
+                                                                                                                                                                                    $querys = $CI->db->get($tbl_name);
+
+                                                                                                                                                                                    $CI->db->where($where);
+                                                                                                                                                                                    $CI->db->order_by($order);
+                                                                                                                                                                                    $queryc = $CI->db->get($tbl_name);
+
+                                                                                                                                                                                    // $sql=$CI->db->last_query();
+                                                                                                                                                                                    $sql = $querys->result();
+                                                                                                                                                                                    $sqlc = $queryc->result();
+                                                                                                                                                                                    $total_pages = count($sqlc);
+                                                                                                                                                                                    // $sql = "SELECT * from $tbl_name $where  LIMIT $start, $limit";
+
+                                                                                                                                                                                    if ($page == 0)
+                                                                                                                                                                                        $page = 1;     //if no page var is given, default to 1.
+                                                                                                                                                                                    $prev = $page - 1;       //previous page is page - 1
+                                                                                                                                                                                    $next = $page + 1;       //next page is page + 1
+                                                                                                                                                                                    $lastpage = ceil($total_pages / $limit);  //lastpage is = total pages / items per page, rounded up.
+                                                                                                                                                                                    $lpm1 = $lastpage - 1;      //last page minus 1
+                                                                                                                                                                                    $pagination = "";
+                                                                                                                                                                                    if ($lastpage > 1) {
+                                                                                                                                                                                        $pagination .= "<nav aria-label='...'>";
+                                                                                                                                                                                        $pagination .= "<ul class=\"pagination pagination-sm\">";
+                                                                                                                                                                                        //previous button
+                                                                                                                                                                                        if ($page > 1)
+                                                                                                                                                                                            $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$prev\">&laquo; " . $prv . "</a></li>";
+                                                                                                                                                                                        else
+                                                                                                                                                                                            $pagination .= " <li class=\"page-item disabled\"><a class=\" page-link   \" href=\"\">&laquo; " . $prv . "</a></li>";
+
+                                                                                                                                                                                        //pages 
+                                                                                                                                                                                        if ($lastpage < 7 + ($adjacents * 2)) { //not enough pages to bother breaking it up
+                                                                                                                                                                                            for ($counter = 1; $counter <= $lastpage; $counter++) {
+                                                                                                                                                                                                if ($counter == $page)
+                                                                                                                                                                                                    $pagination .= "<li class=\"page-item active\"><a class=\" page-link   \" href=\"\">$counter</a></li>";
+                                                                                                                                                                                                else
+                                                                                                                                                                                                    $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$counter\">$counter</a></li>";
+                                                                                                                                                                                            }
+                                                                                                                                                                                        } elseif ($lastpage > 5 + ($adjacents * 2)) { //enough pages to hide some
+                                                                                                                                                                                            //close to beginning; only hide later pages
+                                                                                                                                                                                            if ($page < 1 + ($adjacents * 2)) {
+                                                                                                                                                                                                for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
+                                                                                                                                                                                                    if ($counter == $page)
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item active\"><a class=\" page-link   \" href=\"\">$counter</a></li>";
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$counter\">$counter</a></li>";
+                                                                                                                                                                                                }
+                                                                                                                                                                                                $pagination .= "...";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$lpm1\">$lpm1</a></li>";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$lastpage\">$lastpage</a></li>";
+                                                                                                                                                                                            }
+                                                                                                                                                                                            //in middle; hide some front and some back
+                                                                                                                                                                                            elseif ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=1\">1</a></li>";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=2\">2</a></li>";
+                                                                                                                                                                                                $pagination .= "...";
+                                                                                                                                                                                                for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
+                                                                                                                                                                                                    if ($counter == $page)
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item active\"><a class=\" page-link   \" href=\"\">$counter</a></li>";
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$counter\">$counter</a></li>";
+                                                                                                                                                                                                }
+                                                                                                                                                                                                $pagination .= "...";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$lpm1\">$lpm1</a></li>";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$lastpage\">$lastpage</a></li>";
+                                                                                                                                                                                            }
+                                                                                                                                                                                            //close to end; only hide early pages
+                                                                                                                                                                                            else {
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=1\">1</a></li>";
+                                                                                                                                                                                                $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=2\">2</a></li>";
+                                                                                                                                                                                                $pagination .= "...";
+                                                                                                                                                                                                for ($counter = $lastpage - (2 + ($adjacents * 2)); $counter <= $lastpage; $counter++) {
+                                                                                                                                                                                                    if ($counter == $page)
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item active\"><a class=\" page-link   \" href=\"\">$counter</a></li>";
+                                                                                                                                                                                                    else
+                                                                                                                                                                                                        $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$counter\">$counter</a></li>";
+                                                                                                                                                                                                }
+                                                                                                                                                                                            }
+                                                                                                                                                                                        }
+                                                                                                                                                                                        //next button
+                                                                                                                                                                                        if ($page < $counter - 1)
+                                                                                                                                                                                            $pagination .= "<li class=\"page-item\"><a class=\" page-link   \" href=\"$targetpage" . $seprator . "pager=$next\">" . $nxt . " &raquo;</a></li>";
+                                                                                                                                                                                        else
+                                                                                                                                                                                            $pagination .= "<li class=\"page-item disabled\"><a class=\" page-link   \" href=\"\">" . $nxt . " &raquo;</a></li>";
                                                                                                                                                                                         $pagination .= "</ul>\n";
                                                                                                                                                                                         $pagination .= "</nav>\n";
                                                                                                                                                                                     }

@@ -29,7 +29,7 @@
 
                 <div class="panel-body">
                     <div class="col-md-12">
-                        <?= showMsg(); ?>
+                       
                     </div>
                     <!-- Inline Form  -->
                     <!--===================================================-->

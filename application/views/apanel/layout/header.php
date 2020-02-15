@@ -57,6 +57,11 @@
 
             </ul>
             <ul class="nav navbar-top-links">
+            <li>
+                    <a title="Manage Admins" href="<?= base_url(ADMIN."/manage_admins") ?>">
+                        <i class="ion-person-stalker icon-lg icon-fw"></i>
+                    </a>
+                </li>
                 <li>
                     <a title="Dark Mode" href="javascript:void(0);" id="darkColor" data-mode="<?= $this->session->userdata('themeMode') ?>" data-url="<?= base_url('apanel/index/dark_mode') ?>" data-dark="<?= base_url() ?>assets/apanel/css/dark-theme.min.css" data-light="<?= base_url() ?>assets/apanel/css/theme-mint.min.css">
                         <?php

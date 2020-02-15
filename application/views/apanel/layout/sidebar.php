@@ -14,7 +14,17 @@
                     <div id="mainnav-profile" class="mainnav-profile">
                         <div class="profile-wrap text-center">
                             <div class="pad-btm">
-                                <img class="img-circle img-md" src="<?= base_url("uploads/apanel/admin/") . $site_admin_data["admin_image"] ?>" alt="Profile Picture">
+                                <?php
+                                if (!empty($site_admin_data['admin_image'])) {
+                                ?>
+                                    <img class="img-circle img-md" src="<?= base_url("uploads/apanel/admin/") . $site_admin_data["admin_image"] ?>" alt="Profile Picture">
+                                <?php
+                                } else {
+                                ?>
+                                    <img class="img-circle img-md" src="<?= base_url("assets/".ADMIN."/user.png") ?>" alt="Profile Picture">
+                                <?php
+                                }
+                                ?>
                             </div>
                             <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
                                 <span class="pull-right dropdown-toggle">
@@ -94,6 +104,12 @@
                                 <span class="menu-title">Pages</span>
                             </a>
                         </li>
+                        <li class="<?= $this->uri->segment(2) == 'categories' ? 'active-sub' : ''; ?>">
+                            <a href="<?= base_url(ADMIN . '/categories') ?>">
+                                <i class="ti-server"></i>
+                                <span class="menu-title">Categories</span>
+                            </a>
+                        </li>
                         <li class="<?= ($this->uri->segment(2) == 'site_settings' || $this->uri->segment(2) == 'site_social' || $this->uri->segment(2) == 'site_contact') ? 'active-sub' : ''; ?>">
                             <a href="javascript:void(0);">
                                 <i class="ion-settings"></i>
@@ -104,8 +120,8 @@
                             <!--Submenu-->
                             <ul class="collapse <?= ($this->uri->segment(2) == 'site_settings' || $this->uri->segment(2) == 'site_social' || $this->uri->segment(2) == 'site_contact') ? 'in' : ''; ?>">
                                 <li class="<?= $this->uri->segment(2) == 'site_settings' ? 'active-link' : ''; ?>"><a href="<?= base_url(ADMIN . '/site_settings') ?>">Site Settings</a></li>
-                                <li class="<?= $this->uri->segment(2) == 'site_social' ? 'active-link' : ''; ?>"><a href="<?= base_url(ADMIN . '/site_social') ?>">Site Social</a></li>
-                                <li class="<?= $this->uri->segment(2) == 'site_contact' ? 'active-link' : ''; ?>"><a href="<?= base_url(ADMIN . '/site_contact') ?>">Site Contact</a></li>
+                                <!-- <li class="<?= $this->uri->segment(2) == 'site_social' ? 'active-link' : ''; ?>"><a href="<?= base_url(ADMIN . '/site_social') ?>">Site Social</a></li>
+                                <li class="<?= $this->uri->segment(2) == 'site_contact' ? 'active-link' : ''; ?>"><a href="<?= base_url(ADMIN . '/site_contact') ?>">Site Contact</a></li> -->
 
 
                             </ul>

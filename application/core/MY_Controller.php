@@ -18,28 +18,28 @@ class MY_Controller extends CI_Controller
   {
     parent::__construct();
 
-    // $cus_id = $this->session->userdata('cus_id');
-    // $site = $this->getSiteSettings();
-    // $this->data['got_customer'] = $this->getCustomer($cus_id);
-    // $info_data = unserialize(urldecode($site->site_info_data));
-    // stripcslashes($info_data);
-    // $theme_data = unserialize(urldecode($site->site_theme_data));
-    // stripcslashes($theme_data);
-    // $admin_data = unserialize(urldecode($site->site_admin_data));
-    // stripcslashes($admin_data);
-    // $social_data = unserialize(urldecode($site->site_social_data));
-    // stripcslashes($social_data);
-    // $contact_data = unserialize(urldecode($site->site_contact_data));
-    // stripcslashes($contact_data);
-    // $social_data = unserialize(urldecode($site->site_social_data));
-    // stripcslashes($social_data);
+    $cus_id = $this->session->userdata('cus_id');
+    $site = $this->getSiteSettings();
+    $this->data['got_customer'] = $this->getCustomer($cus_id);
+    $info_data = unserialize(urldecode($site->site_info_data));
+    stripcslashes($info_data);
+    $theme_data = unserialize(urldecode($site->site_theme_data));
+    stripcslashes($theme_data);
+    $admin_data = unserialize(urldecode($site->site_admin_data));
+    stripcslashes($admin_data);
+    $social_data = unserialize(urldecode($site->site_social_data));
+    stripcslashes($social_data);
+    $contact_data = unserialize(urldecode($site->site_contact_data));
+    stripcslashes($contact_data);
+    $social_data = unserialize(urldecode($site->site_social_data));
+    stripcslashes($social_data);
 
-    // $this->data['site_info_data'] = $info_data;
-    // $this->data['site_theme_data'] = $theme_data;
-    // $this->data['site_admin_data'] = $admin_data;
-    // $this->data['site_social_data'] = $social_data;
-    // $this->data['site_contact_data'] = $contact_data;
-    // $this->data['site_social_data'] = $social_data;
+    $this->data['site_info_data'] = $info_data;
+    $this->data['site_theme_data'] = $theme_data;
+    $this->data['site_admin_data'] = $admin_data;
+    $this->data['site_social_data'] = $social_data;
+    $this->data['site_contact_data'] = $contact_data;
+    $this->data['site_social_data'] = $social_data;
 
     // $this->load->model('Index_model');
     // $this->data['parent_pages'] = $this->Index_model->getParentPages();
@@ -125,7 +125,7 @@ class MY_Admin extends CI_Controller
     } else {
       $this->data['sideMode'] = "mainnav-sm";
     }
-    $this->data['site_login'] = $site->site_login;
+    
     $info_data = unserialize(urldecode($site->site_info_data));
     stripcslashes($info_data);
     $theme_data = unserialize(urldecode($site->site_theme_data));
@@ -149,6 +149,7 @@ class MY_Admin extends CI_Controller
 
     $st_id = $this->session->userdata('site_id');
     $siteLocals = $this->getSiteSettingsLocals($st_id);
+    $this->data['site_login'] = $siteLocals->site_login;
     $admin_data = unserialize(urldecode($siteLocals->site_admin_data));
     stripcslashes($admin_data);
     $this->data['site_admin_data'] = $admin_data;

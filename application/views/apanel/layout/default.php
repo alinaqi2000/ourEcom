@@ -27,6 +27,9 @@
     <!--Nifty Premium Icon [ DEMONSTRATION ]-->
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
 
+    <link href="<?= base_url() ?>assets/apanel/plugins/animate-css/animate.min.css" rel="stylesheet">
+
+
 
     <!--=================================================-->
 
@@ -88,6 +91,17 @@
             width: 100%;
         }
 
+        .media-body {
+            width: auto;
+            font-size: medium;
+            line-height: 2.5;
+
+        }
+
+        .alert {
+            padding: 5px 3em 5px 5px;
+        }
+
         <?php
         if ($this->session->userdata('themeMode') == 'light' || empty($this->session->userdata('themeMode'))) {
         ?>#moonImg {
@@ -137,14 +151,11 @@
 <!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
 
 <body>
-    <div id="container" class="layOut effect aside-float aside-bright <?= $sideMode ?>"
-    <?php
-    if($this->uri->segment(2)=='login'){
-        ?>
-         style="background: url(<?= base_url("assets/" . ADMIN . "/bg_grey3.jpg") ?>) no-repeat;background-size:cover;"
-        <?php
-    }
-    ?>>
+    <div id="container" class="layOut effect aside-float aside-bright <?= $sideMode ?>" <?php
+                                                                                        if ($this->uri->segment(2) == 'login') {
+                                                                                        ?> style="background: url(<?= base_url("assets/" . ADMIN . "/img/bg-img/bg-img-3.jpg") ?>) no-repeat;background-size:cover;" <?php
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                        ?>>
 
         <!--NAVBAR-->
         <!--===================================================-->
@@ -188,16 +199,10 @@
     <!--===================================================-->
     <!-- END OF CONTAINER -->
 
-
-
-
-
+    <?= showMsg(); ?>
     <!--JAVASCRIPT-->
     <!--=================================================-->
 
-    <script type="text/javascript">
-
-    </script>
 
     <!--jQuery [ REQUIRED ]-->
 
@@ -235,6 +240,7 @@
 
     <!--Specify page [ SAMPLE ]-->
     <script src="<?= base_url() ?>assets/apanel/js/demo/dashboard.js"></script>
+
 
 
 

@@ -28,9 +28,7 @@
          <div class="panel">
 
              <div class="panel-body">
-                 <div class="col-md-12">
-                     <?= showMsg(); ?>
-                 </div>
+                
                  <!-- Inline Form  -->
                  <!--===================================================-->
                  <form class="form-inline" method="POST" enctype="multipart/form-data">

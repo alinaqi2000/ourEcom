@@ -25,7 +25,7 @@ $(document).ready(function () {
                     } else {
                         $('.layOut').addClass("mainnav-sm");
                         $('.layOut').removeClass("mainnav-lg");
-                        
+
                         $('#brandLogo').hide();
                         $('#brandFav').show();
                         // window.location.reload();
@@ -34,7 +34,7 @@ $(document).ready(function () {
             }
         });
 
-        
+
 
     });
 
@@ -112,7 +112,66 @@ $(document).ready(function () {
         });
     });
 
+    // Label Buttton ajax
 
+
+    $(document).on('click', '.labelBtn', function () {
+        var statusUrl = $(this).data('url');
+        var statusId = $(this).data('id');
+        var statusField = $(this).data('field');
+        var statusValue = $(this).data('label');
+        $.ajax({
+            url: statusUrl,
+            method: 'POST',
+            data: {
+                id: statusId,
+                field: statusField,
+                value: statusValue,
+            },
+            success: function (response) {
+                console.log(response);
+                location.reload();
+
+            }
+        });
+    });
+
+    // Order Ajax
+
+    $(document.body).on('click', '.orders', function () {
+        $('.txtedit').hide();
+        $(this).next('.txtedit').show().focus();
+        $(this).hide();
+    });
+
+
+    $(document.body).on('focusout', '.txtedit', function () {
+        var edit_id = $(this).data('id');
+        var orderUrl = $(this).data('url');
+        var fieldname = $(this).data('order');
+        var value = $(this).val();
+        $(this).hide();
+        $(this).prev('.orders').show();
+        $(this).prev('.orders').text(value);
+        $.ajax({
+            url: orderUrl,
+            method: 'POST',
+            data: { order: fieldname, value: value, id: edit_id },
+            success: function (response) {
+                console.log(response);
+
+            }
+        });
+    });
+
+
+
+    $(document.body).on('click', '.close', function () {
+        $('#alrt').removeClass('in');
+        $('#alrt').addClass('fadeOut');
+        $('#floating-top-right').fadeOut(2000);
+
+    });
 
 
 });

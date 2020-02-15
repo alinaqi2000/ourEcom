@@ -81,7 +81,11 @@ $route['apanel/login'] = 'apanel/index/login';
 $route['apanel/logout'] = 'apanel/index/logout';
 $route['(:any)/edit/(:any)'] = '?edit/$1';
 $route['apanel/gallery/(:any)'] = 'apanel/products/product_images/$1';
+$route['apanel/manage_admins'] = 'apanel/index/manage_admins';
+$route['apanel/manage_admins/add'] = 'apanel/index/add_admin';
+$route['apanel/manage_admins/edit/(:any)'] = 'apanel/index/edit_admin/$1';
 
+$route['apanel/admin_delete/(:any)'] = 'apanel/index/admin_delete/$1';
 
 
 $route['404_override'] = '';

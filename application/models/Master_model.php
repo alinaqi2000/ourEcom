@@ -8,7 +8,7 @@ class Master_model extends CI_Model {
     function getRow($table, $field, $id) {
         $this->db->where($field, $id);
         $query = $this->db->get($table);
-        return $query->row()->site_info_data;
+        return $query->row();
     }
 
     function getSpecCol($table, $field, $id,$col) {

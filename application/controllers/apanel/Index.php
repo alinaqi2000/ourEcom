@@ -104,8 +104,7 @@ class Index extends MY_Admin
 		$this->session->unset_userdata('site_id');
 		$this->session->unset_userdata('d_id');
 		$this->session->unset_userdata('site_type');
-		$this->session->set_userdata('themeMode');
-		$this->session->set_userdata('themeSheet');
+		$this->session->set_userdata('sideMode');
 
 		redirect('apanel/login', 'refresh');
 	}
@@ -275,6 +274,55 @@ class Index extends MY_Admin
 			redirect(base_url() . ADMIN . '/manage_admins', 'refresh');
 		}
 	}
+	public function edit_admin($edit_id)
+	{
+		$this->isLoggedAdmin();
+		$this->data['page'] =  'manage_admins';
+		$this->data['mode'] =  'edit';
+		$this->data['row'] = $this->Master_model->getRow('tbl_siteadmin', 'site_id', $edit_id);
+		$this->load->view('apanel/layout/default', $this->data);
+		if ($this->session->userdata('site_id') == '1') {
+			if ($vals = $this->input->post()) {
+				if (is_array($vals)) {
+					if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
+
+						if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+							$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+							if (!empty($image['file_name'])) {
+								$vals['admin_image'] = $image['file_name'];
+							} else {
+								setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+								redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+							}
+						}
+						$new_vals['site_type'] = $vals['site_type'];
+						$new_vals['site_login'] = $vals['site_login'];
+						$new_vals['site_pswd'] = md5($vals['site_pswd']);
+						unset($vals['site_pswd']);
+						unset($vals['site_login']);
+						unset($vals['site_type']);
+						$new_vals['site_admin_data'] = serialize($vals);
+
+						if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $edit_id)) {
+							setMsg('success', 'Admin Updated successfully');
+
+							redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+						}
+					} else {
+						setMsg('error', 'An admin already exists with this username.');
+
+						redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+					}
+				} else {
+					setMsg('error', 'Please enter all fields');
+					redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+				}
+			}
+		} else {
+			setMsg('error', 'You are not eligible for using this feature.');
+			redirect(base_url() . ADMIN . '/manage_admins', 'refresh');
+		}
+	}
 	function admin_delete($del_id)
 	{
 		$this->isLoggedAdmin();
@@ -299,20 +347,24 @@ class Index extends MY_Admin
 
 		if ($vals = $this->input->post()) {
 			if (is_array($vals)) {
+				if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $st_id))) {
 
-				if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-					$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-					if (!empty($image['file_name'])) {
-						$vals['admin_image'] = $image['file_name'];
-					} else {
-						setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+					if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+						$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+						if (!empty($image['file_name'])) {
+							$vals['admin_image'] = $image['file_name'];
+						} else {
+							setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+						}
 					}
-				}
-				$new_vals['site_login'] = $vals['site_login'];
-				unset($vals['site_login']);
-				$new_vals['site_admin_data'] = serialize($vals);
-				if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $st_id)) {
-					setMsg('success', 'Admin settings updated successfully');
+					$new_vals['site_login'] = $vals['site_login'];
+					unset($vals['site_login']);
+					$new_vals['site_admin_data'] = serialize($vals);
+					if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $st_id)) {
+						setMsg('success', 'Admin settings updated successfully');
+					}
+				} else {
+					setMsg('error', 'An admin already exists with this username.');
 				}
 			} else {
 				setMsg('error', 'Please enter all fields');

@@ -1,14 +1,13 @@
 <div class="cls-content">
     <div class="cls-content-sm panel">
-        <div class="panel-body">
+        <div class="panel-body" style="background: rgba(255,255,255,.8);">
             <div class="float-left w-100">
                 <img id="brandLogo" src="<?= base_url('uploads/logo/' . $site_info_data['sec_logo']) ?>" alt="Nifty Logo" class="brand-icon">
             </div>
             <div class="mar-ver pad-btm float-left">
 
-                <p>Sign In to your account</p>
+                <p>Sign In to admin panel</p>
             </div>
-            <?= showMsg(); ?>
             <?php
             echo form_open(base_url(ADMIN . '/index/login'), 'method="POST"  autocomplete="off"');
             ?>

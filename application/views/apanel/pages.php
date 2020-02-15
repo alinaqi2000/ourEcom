@@ -46,9 +46,6 @@
                 <div class="panel">
 
                     <div class="panel-body">
-                        <div class="col-md-12">
-                            <?= showMsg(); ?>
-                        </div>
                         <!-- Inline Form  -->
                         <!--===================================================-->
                         <form class="form-inline" method="POST" enctype="multipart/form-data">
@@ -185,7 +182,7 @@
                     <!--===================================================-->
                     <div class="panel-body">
 
-                        <?= showMsg(); ?>
+                      
 
                         <div class="pad-btm form-inline">
                             <div class="row">
@@ -235,7 +232,7 @@
                             type: "POST"
                         },
                         "columnDefs": [{
-                            "targets": [3,4],
+                            "targets": [3, 4],
                             "orderable": false,
                         }, ],
                     });

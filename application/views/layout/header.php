@@ -30,7 +30,7 @@
     </div>
     <div class="header__content">
         <div class="container">
-            <div class="header__content-left"><a class="ps-logo" href="index.html"><img src="<?= base_url("assets/") ?>img/logo-electronic.png" alt=""></a>
+            <div class="header__content-left"><a class="ps-logo" href="index.html"><img src="<?= base_url('uploads/logo/' . $site_info_data['site_logo']) ?>" alt=""></a>
                 <div class="menu--product-categories">
                     <div class="menu__toggle"><i class="icon-menu"></i><span> Shop by Department</span></div>
                     <div class="menu__content">
