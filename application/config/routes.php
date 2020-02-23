@@ -86,6 +86,8 @@ $route['apanel/manage_admins/add'] = 'apanel/index/add_admin';
 $route['apanel/manage_admins/edit/(:any)'] = 'apanel/index/edit_admin/$1';
 
 $route['apanel/admin_delete/(:any)'] = 'apanel/index/admin_delete/$1';
+$route['apanel/inbox'] = 'apanel/mails/index';
+$route['apanel/compose'] = 'apanel/mails/compose';
 
 
 $route['404_override'] = '';

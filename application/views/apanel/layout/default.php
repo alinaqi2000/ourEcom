@@ -28,11 +28,13 @@
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
 
     <link href="<?= base_url() ?>assets/apanel/plugins/animate-css/animate.min.css" rel="stylesheet">
+    <link href="<?= base_url('assets/' . ADMIN) ?>/plugins/summernote/summernote.min.css" rel="stylesheet">
 
 
 
     <!--=================================================-->
 
+    <script src="<?= base_url() ?>assets/apanel/js/jquery.min.js"></script>
 
 
     <!--Pace - Page Load Progress Par [OPTIONAL]-->
@@ -49,16 +51,19 @@
 
     <!--Demo [ DEMONSTRATION ]-->
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo.min.css" rel="stylesheet">
-    <link id="dark_sheet" href="<?= $themeColor ?>" rel="stylesheet">
-    <script src="<?= base_url() ?>assets/apanel/js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
+
+    <link id="dark_sheet" href="<?= $themeColor ?>" rel="stylesheet">
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 
 
 
     <style type="text/css">
-        .panel-body .form-group label,
+        <?php
+        if ($page != 'mails') {
+
+        ?>.panel-body .form-group label,
         .panel-body .form-group select,
         .panel-body .form-group {
             width: 100%;
@@ -86,8 +91,9 @@
             font-weight: 600 !important;
         }
 
-
-        .w-100 {
+        <?php
+        }
+        ?>.w-100 {
             width: 100%;
         }
 
@@ -220,26 +226,15 @@
 
     <!--=================================================-->
 
-    <!--Demo script [ DEMONSTRATION ]-->
-    <!-- <script src="<?= base_url() ?>/assets/apanel/js/demo/nifty-demo.min.js"></script> -->
-
-
-    <!--Flot Chart [ OPTIONAL ]-->
-    <script src="<?= base_url() ?>assets/apanel/plugins/flot-charts/jquery.flot.min.js"></script>
-    <script src="<?= base_url() ?>assets/apanel/plugins/flot-charts/jquery.flot.resize.min.js"></script>
-    <script src="<?= base_url() ?>assets/apanel/plugins/flot-charts/jquery.flot.tooltip.min.js"></script>
-
-
-    <!--DataTables [ OPTIONAL ]-->
-
-
-
-    <!--Sparkline [ OPTIONAL ]-->
-    <script src="<?= base_url() ?>assets/apanel/plugins/sparkline/jquery.sparkline.min.js"></script>
 
 
     <!--Specify page [ SAMPLE ]-->
     <script src="<?= base_url() ?>assets/apanel/js/demo/dashboard.js"></script>
+    <script src="<?= base_url() ?>assets/apanel/js/demo/mail.js"></script>
+
+    <script src="<?= base_url() ?>assets/apanel/js/demo/nifty-demo.min.js"></script>
+
+
 
 
 
@@ -247,6 +242,5 @@
 
 </body>
 
-<!-- Mirrored from www.themeon.net/nifty/v2.9.1/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 04 Dec 2019 17:01:03 GMT -->
 
 </html>

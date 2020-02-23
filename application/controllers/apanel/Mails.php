@@ -9,6 +9,7 @@ class Mails extends MY_Admin
     $this->isLoggedAdmin();
     $this->load->model('Master_model');
     $this->load->model('Mail_model');
+    $this->load->model('Admin_model');
   }
 
   public function index()
@@ -19,77 +20,130 @@ class Mails extends MY_Admin
     $this->load->view('apanel/layout/default', $this->data);
   }
 
-  function fetchMails()
+  function fetchMails($count = 1)
   {
+    $max = 5;
     $srNo = 0;
     $fetch_data = $this->Mail_model->make_datatables();
     $data = array();
-    foreach ($fetch_data as $row) {
-      $srNo++;
-      $m_lvl1 = "";
-      $m_lvl2 = "";
-      if (!empty($row->m_parent1)) {
-        $m_lvl1 = getParentCat($row->m_parent1);
+    $t_num = count($fetch_data);
+    $p_num = $count + 1;
+    $m_num = $count - 1;
+    if ($t_num > ($max * $count)) {
+      $a_num = $max * $count;
+      $n_num = ($max * $count) - ($max - 1);
+    } elseif ($t_num <= ($max * $count)) {
+      $a_num = $t_num;
+      $n_num = ($max * $count) - ($max - 1);
+    } else {
+      $a_num = $t_num;
+      $n_num = 1;
+    }
+    foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
+
+      foreach ($fetch_data as $row) {
+        $sub_array = loadMAils($row->m_author, $row->m_subject, $row->m_date);
+        $data[] = $sub_array;
       }
-      if (!empty($row->m_parent2)) {
-        $m_lvl2 = getParentCat($row->m_parent2);
-      }
-
-      $sub_array = array();
-      $sub_array[] = $row->m_id;
-      $sub_array[] = $row->m_title;
-      $sub_array[] = $m_lvl1;
-      $sub_array[] = $m_lvl2;
-      $sub_array[] = getOrderButton($row->m_order, $row->m_id, 'm_order',base_url("apanel/mails/updateOrder"));
-      $sub_array[] = getFeaturedButton($row->m_label,  $row->m_id, 'm_label',  base_url(ADMIN . '/mails/updateLabel'));
-      $sub_array[] = getStatusButton($row->m_status, $row->m_id, 'm_status', base_url(ADMIN . '/mails/updateStatus'));
-
-      $sub_array[] = '<a href="' . base_url('apanel/mails/edit/' . $row->m_id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> &nbsp;
-      <a onclick="return confirm(\' Are you sure, you want to delete? \')" href="' . base_url('apanel/mails/delete/' . $row->m_id) . '" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</a>';
-
-      $data[] = $sub_array;
     }
     $output = array(
-      "draw" => intval($_POST["draw"]),
-      "recordsTotal" => $this->Mail_model->get_all_data(),
-      "recordsFiltered" => $this->Mail_model->get_filtered_data(),
-      "data" => $data
+      'data' => $data,
+      't_count' => $t_num,
+      'a_count' => $a_num,
+      'n_count' => $n_num,
+      'p_nxt' => $p_num,
+      'm_nxt' => $m_num,
     );
+
+
     echo json_encode($output);
+    exit;
   }
-
-
-  public function add()
+  function fetchSents($count = 1)
   {
-    $this->data['page'] = 'mails';
-    $this->data['mode'] = 'add';
-    $this->data['res1'] = $this->Mail_model->getParent1Mails();
-    $this->data['res2'] = $this->Mail_model->getParent2Mails();
+    $max = 5;
+    $srNo = 0;
+    $fetch_data = $this->Mail_model->make_datatables();
+    $data = array();
+    $t_num = count($fetch_data);
+    $p_num = $count + 1;
+    $m_num = $count - 1;
+    if ($t_num > ($max * $count)) {
+      $a_num = $max * $count;
+      $n_num = ($max * $count) - ($max - 1);
+    } elseif ($t_num <= ($max * $count)) {
+      $a_num = $t_num;
+      $n_num = ($max * $count) - ($max - 1);
+    } else {
+      $a_num = $t_num;
+      $n_num = 1;
+    }
+    foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
 
-    $this->load->view('apanel/layout/default', $this->data);
-    if ($vals = $this->input->post()) {
-      if (is_array($vals) && $vals['m_title'] != '') {
-        $vals['m_slug'] = toSlugUrl($vals['m_title']);
-        if (empty($this->Mail_model->isAlreadyExist($vals['m_title']))) {
-          if ($this->Mail_model->save($vals)) {
-            setMsg('success', 'Mail added successfully');
-            redirect(base_url(ADMIN) .  '/mails', 'refresh');
-          }
-        } else {
-          setMsg('error', 'A category already exists with this title');
-          redirect(base_url(ADMIN) .  '/mails/add', 'refresh');
-        }
-      } else {
-        $this->data['post'] = $vals;
-        setMsg('error', 'Please enter all required fields');
-        redirect(base_url(ADMIN) .  '/mails/add', 'refresh');
+      foreach ($fetch_data as $row) {
+        $sub_array = loadMAils($row->m_author, $row->m_subject, $row->m_date);
+        $data[] = $sub_array;
       }
     }
+    $output = array(
+      'data' => $data,
+      't_count' => $t_num,
+      'a_count' => $a_num,
+      'n_count' => $n_num,
+      'p_nxt' => $p_num,
+      'm_nxt' => $m_num,
+    );
+
+
+    echo json_encode($output);
+    exit;
   }
-  
 
 
- 
+  public function compose()
+  {
+    $this->data['page'] = 'mails';
+    $this->data['mode'] = 'compose';
+    $this->load->view('apanel/layout/default', $this->data);
+  }
+  public function sendMail()
+  {
+    $vals['m_date'] = date(DATE_RFC2822, time());
+    $vals['m_author'] = trim($this->session->userdata('site_id'));
+    $vals['m_recipient'] = trim($this->input->post('rep_id'));
+    $vals['m_subject'] = trim($this->input->post('m_sub'));
+    $vals['m_content'] = trim($this->input->post('m_cont'));
+    if (($vals['m_recipient'] != 0) && !empty($vals['m_subject']) && !empty($vals['m_content'])) {
+      if ($row = $this->Mail_model->sendmail($vals)) {
+        setMsg('success', 'Mail sent successfully');
+      }
+    } else {
+      setMsg('error', 'Please fill in all the fields');
+    }
+    echo json_encode($vals);
+  }
+
+  function getAdmins()
+  {
+    $id = trim($this->session->userdata('site_id'));
+    $name = trim($this->input->post('search'));
+    if ($rows = $this->Admin_model->getSearchAdmins('site_login', $name, $id)) {
+
+      $rslt[] .= '<div classs="list-group">';
+      foreach ($rows as $row) {
+        $adminData = unserialize(urldecode($row->site_admin_data));
+        stripcslashes($adminData);
+        $rslt[] .= '<a href="javascript:void(0);" role"button" class="selectAdmin list-group-item" data-name="' . $row->site_login . '" data-id="' . $row->site_id . '"><strong>' . $adminData['admin_name'] . '</strong> @' . $row->site_login . '</a>';
+      }
+      $rslt[] .= '</div>';
+    } else {
+      $rslt[] = '<div classs="list-group"><a class="list-group-item">No user found</a></div>';
+    }
+    echo json_encode($rslt);
+    exit;
+  }
+
+
 
   function delete($del_id)
   {

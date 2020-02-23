@@ -281,38 +281,79 @@ class Index extends MY_Admin
 		$this->data['mode'] =  'edit';
 		$this->data['row'] = $this->Master_model->getRow('tbl_siteadmin', 'site_id', $edit_id);
 		$this->load->view('apanel/layout/default', $this->data);
+		$gotAdmin = $this->Master_model->getRow('tbl_siteadmin', 'site_id', $edit_id);
 		if ($this->session->userdata('site_id') == '1') {
 			if ($vals = $this->input->post()) {
 				if (is_array($vals)) {
-					if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
+					if ($vals['passY'] != 1) {
 
-						if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-							$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-							if (!empty($image['file_name'])) {
-								$vals['admin_image'] = $image['file_name'];
-							} else {
-								setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
-								redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
-							}
-						}
-						$new_vals['site_type'] = $vals['site_type'];
-						$new_vals['site_login'] = $vals['site_login'];
-						$new_vals['site_pswd'] = md5($vals['site_pswd']);
 						unset($vals['site_pswd']);
-						unset($vals['site_login']);
-						unset($vals['site_type']);
-						$new_vals['site_admin_data'] = serialize($vals);
+						if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
 
-						if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $edit_id)) {
-							setMsg('success', 'Admin Updated successfully');
+							if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+								$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+								if (!empty($image['file_name'])) {
+									$vals['admin_image'] = $image['file_name'];
+								} else {
+									setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+									redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+								}
+							}
+							$new_vals['site_type'] = $vals['site_type'];
+							$new_vals['site_login'] = $vals['site_login'];
+
+							unset($vals['site_login']);
+							unset($vals['site_type']);
+							$new_vals['site_admin_data'] = serialize($vals);
+
+							if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $edit_id)) {
+								setMsg('success', 'Admin Updated successfully');
+
+								redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+							}
+						} else {
+							setMsg('error', 'An admin already exists with this username.');
 
 							redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
 						}
 					} else {
-						setMsg('error', 'An admin already exists with this username.');
+						$new_vals['site_pswd'] = md5($vals['site_pswd']);
+						if ($gotAdmin->site_pswd != $new_vals['site_pswd'] && $gotAdmin->site_pswd != $vals['site_pswd']) {
+							unset($vals['site_pswd']);
+							if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
 
-						redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+								if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+									$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+									if (!empty($image['file_name'])) {
+										$vals['admin_image'] = $image['file_name'];
+									} else {
+										setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+										redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+									}
+								}
+								$new_vals['site_type'] = $vals['site_type'];
+								$new_vals['site_login'] = $vals['site_login'];
+
+								unset($vals['site_login']);
+								unset($vals['site_type']);
+								$new_vals['site_admin_data'] = serialize($vals);
+
+								if ($row = $this->Master_model->save('siteadmin', $new_vals, 'site_id', $edit_id)) {
+									setMsg('success', 'Admin Updated successfully');
+
+									redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+								}
+							} else {
+								setMsg('error', 'An admin already exists with this username.');
+
+								redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+							}
+						} else {
+							setMsg('error', 'Please change admin password');
+							redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');
+						}
 					}
+					unset($vals['passY']);
 				} else {
 					setMsg('error', 'Please enter all fields');
 					redirect(base_url(ADMIN) .  '/manage_admins/edit/' . $edit_id, 'refresh');

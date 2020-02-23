@@ -69,7 +69,16 @@
                                 <?= formTextArea('Admin Description Text', 'admin_text', $admin_data['admin_text']); ?>
                                 <?php
                                 if ($mode == 'edit') {
-                                    echo formText('Admin Password (displayed in md5())', 'site_pswd', $row->site_pswd);
+                                ?>
+                                    <div class="form-group">
+                                        <label for="Change Password">Change Password</label>
+                                        <input type="checkbox" id="cPass">
+                                    </div>
+                                    <div id="cPassDiv" style="display: none">
+                                        <?php echo formText('Admin Password (displayed in md5())', 'site_pswd', $row->site_pswd); ?>
+
+                                    </div>
+                                <?php
                                 } else {
                                     formText('Admin Password', 'site_pswd', $row->site_pswd);
                                 }
@@ -85,10 +94,11 @@
                                 </div>
                             </div>
 
-
+                            <input type="text" id="passY" name="passY" value="0" style="display: none">
                         </form>
                         <!--===================================================-->
                         <!-- End Inline Form  -->
+
 
                     </div>
                 </div>
@@ -96,6 +106,19 @@
             </div>
             <!--===================================================-->
             <!--End page content-->
+            <script>
+                $(document).ready(function() {
+                    $(document.body).on("click", "#cPass", function() {
+                        if ($(this).is(':checked')) {
+                            $('#cPassDiv').show();
+                            $('#passY').val('1');
+                        } else {
+                            $('#cPassDiv').hide();
+                            $('#passY').val('0');
+                        }
+                    });
+                });
+            </script>
         <?php
         } else {
         ?>
@@ -114,7 +137,7 @@
 
                 <!--Breadcrumb-->
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-             
+
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <!--End breadcrumb-->
 
@@ -218,7 +241,7 @@
                     <?php
                     $page_name = $this->uri->segment(2);
                     $pager = $this->input->get('pager');
-                    $paging = getPagingSm("tbl_siteadmin", 'site_id <> 1', '', 1, $page_name, '?', $pager, '', 'next', 'previous');
+                    $paging = getPagingSm("tbl_siteadmin", 'site_id <> 1', '', 8, $page_name, '?', $pager, '', 'next', 'previous');
 
                     if (count($paging[0]) > 0) {
 
@@ -237,7 +260,7 @@
                                 <div class="panel pos-rel">
                                     <div class="pad-all text-center">
                                         <div class="widget-control">
-                                            <a role="button" class="add-tooltip btn btn-trans" data-original-title="<?= $row->site_type != 'super_admin' ? 'Local Admin' : 'Super Admin' ;  ?>"><span class="<?= $row->site_type != 'super_admin' ? 'unfavorite-color' : 'favorite-color' ;  ?>"><i class="demo-psi-star icon-lg"></i></span></a>
+                                            <a role="button" class="add-tooltip btn btn-trans" data-original-title="<?= $row->site_type != 'super_admin' ? 'Local Admin' : 'Super Admin';  ?>"><span class="<?= $row->site_type != 'super_admin' ? 'unfavorite-color' : 'favorite-color';  ?>"><i class="demo-psi-star icon-lg"></i></span></a>
                                             <div class="btn-group dropdown">
                                                 <a href="#" class="dropdown-toggle btn btn-trans" data-toggle="dropdown" aria-expanded="false"><i class="demo-psi-dot-vertical icon-lg"></i></a>
                                                 <ul class="dropdown-menu dropdown-menu-right" style="">

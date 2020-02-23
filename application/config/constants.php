@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 defined('CURRENCY') OR define('CURRENCY', 'Rs.');
 defined('ADMIN') OR define('ADMIN', 'apanel');
+date_default_timezone_set('Asia/Karachi');
+
 
 /*
 |--------------------------------------------------------------------------

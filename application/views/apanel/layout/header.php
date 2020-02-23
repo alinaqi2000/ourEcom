@@ -57,8 +57,13 @@
 
             </ul>
             <ul class="nav navbar-top-links">
-            <li>
-                    <a title="Manage Admins" href="<?= base_url(ADMIN."/manage_admins") ?>">
+                <li>
+                    <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
+                        <i class="ion-email icon-lg icon-fw"></i>
+                    </a>
+                </li>
+                <li>
+                    <a title="Manage Admins" href="<?= base_url(ADMIN . "/manage_admins") ?>">
                         <i class="ion-person-stalker icon-lg icon-fw"></i>
                     </a>
                 </li>

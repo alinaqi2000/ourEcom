@@ -11,7 +11,14 @@ class Admin_model extends CI_Model
 	{
 		return "siteadmin";
 	}
+	function getSearchAdmins($field, $value, $id = '1')
+	{
 
+		$this->db->like($field, $value);
+		$this->db->where('site_id <>' . $id);
+		$query = $this->db->get($this->table_name());
+		return $query->result();
+	}
 	function getSettings()
 	{
 		$query = $this->db->get($this->table_name());

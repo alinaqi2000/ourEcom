@@ -173,5 +173,72 @@ $(document).ready(function () {
 
     });
 
+    // Admin Search
+    $(document.body).on('keyup', '#inputName', function () {
+
+        var name = $('#inputName').val();
+        if (name == '') {
+            $("#loadAdmins").fadeOut(250);
+        } else {
+            $('#loadAdmins').fadeIn(250);
+            var urlAdmins = $(this).data('url');
+            $.ajax({
+                method: "POST",
+                url: urlAdmins,
+                data: {
+                    search: name,
+                },
+                dataType: "JSON",
+                success: function (response) {
+                    console.log(response);
+                    $("#loadAdmins").html(response);
+                },
+                error: function () {
+                    $('#loadAdmins').fadeOut(250);
+                }
+
+            });
+        }
+    });
+    $(document.body).on('click', '.selectAdmin', function () {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        $('#inputName').val(name);
+        $('#inputName').attr('data-id', id);
+        $('#loadAdmins').fadeOut(250);
+
+    });
+    $(document.body).on('click', '#mailSend', function () {
+        var id = $('#inputName').data('id');
+        var sub = $('#inputSubject').val();
+        var cont = $('#demo-mail-compose').val();
+        var urlMail = $(this).data('url');
+        $.ajax({
+            method: "POST",
+            url: urlMail,
+            data: {
+                rep_id: id,
+                m_sub: sub,
+                m_cont: cont
+            },
+            dataType: "JSON",
+            beforeSend: function () {
+                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Sending...');
+            },
+            success: function (response) {
+                console.log(response);
+                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Sent');
+                location.reload();
+            },
+            error: function () {
+                location.reload();
+
+            },
+
+
+        });
+    });
+
+
 
 });
