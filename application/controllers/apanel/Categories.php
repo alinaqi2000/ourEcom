@@ -40,7 +40,7 @@ class Categories extends MY_Admin
       $sub_array[] = $row->cat_title;
       $sub_array[] = $cat_lvl1;
       $sub_array[] = $cat_lvl2;
-      $sub_array[] = getOrderButton($row->cat_order, $row->cat_id, 'cat_order',base_url("apanel/categories/updateOrder"));
+      $sub_array[] = getOrderButton($row->cat_order, $row->cat_id, 'cat_order', base_url("apanel/categories/updateOrder"));
       $sub_array[] = getFeaturedButton($row->cat_label,  $row->cat_id, 'cat_label',  base_url(ADMIN . '/categories/updateLabel'));
       $sub_array[] = getStatusButton($row->cat_status, $row->cat_id, 'cat_status', base_url(ADMIN . '/categories/updateStatus'));
 

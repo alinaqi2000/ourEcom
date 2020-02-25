@@ -23,7 +23,6 @@ class Mails extends MY_Admin
   function fetchMails($count = 1)
   {
     $max = 5;
-    $srNo = 0;
     $fetch_data = $this->Mail_model->make_datatables();
     $data = array();
     $t_num = count($fetch_data);
@@ -32,19 +31,25 @@ class Mails extends MY_Admin
     if ($t_num > ($max * $count)) {
       $a_num = $max * $count;
       $n_num = ($max * $count) - ($max - 1);
-    } elseif ($t_num <= ($max * $count)) {
-      $a_num = $t_num;
-      $n_num = ($max * $count) - ($max - 1);
     } else {
       $a_num = $t_num;
-      $n_num = 1;
-    }
-    foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
-
-      foreach ($fetch_data as $row) {
-        $sub_array = loadMAils($row->m_author, $row->m_subject, $row->m_date);
-        $data[] = $sub_array;
+      if ($a_num == 0) {
+        $n_num = 0;
+      } else {
+        $n_num = ($max * $count) - ($max - 1);
       }
+    }
+    if ($t_num > 0 && !empty($fetch_data)) {
+      $data = array();
+      foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
+
+        foreach ($fetch_data as $row) {
+          $sub_array = loadMAils($row->m_id, $row->m_author, $row->m_subject, $row->m_date, $row->m_status, $row->m_slabel, $row->m_attach, $row->m_tags);
+          $data[] = $sub_array;
+        }
+      }
+    } else {
+      $data = '<li><h5>No mail(s) to show.</h5></li>';
     }
     $output = array(
       'data' => $data,
@@ -62,9 +67,8 @@ class Mails extends MY_Admin
   function fetchSents($count = 1)
   {
     $max = 5;
-    $srNo = 0;
     $fetch_data = $this->Mail_model->make_datatables();
-    $data = array();
+
     $t_num = count($fetch_data);
     $p_num = $count + 1;
     $m_num = $count - 1;
@@ -78,12 +82,17 @@ class Mails extends MY_Admin
       $a_num = $t_num;
       $n_num = 1;
     }
-    foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
+    if ($t_num > 0 && !empty($fetch_data)) {
+      $data = array();
+      foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
 
-      foreach ($fetch_data as $row) {
-        $sub_array = loadMAils($row->m_author, $row->m_subject, $row->m_date);
-        $data[] = $sub_array;
+        foreach ($fetch_data as $row) {
+          $sub_array = loadMAils($row->m_id, $row->m_author, $row->m_subject, $row->m_date, $row->m_status, $row->m_slabel, $row->m_attach, $row->m_tags);
+          $data[] = $sub_array;
+        }
       }
+    } else {
+      $data = '<li><h3>No mails yet.</h3></li>';
     }
     $output = array(
       'data' => $data,
@@ -106,6 +115,18 @@ class Mails extends MY_Admin
     $this->data['mode'] = 'compose';
     $this->load->view('apanel/layout/default', $this->data);
   }
+  public function read($m_id)
+  {
+    $mail_id = explode('_', $m_id);
+    $this->Mail_model->setAsRead($mail_id[0]);
+    $this->data['attachs'] = unserialize(urldecode($this->Mail_model->getAttach($mail_id[0])));
+    // pr(unserialize(urldecode($this->Mail_model->getAttach($mail_id[0]))));
+    // exit;
+    $this->data['row'] = $this->Mail_model->getMail($mail_id[0]);
+    $this->data['page'] = 'mails';
+    $this->data['mode'] = 'read';
+    $this->load->view('apanel/layout/default', $this->data);
+  }
   public function sendMail()
   {
     $vals['m_date'] = date(DATE_RFC2822, time());
@@ -113,14 +134,41 @@ class Mails extends MY_Admin
     $vals['m_recipient'] = trim($this->input->post('rep_id'));
     $vals['m_subject'] = trim($this->input->post('m_sub'));
     $vals['m_content'] = trim($this->input->post('m_cont'));
-    if (($vals['m_recipient'] != 0) && !empty($vals['m_subject']) && !empty($vals['m_content'])) {
+    $vals['m_tags'] = trim($this->input->post('m_tgs'));
+    // echo $vals['m_tags'];
+    // exit;
+    // $vals['m_attach'] = trim($this->input->post('m_attach'));
+    if (($vals['m_recipient'] != 0) && !empty($vals['m_subject'])) {
+
+      if (isset($_FILES["m_attachs"]["name"]) && $_FILES["m_attachs"]["name"] != "") {
+        $filesCount = count($_FILES['m_attachs']['name']);
+        for ($i = 0; $i < $filesCount; $i++) {
+          // $name =  $_FILES["m_attach"]["name"][$i];
+          $_FILES['m_attach']['name'] = $_FILES['m_attachs']['name'][$i];
+          $_FILES['m_attach']['tmp_name'] = $_FILES['m_attachs']['tmp_name'][$i];
+          $_FILES['m_attach']['type']     = $_FILES['m_attachs']['type'][$i];
+          $_FILES['m_attach']['error']     = $_FILES['m_attachs']['error'][$i];
+          $_FILES['m_attach']['size']     = $_FILES['m_attachs']['size'][$i];
+          $image = upload_file('./uploads/apanel/mailAttachments/', 'm_attach');
+          if (!empty($image['file_name']) && empty($image['error'])) {
+            $gotFiles[$i]['file'] = $image['file_name'];
+            $gotFiles[$i]['size'] = $_FILES['m_attach']['size'];
+            $gotFiles[$i]['type'] = $_FILES['m_attach']['type'];
+          } else {
+            setMsg('error', strip_tags($image['error']));
+            redirect(base_url(ADMIN) .  '/compose', 'refresh');
+          }
+        }
+        $vals['m_attach'] = serialize($gotFiles);
+      }
       if ($row = $this->Mail_model->sendmail($vals)) {
         setMsg('success', 'Mail sent successfully');
       }
     } else {
       setMsg('error', 'Please fill in all the fields');
     }
-    echo json_encode($vals);
+    echo json_encode($_FILES["m_attach"]["name"]);
+    exit;
   }
 
   function getAdmins()
@@ -147,22 +195,81 @@ class Mails extends MY_Admin
 
   function delete($del_id)
   {
-    if ($this->Mail_model->delete($del_id)) {
-      setMsg('success', 'Mail deleted successfully');
-      redirect(base_url(ADMIN) .  '/mails', 'refresh');
+
+
+    // pr($id);exit;
+
+
+    $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($del_id)));
+    $gotCount = count($gotAttach);
+    if ($gotCount > 0 && !empty($gotAttach)) {
+      foreach ($gotAttach as $files) {
+        // echo $files['file'];
+        // exit;
+        $got = "./uploads/apanel/mailAttachments/" . $files['file'];
+        if (unlink($got)) {
+          if ($this->Mail_model->delete($del_id)) {
+            setMsg('success', 'Mail deleted successfully');
+            redirect(base_url(ADMIN) .  '/inbox', 'refresh');
+          } else {
+            setMsg('error', 'Something went wrong, Please try later.');
+            redirect(base_url(ADMIN) .  '/inbox', 'refresh');
+          }
+        }
+      }
     } else {
-      setMsg('error', 'Something went wrong, Please try later.');
-      redirect(base_url(ADMIN) .  '/mails', 'refresh');
+      if ($this->Mail_model->delete($del_id)) {
+        setMsg('success', 'Mail deleted successfully');
+        redirect(base_url(ADMIN) .  '/inbox', 'refresh');
+      } else {
+        setMsg('error', 'Something went wrong, Please try later.');
+        redirect(base_url(ADMIN) .  '/inbox', 'refresh');
+      }
     }
   }
 
   function m_delete()
   {
-    if ($this->input->post('checkbox_value')) {
-      $id = $this->input->post('checkbox_value');
+    if ($this->input->post('c_box')) {
+      $id = $this->input->post('c_box');
+      // pr($id);exit;
+
       for ($count = 0; $count < count($id); $count++) {
-        $this->Mail_model->delete($id[$count]);
+        $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($id[$count])));
+        $gotCount = count($gotAttach);
+        if ($gotCount > 0  && !empty($gotAttach)) {
+          foreach ($gotAttach as $files) {
+            // echo $files['file'];
+            // exit;
+            $got = "./uploads/apanel/mailAttachments/" . $files['file'];
+            if (unlink($got)) {
+              $this->Mail_model->delete($id[$count]);
+            }
+          }
+        } else {
+          $this->Mail_model->delete($id[$count]);
+        }
       }
+    }
+  }
+  function download($file)
+  {
+    $this->load->helper('download');
+    $data = file_get_contents('./uploads/apanel/mailAttachments/' . $file); // Read the file's contents
+    force_download($file, $data);
+  }
+  function downloadAll($a_id, $m_id)
+  {
+    $this->load->library('zip');
+    $author = getRecipientUserName($a_id) . rand(1111, 9999);
+    $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($m_id)));
+    $gotCount = count($gotAttach);
+    if ($gotCount > 0  && !empty($gotAttach)) {
+      foreach ($gotAttach as $files) {
+        $this->zip->read_file('./uploads/apanel/mailAttachments/' . $files['file']); // Read the file's contents
+
+      }
+      $this->zip->download($author . '.zip');
     }
   }
 }

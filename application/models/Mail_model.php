@@ -23,6 +23,18 @@ class Mail_model extends CI_Model
         $query = $this->db->get($this->table_name());
         return $query->row();
     }
+    function getAttach($m_id)
+    {
+        $this->db->where('m_id', $m_id);
+        $query = $this->db->get($this->table_name());
+        return $query->row()->m_attach;
+    }
+    function setAsRead($m_id)
+    {
+        $this->db->set('m_status', '1');
+        $this->db->where('m_id', $m_id);
+        $this->db->update($this->table_name());
+    }
     function getStatusValue($m_id)
     {
         $this->db->where('m_id', $m_id);
@@ -45,36 +57,9 @@ class Mail_model extends CI_Model
         $query = $this->db->get($this->table_name());
         return $query->result();
     }
-    function getParent1Mails($start = '', $offset = '')
-    {
-        if (!empty($offset)) {
-            $this->db->limit($offset, $start);
-        }
-        $this->db->where('m_status', '1');
-        $this->db->where('m_type', '0');
-        $par_que = $this->db->get($this->table_name());
-        return $par_que->result();
-    }
-    function getParent2Mails($start = '', $offset = '')
-    {
-        if (!empty($offset)) {
-            $this->db->limit($offset, $start);
-        }
-        $this->db->where('m_status', '1');
-        $this->db->where('m_type', '1');
-        $par_que = $this->db->get($this->table_name());
-        return $par_que->result();
-    }
-    function getSubMails($start = '', $offset = '', $parent = '')
-    {
 
-        if (!empty($offset)) {
-            $this->db->limit($offset, $start);
-        }
-        $this->db->where('m_parent1', $parent);
-        $query = $this->db->get($this->table_name());
-        return $query->result();
-    }
+
+
     function sendmail($vals)
     {
         $this->db->set($vals);
@@ -133,8 +118,8 @@ class Mail_model extends CI_Model
     }
 
 
-    var $select_column = array("m_id", "m_author", "m_title", "m_subject", "m_content", "m_status", "m_label", "m_date");
-    var $order_column = array("m_id", "m_author", "m_title", "m_subject", "m_content", "m_status", "m_label", "m_date");
+    var $select_column = array("m_id", "m_author", "m_subject", "m_content", "m_status", "m_tags", "m_attach", "m_label", "m_date");
+    var $order_column = array("m_id", "m_author", "m_subject", "m_content", "m_status", "m_tags", "m_label", "m_attach", "m_date");
 
     function make_query()
     {
@@ -144,7 +129,6 @@ class Mail_model extends CI_Model
         $this->db->from($this->table_name());
         if (isset($_POST["search"]["value"])) {
             $this->db->or_like("m_id", $_POST["search"]["value"]);
-            $this->db->or_like("m_title", $_POST["search"]["value"]);
         }
         if (isset($_POST["order"])) {
             $this->db->order_by($this->order_column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);

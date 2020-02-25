@@ -157,16 +157,16 @@ function showMsg($type = '', $msg = '')
     if ($type != '' && $msg != '') {
         switch ($type) {
             case 'success':
-                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-success" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-check-circle fa-2x"></i></span></div><div class="media-body">' . $msg . '</div></div></div> </div></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-success" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-check-circle fa-2x"></i></span></div><div class="media-body" style="line-height:2.5;font-size:medium;width:auto;">' . $msg . '</div></div></div> </div></div>';
                 break;
             case 'error':
-                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-danger" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-times-circle fa-2x"></i></span></div><div class="media-body"> ' . $msg . '</div></div></div> </div></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-danger" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-times-circle fa-2x"></i></span></div><div class="media-body" style="line-height:2.5;font-size:medium;width:auto;"> ' . $msg . '</div></div></div> </div></div>';
                 break;
             case 'warning':
-                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-warning" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-warning fa-2x"></i></span></div><div class="media-body">' . $msg . '</div></div></div> </div></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-warning" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-warning fa-2x"></i></span></div><div class="media-body" style="line-height:2.5;font-size:medium;width:auto;">' . $msg . '</div></div></div> </div></div>';
                 break;
             default:
-                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-info" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-info-circle fa-2x"></i></span></div><div class="media-body">' . $msg . '</div></div></div> </div></div>';
+                return '<div id="floating-top-container" class="floating-container"><div id="floating-top-right"><div id="alrt" class="alert-wrap animated jellyIn in"><div class="alert alert-info" role="alert"><button class="close" type="button"><i class="pci-cross pci-circle"></i></button><div class="media-left"><span class="icon-wrap icon-wrap-xs icon-circle alert-icon"><i class="fa fa-info-circle fa-2x"></i></span></div><div class="media-body" style="line-height:2.5;font-size:medium;width:auto;">' . $msg . '</div></div></div> </div></div>';
                 break;
         }
     }
@@ -262,6 +262,26 @@ function getRecipientName($id)
     stripcslashes($rslt);
     return $rslt['admin_name'];
 }
+function getRecipientImage($id)
+{
+    $CI = get_instance();
+
+    $CI->db->where('site_id', $id);
+    $query = $CI->db->get('tbl_siteadmin');
+    $rslt = $query->row()->site_admin_data;
+    $rslt = unserialize(urldecode($rslt));
+    stripcslashes($rslt);
+    return $rslt['admin_image'];
+}
+function getRecipientUserName($id)
+{
+    $CI = get_instance();
+
+    $CI->db->where('site_id', $id);
+    $query = $CI->db->get('tbl_siteadmin');
+    $rslt = $query->row()->site_login;
+    return $rslt;
+}
 
 
 function getCatIdBySlug($cat_slug)
@@ -302,11 +322,34 @@ function getPageIdBySlug($p_slug)
     $query = $CI->db->get('tbl_pages');
     return $query->row()->page_id;
 }
-function loadMAils($id, $sub, $date)
+function loadMAils($id, $a_id, $sub, $date, $status, $label, $file, $tags)
 {
     $n_date = explode(' ', $date);
+    $read = "";
+    $attach = "";
+    $star = "";
+    $atc_icon = "";
+    $tgs = "";
+    $tgsClass = "";
+    if (!empty($tags)) {
+        $tgs = explode(',', $tags);
+    }
+    if ($tgs != "") {
+        $tgsClass = '<span class="label label-primary">' . $tgs[0] . '</span>';
+    }
+    if ($status == 0) {
+        $read = 'mail-list-unread';
+    }
+    if ($label == 1) {
+        $star = 'mail-starred';
+    }
+    if (!empty($file)) {
+        $attach = 'mail-attach';
+        $atc_icon = '<div class="mail-attach-icon"><i class="demo-psi-paperclip"></i></div>';
+    }
 
-    $rslt = '<li class="mail-list-unread mail-starred mail-attach"><div class="mail-control"><input id="email-list-3" class="magic-checkbox" type="checkbox"><label for="email-list-3"></label></div><div class="mail-star"><a href="#"><i class="demo-psi-star"></i></a></div><div class="mail-from"><a href="#">' . getRecipientName($id) . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div><div class="mail-attach-icon"><i class="demo-psi-paperclip"></i></div><div class="mail-subject"><a href="mailbox-message.html">' . $sub . '</a></div></li>';
+
+    $rslt = '<li class="' . $read . ' ' . $star . ' ' . $attach . '"><div class="mail-control"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></label></div><div class="mail-star"><a href="#"><i class="demo-psi-star"></i></a></div><div class="mail-from"><a href="#">' . getRecipientName($a_id) . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div>' . $atc_icon . '<div class="mail-subject"><a href="' . base_url(ADMIN) . "/inbox/" . $id . '_' . getRecipientUserName($a_id) . '">' . $tgsClass . $sub . '</a></div></li>';
     return $rslt;
 }
 function getPageTitleBySlug($p_slug)
@@ -380,10 +423,11 @@ function upload_file($path, $field_name)
 {
     $CI = &get_instance();
     $stamp = time();
+    // $ray = preg_split('/(,|;|-|_|&|#|:)/', $tmp);
     $config['upload_path'] = $path;
-    $config['allowed_types'] = 'pdf|doc|docx|ppt|pptx|txt|mp4|jpg|png|gif|jpeg';
+    $config['allowed_types'] = 'pdf|doc|docx|ppt|pptx|txt|mp4|mp3|jpg|png|gif|jpeg|zip|rar|html|php|htm|css|js|sql';
     $config['max_size'] = 2100;
-    $config['file_name'] = "file_" . $stamp;
+    $config['file_name'] = 'file_' . $stamp;
 
     $CI->load->library('upload', $config);
 

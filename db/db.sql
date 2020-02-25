@@ -46,7 +46,7 @@ CREATE TABLE `tbl_categories` (
 --
 
 INSERT INTO `tbl_categories` (`cat_id`, `cat_parent1`, `cat_parent2`, `cat_icon`, `cat_menu`, `cat_title`, `cat_slug`, `cat_type`, `cat_link`, `cat_label`, `cat_order`, `cat_status`, `cat_date`) VALUES
-(29, 0, 0, 'icon-shirt', 1, 'Men\'s Fashion', 'men-s-fashions', '0', '', 1, 1, 1, '2020-02-15 10:27:43'),
+(29, 0, 0, 'icon-shirt', 1, 'Men\'s Fashion', 'men-s-fashions', '0', '', 1, 1, 1, '2020-02-19 16:54:36'),
 (30, 29, 0, '', 1, 'Summer Collection', 'summer-collection', '1', '', 1, 1, 1, '2020-02-15 08:49:04'),
 (32, 29, 30, '', 1, 'T-Shirts', 't-shirts', '2', '', 2, 1, 1, '2020-02-11 17:00:43');
 
@@ -145,6 +145,27 @@ INSERT INTO `tbl_listings` (`list_id`, `list_type`, `list_title`, `list_slug`, `
 (18, 'categories', 'Car', 'car', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do sidu', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', NULL, 'image_15636566942788.jpg', NULL, 0, 1, 2, 1),
 (27, 'categories', 'Manipulation', 'manipulation', '', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', NULL, 'image_15636567134998.jpg', NULL, 0, 1, 3, 1),
 (28, 'categories', 'Sea', 'sea', '', 'Lorem ipsum dolor sit amet, consecteturs nisi ut aliquip ex ea commodo ', 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\nLorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod\r\ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,\r\nquis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo\r\nconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse\r\ncillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non\r\nproident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '', NULL, 'image_15636985569172.jpg', NULL, 0, 0, 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_mails`
+--
+
+DROP TABLE IF EXISTS `tbl_mails`;
+CREATE TABLE `tbl_mails` (
+  `m_id` int(11) NOT NULL,
+  `m_author` int(11) NOT NULL,
+  `m_recipient` int(11) NOT NULL,
+  `m_date` varchar(255) DEFAULT NULL,
+  `m_label` int(11) DEFAULT NULL,
+  `m_status` int(11) NOT NULL DEFAULT '0',
+  `m_subject` varchar(255) DEFAULT NULL,
+  `m_tags` varchar(255) DEFAULT NULL,
+  `m_content` longtext,
+  `m_attach` longtext,
+  `m_order` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -312,9 +333,9 @@ CREATE TABLE `tbl_siteadmin` (
 
 INSERT INTO `tbl_siteadmin` (`site_id`, `site_type`, `site_login`, `site_pswd`, `site_info_data`, `site_admin_data`, `site_contact_data`, `site_theme_data`, `site_social_data`, `site_og_data`, `site_contact_map`) VALUES
 (1, 'super_admin', 'alinaqi2000', '6e586d764f582c117f0ef15dad2605bd', 'a:6:{s:9:\"site_name\";s:7:\"ourEcom\";s:9:\"site_desc\";s:0:\"\";s:16:\"site_footer_text\";s:38:\"© 2019 ourEcom. All Rights Reserved. \";s:9:\"site_logo\";s:25:\"image_1581669144_2113.png\";s:8:\"sec_logo\";s:25:\"image_1581149617_2176.png\";s:12:\"site_favicon\";s:26:\"image_1581149617_21761.png\";}', 'a:4:{s:10:\"admin_name\";s:18:\"Ali Naqi Al-Musawi\";s:15:\"admin_portfolio\";s:31:\"Junior Full Stack Web Developer\";s:10:\"admin_text\";s:0:\"\";s:11:\"admin_image\";s:25:\"image_1576833023_2215.jpg\";}', 'a:4:{s:13:\"contact_email\";s:21:\"alinaqi2000@gmail.com\";s:13:\"contact_phone\";s:16:\" 92 306 156 1246\";s:13:\"contact_hours\";s:27:\"Mon - Sun / 9:00AM - 8:00PM\";s:15:\"contact_address\";s:49:\"Rehmat Park, University Road, Sargodha, Pakistan.\";}', 'a:11:{s:12:\"general_text\";s:10:\"text-white\";s:14:\"secondary_text\";s:9:\"text-dark\";s:11:\"primary_btn\";s:16:\"btn-outline-info\";s:16:\"primary_timeline\";s:6:\"danger\";s:9:\"header_bg\";s:16:\" bg-happy-fisher\";s:11:\"header_text\";s:17:\"header-text-light\";s:12:\"sidebar_text\";s:17:\"sidebar-text-dark\";s:10:\"sidebar_bg\";s:8:\"bg-white\";s:14:\"sidebar_banner\";s:25:\"image_1570957659_6879.jpg\";s:7:\"dash_bg\";s:16:\" bg-happy-fisher\";s:9:\"footer_bg\";s:8:\"bg-white\";}', 'a:7:{s:9:\"social_fb\";s:36:\"https://www.facebook.com/alinaqi2000\";s:10:\"social_twt\";s:31:\"https://twitter.com/alinaqi2000\";s:11:\"social_inst\";s:33:\"https://instagram.com/alinaqi2000\";s:12:\"social_linkd\";s:57:\"https://www.linkedin.com/in/ali-naqi-al-musawi-531742100/\";s:9:\"social_yt\";s:56:\"https://www.youtube.com/channel/UC5ZnxASDnkuZ3JVR5xVn7fg\";s:12:\"social_gmail\";s:21:\"alinaqi2000@gmail.com\";s:10:\"social_pin\";s:0:\"\";}', 'a:6:{s:13:\"site_og_title\";s:25:\"Prime Cargo International\";s:12:\"site_og_type\";s:7:\"website\";s:13:\"site_og_image\";s:73:\"http://localhost/paperbirdpackaging/uploads/logo/Image_15474478326709.png\";s:18:\"site_og_image_type\";s:10:\"image/jpeg\";s:14:\"site_og_locale\";s:5:\"en_US\";s:19:\"site_og_description\";s:25:\"Prime Cargo International\";}', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d845.2902674943832!2d72.68641282917709!3d32.064891998824564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDAzJzUzLjYiTiA3MsKwNDEnMTMuMSJF!5e0!3m2!1sen!2s!4v1575704271212!5m2!1sen!2s\" width=\"100%\" height=\"450\" frameborder=\"0\" style=\"border:0;\" allowfullscreen=\"\"></iframe>'),
-(8, 'local_admin', 'ehmerhaider', 'c49ea753e1c1d1a107826286ad9bd777', NULL, 'a:4:{s:10:\"admin_name\";s:12:\"Ehmer Haider\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:30:\"I\'m a freelance Web Developer.\";s:11:\"admin_image\";s:0:\"\";}', NULL, NULL, NULL, NULL, NULL),
-(12, 'super_admin', 'mianhaseeb', '1522054b7298aba289db03dda7f27ef0', NULL, 'a:4:{s:10:\"admin_name\";s:11:\"Mian Haseeb\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:30:\"I\'m a freelance Web Developer.\";s:11:\"admin_image\";s:0:\"\";}', NULL, NULL, NULL, NULL, NULL),
-(13, 'super_admin', 'saad_khan', 'd8ccd4adc7afe02070ff472a9ace29c6', NULL, 'a:4:{s:10:\"admin_name\";s:9:\"Saad Khan\";s:15:\"admin_portfolio\";s:20:\"Site Content Manager\";s:10:\"admin_text\";s:36:\"I\'m a freelance Web Content Manager.\";s:11:\"admin_image\";s:0:\"\";}', NULL, NULL, NULL, NULL, NULL);
+(8, 'super_admin', 'ehmerhaider', '7acc2c9a827c0feaf0cfea12a9698d7c', NULL, 'a:5:{s:10:\"admin_name\";s:12:\"Ehmer Haider\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:30:\"I\'m a freelance Web Developer.\";s:11:\"admin_image\";s:0:\"\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL),
+(12, 'super_admin', 'mianhaseeb', 'eec0e0691c17de4650cc0da610dfb238', NULL, 'a:4:{s:10:\"admin_name\";s:11:\"Mian Haseeb\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:30:\"I\'m a freelance Web Developer.\";s:11:\"admin_image\";s:0:\"\";}', NULL, NULL, NULL, NULL, NULL),
+(13, 'super_admin', 'saad_khan', '138249968a5da172f00792609f89b1fa', NULL, 'a:4:{s:10:\"admin_name\";s:9:\"Saad Khan\";s:15:\"admin_portfolio\";s:20:\"Site Content Manager\";s:10:\"admin_text\";s:36:\"I\'m a freelance Web Content Manager.\";s:11:\"admin_image\";s:25:\"image_1582625363_2149.png\";}', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -403,6 +424,12 @@ ALTER TABLE `tbl_listings`
   ADD PRIMARY KEY (`list_id`);
 
 --
+-- Indexes for table `tbl_mails`
+--
+ALTER TABLE `tbl_mails`
+  ADD PRIMARY KEY (`m_id`);
+
+--
 -- Indexes for table `tbl_orders`
 --
 ALTER TABLE `tbl_orders`
@@ -486,6 +513,12 @@ ALTER TABLE `tbl_customers`
 --
 ALTER TABLE `tbl_listings`
   MODIFY `list_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `tbl_mails`
+--
+ALTER TABLE `tbl_mails`
+  MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `tbl_orders`

@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -88,6 +88,7 @@ $route['apanel/manage_admins/edit/(:any)'] = 'apanel/index/edit_admin/$1';
 $route['apanel/admin_delete/(:any)'] = 'apanel/index/admin_delete/$1';
 $route['apanel/inbox'] = 'apanel/mails/index';
 $route['apanel/compose'] = 'apanel/mails/compose';
+$route['apanel/inbox/(:any)'] = 'apanel/mails/read/$1';
 
 
 $route['404_override'] = '';

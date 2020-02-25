@@ -32,21 +32,27 @@
                             <!-- <a href="#" class="list-group-item mail-nav-unread">
                                 <i class="demo-pli-fire-flame-2 icon-lg icon-fw"></i> Spam (5)
                             </a> -->
-                            <a href="#" class="list-group-item">
-                                <i class="demo-pli-trash icon-lg icon-fw"></i> Trash
-                            </a>
+                            <?php
+                            if ($mode != 'read' && $mode != 'compose') {
+                            ?>
+                                <a type="button" href="javascript:void(0);" id="mailTrash" class="list-group-item">
+                                    <i class="demo-pli-trash icon-lg icon-fw"></i> Trash
+                                </a>
+                            <?php
+                            }
+                            ?>
                         </div>
 
-                        <div class="list-group bg-trans">
+                        <!-- <div class="list-group bg-trans">
                             <a href="#" class="list-group-item"><i class="demo-pli-male-female icon-lg icon-fw"></i> Address Book</a>
                             <a href="#" class="list-group-item"><i class="demo-pli-folder-with-document icon-lg icon-fw"></i> User Folders</a>
-                        </div>
+                        </div> -->
 
                         <!-- Friends -->
-                        <div class="list-group bg-trans pad-ver bord-ver">
+                        <!-- <div class="list-group bg-trans pad-ver bord-ver">
                             <p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Friends</p>
 
-                            <!-- Menu list item -->
+                            
                             <a href="#" class="list-group-item list-item-sm">
                                 <span class="badge badge-purple badge-icon badge-fw pull-left"></span>
                                 Joey K. Greyson
@@ -67,7 +73,7 @@
                                 <span class="badge badge-danger badge-icon badge-fw pull-left"></span>
                                 Susan Sun
                             </a>
-                        </div>
+                        </div> -->
 
 
 
@@ -81,19 +87,19 @@
                             <!-- COMPOSE EMAIL -->
                             <!--===================================================-->
 
-                            <!-- <div class="pad-btm clearfix">
+                            <div class="pad-btm clearfix">
                                 <div class="pull-right pad-btm">
                                     <div class="btn-group">
-                                        <button id="demo-toggle-cc" data-toggle="button" type="button" class="btn btn-sm btn-default btn-active-info">Cc</button>
-                                        <button id="demo-toggle-bcc" data-toggle="button" type="button" class="btn btn-sm btn-default btn-active-info">Bcc</button>
+                                        <button id="demo-toggle-cc" data-toggle="button" type="button" class="btn btn-sm btn-default btn-active-info">#Tags</button>
+                                        <button id="demo-toggle-bcc" data-toggle="button" type="button" class="btn btn-sm btn-default btn-active-info"><i class="demo-psi-paperclip icon-lg icon-fw"></i></button>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
 
 
                             <!--Input form-->
-                            <form method="post" id="mailForm" class="form-horizontal">
+                            <form method="post" id="mailForm" enctype="multipart/form-data" class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-lg-1 control-label text-left" for="inputEmail">To</label>
                                     <div class="col-lg-11">
@@ -105,24 +111,39 @@
 
                                     </div>
                                 </div>
-                                <!-- <div id="demo-cc-input" class="hide form-group">
-                                    <label class="col-lg-1 control-label text-left" for="inputCc">Cc</label>
-                                    <div class="col-lg-11">
-                                        <input type="text" id="inputCc" class="form-control">
-                                    </div>
-                                </div>
-                                <div id="demo-bcc-input" class="hide form-group">
-                                    <label class="col-lg-1 control-label text-left" for="inputBcc">Bcc</label>
-                                    <div class="col-lg-11">
-                                        <input type="text" id="inputBcc" class="form-control">
-                                    </div>
-                                </div> -->
                                 <div class="form-group">
                                     <label class="col-lg-1 control-label text-left" for="inputSubject">Subject</label>
                                     <div class="col-lg-11">
                                         <input type="text" id="inputSubject" name="m_subject" class="form-control">
                                     </div>
                                 </div>
+                                <div id="demo-cc-input" class="hide form-group">
+                                    <label class="col-lg-1 control-label text-left" for="tagsinput">#Tags</label>
+                                    <div class="col-lg-11">
+                                        <input type="text" class="form-control" id="tagsinput" name="m_tags" placeholder="Type to add a tag" value="" id="tagsinput" data-role="tagsinput">
+                                    </div>
+                                </div>
+                                <div id="demo-bcc-input" class="hide form-group">
+                                    <div class="col-lg-2">
+                                        <span class="btn btn-primary btn-file"><i class="demo-psi-paperclip"></i> Attachment(s)
+                                            <input type="file" id="inputAttach" size="50" name="m_attachs[]" multiple="multiple">
+                                        </span>
+                                    </div>
+                                    <div class="col-lg-10 col-xs-12">
+                                        <strong>Supported Formats : </strong> pdf|doc|docx|ppt|pptx|txt|mp4|jpg|png|gif |jpeg|zip|rar|html|php|htm|css|js<br>
+                                        <strong>Max size per file: </strong> 2mb
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div id="fList"></div>
+                                    </div>
+                                </div>
+                                <!-- <div id="demo-bcc-input" class="hide form-group">
+                                    <label class="col-lg-1 control-label text-left" for="inputBcc">Bcc</label>
+                                    <div class="col-lg-11">
+                                        <input type="text" id="inputBcc" class="form-control">
+                                    </div>
+                                </div> -->
+
                             </form>
 
 
@@ -139,7 +160,6 @@
 
                             <!--Wysiwyg editor : Summernote placeholder-->
                             <textarea id="demo-mail-compose" name="inputContent" style="display: none;"></textarea>
-
 
                             <div class="pad-ver">
 
@@ -240,7 +260,255 @@
 
                             });
                         </script>
+                        <script>
+
+                        </script>
                         <script src="<?= base_url('assets/' . ADMIN) ?>/plugins/summernote/summernote.min.js"></script>
+                    <?php
+                    } elseif ($mode == 'read') {
+                    ?>
+                        <div class="fluid">
+
+                            <!-- VIEW MESSAGE -->
+                            <!--===================================================-->
+
+                            <div class="mar-btm pad-btm bord-btm">
+                                <h1 class="page-header text-overflow">
+                                    <?php
+                                    if (!empty($row->m_tags)) {
+                                    ?>
+
+                                        <?php
+                                        $m_tags = explode(',', $row->m_tags);
+                                        foreach ($m_tags as $tag) {
+                                        ?>
+
+                                            <span class="label label-normal label-primary"><?= $tag ?></span>
+
+                                        <?php
+                                        }
+                                        ?>
+
+                                    <?php
+                                    }
+                                    ?>
+
+
+
+                                    <?php
+                                    if (!empty($row->m_subject)) {
+                                    ?>
+                                        <?= $row->m_subject ?>
+                                    <?php
+                                    }
+                                    ?>
+                                    <a class="btn pull-right btn-default" href="<?= base_url(ADMIN . '/inbox') ?>">
+                                        <i class="demo-psi-left-4"></i>
+                                    </a>
+
+                                </h1>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-7 toolbar-left">
+
+                                    <!--Sender Information-->
+                                    <div class="media">
+                                        <span class="media-left">
+                                            <?php
+                                            if (!empty(getRecipientImage($row->m_author))) {
+                                            ?>
+                                                <img src="<?= base_url('uploads/' . ADMIN . '/admin/') . getRecipientImage($row->m_author) ?>" class="img-circle img-sm" alt="Profile Picture">
+
+                                            <?php
+                                            } else {
+                                            ?>
+                                                <img src="<?= base_url('assets/' . ADMIN . '/user.png') ?>" class="img-circle img-sm" alt="Profile Picture">
+
+                                            <?php
+                                            }
+                                            ?>
+                                        </span>
+                                        <div class="media-body text-left">
+                                            <div class="text-bold"><?= getRecipientName($row->m_author) ?></div>
+                                            <small class="text-muted">@<?= getRecipientUserName($row->m_author) ?></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 toolbar-right">
+
+                                    <!--Details Information-->
+                                    <?php
+                                    $m_date = explode(' ', $row->m_date);
+                                    ?>
+                                    <p class="mar-no"><small class="text-muted"><?= $m_date[0] . ' ' . $m_date[1] . ' ' . $m_date[2] . ' ' . $m_date[3] ?></small></p>
+                                    <?php
+                                    if (count($attachs) > 0 && $attachs != '') {
+                                    ?>
+                                        <a href="#attaches">
+                                            <i class="demo-psi-paperclip icon-lg icon-fw"></i>
+                                            <strong>Attachments (<?= count($attachs) ?>)</strong>
+                                        </a>
+
+
+                                    <?php
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="row pad-top">
+                                <div class="col-sm-7 toolbar-left">
+
+
+                                    <!-- <button class="btn btn-default"><i class="demo-pli-printer icon-lg"></i></button> -->
+                                    <div class="btn-group btn-group">
+                                        <!-- <button class="btn btn-default"><i class="demo-pli-information icon-lg"></i></button> -->
+                                        <?php
+                                        $infTitle = "Mail Info";
+                                        $info = "This mail was sent on " . $row->m_date . ". If you want to delete all it's contents then click on remove button.";
+                                        ?>
+                                        <button class="btn btn-default btn-active-success add-popover" data-toggle="popover" data-container="body" data-placement="bottom" data-original-title="<?= $infTitle ?>" data-content="<?= $info ?>"><i class="demo-pli-information icon-lg"></i></button>
+                                        <a href="<?= base_url(ADMIN . '/mails/delete/' . $row->m_id) ?>" class="btn btn-default"><i class="demo-pli-trash icon-lg"></i> Remove</a>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-5 toolbar-right">
+                                   
+                                    <div class="btn-group btn-group">
+                                        <a class="btn btn-default" href="#">
+                                            <i class="demo-psi-left-4"></i>
+                                        </a>
+                                        <a class="btn btn-default" href="#">
+                                            <i class="demo-psi-right-4"></i>
+                                        </a>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <!--Message-->
+                            <!--===================================================-->
+                            <div class="mail-message">
+                                <?php
+                                if (!empty($row->m_content)) {
+                                ?>
+                                    <?= $row->m_content  ?>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <!--===================================================-->
+                            <!--End Message-->
+
+                            <!-- Attach Files-->
+                            <!--===================================================-->
+                            <?php
+                            if (count($attachs) > 0 && !empty($attachs)) {
+                            ?>
+                                <div id="attaches" class="pad-ver">
+                                    <p class="text-main text-bold box-inline"><i class="demo-psi-paperclip icon-fw"></i> Attachments <span>(<?= count($attachs) ?>) - </span></p>
+                                    <a href="<?= base_url(ADMIN . '/mails/downloadAll/' . $row->m_author . '/' . $row->m_id) ?>" class="btn-link">Download all in a Zip file</a>
+
+                                    <ul class="mail-attach-list list-ov">
+                                        <?php
+                                        foreach ($attachs as $attach) {
+                                            $attach_type = explode('/', $attach['type']);
+                                            $size = '';
+                                            $icon = '';
+                                            if ($attach['size'] > 1000000) {
+                                                $size =  round($attach['size'] / 1000000, 2) . ' mb(s)';
+                                            } elseif ($attach['size'] > 1000 && $attach['size'] < 1000000) {
+                                                $size = round($attach['size'] / 1000, 2) . ' kb(s)';
+                                            } else {
+                                                $size = $attach['size']  . ' byte(s)';
+                                            }
+                                        ?>
+                                            <!-- <li>
+                                                <a href="#" class="thumbnail">
+                                                    <div class="mail-file-img">
+                                                        <img class="image-responsive" src="img/bg-img/bg-img-4.jpg" alt="image">
+                                                    </div>
+                                                    <div class="caption">
+                                                        <p class="text-main mar-no">Nature.jpg</p>
+                                                        <small class="text-muted">Added: May 01, 2016</small>
+                                                    </div>
+                                                </a>
+                                            </li> -->
+                                            <li>
+                                                <div class="thumbnail">
+                                                    <?php
+                                                    if ($attach_type[1] == 'jpg' || $attach_type[1] == 'jpeg' || $attach_type[1] == 'png' || $attach_type[1] == 'gif') {
+                                                    ?>
+                                                        <div class="mail-file-img">
+                                                            <div style="height: 120px;">
+                                                                <img class="image-responsive" src="<?= base_url('uploads/' . ADMIN . '/mailAttachments/' . $attach['file']) ?>" alt="image">
+                                                            </div>
+                                                            <div class="ovr_lay"><a href="<?= base_url(ADMIN . '/mails/download/' . $attach['file']) ?>"><i class="demo-pli-download-from-cloud"></i></a></div>
+                                                        </div>
+                                                    <?php
+                                                    } else {
+                                                        if ($attach_type[1] == 'html' || $attach_type[1] == 'css' || $attach_type[1] == 'octet-stream' || $attach_type[1] == 'js') {
+                                                            $icon = 'demo-pli-file-html';
+                                                        } elseif ($attach_type[1] == 'zip' || $attach_type[1] == 'rar') {
+                                                            $icon = 'demo-pli-file-zip';
+                                                        } elseif ($attach_type[1] == 'mp3') {
+                                                            $icon = 'demo-pli-file-music';
+                                                        } elseif ($attach_type[1] == 'mp4') {
+                                                            $icon = 'demo-pli-file-video';
+                                                        } elseif ($attach_type[1] == 'docx' || $attach_type[1] == 'doc' || $attach_type[1] == 'ppt' || $attach_type[1] == 'pptx') {
+                                                            $icon = 'demo-pli-file-word';
+                                                        } elseif ($attach_type[1] == 'pdf') {
+                                                            $icon = 'demo-pli-file-text-image';
+                                                        } elseif ($attach_type[1] == 'txt') {
+                                                            $icon = 'demo-pli-file-text';
+                                                        } elseif ($attach_type[1] == 'pdf') {
+                                                            $icon = 'demo-pli-file-text-image';
+                                                        } else {
+                                                            $icon = 'demo-pli-file';
+                                                        }
+                                                    ?>
+                                                        <div class="mail-file-icon">
+                                                            <i class="<?= $icon ?>"></i>
+                                                            <div class="ovr_lay"><a href="<?= base_url(ADMIN . '/mails/download/' . $attach['file']) ?>"><i class="demo-pli-download-from-cloud"></i></a></div>
+
+                                                        </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                    <div class="caption">
+                                                        <p class="text-main mar-no"><?= $attach['file'] ?></p>
+                                                        <small class="text-muted">Size : <?= $size ?></small>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        <?php
+                                        }
+                                        ?>
+
+                                    </ul>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                            <!--===================================================-->
+                            <!-- End Attach Files-->
+
+
+                            <!--Quick reply : Summernote Placeholder -->
+                            <!-- <div id="demo-mail-textarea" class="mail-message-reply bg-trans-dark">
+                                <strong>Reply</strong> or <strong>Forward</strong> this message...
+                            </div> -->
+
+                            <!--Send button-->
+                            <!-- <div class="pad-btm">
+                                <button id="demo-mail-send-btn" type="button" class="btn btn-primary btn-lg btn-block hide">
+                                    <span class="demo-psi-mail-send icon-lg icon-fw"></span>
+                                    Send Message
+                                </button>
+                            </div> -->
+                            <!--===================================================-->
+                            <!-- END VIEW MESSAGE -->
+
+                        </div>
                     <?php
                     } else {
                     ?>
@@ -253,9 +521,9 @@
                                         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
                                         <!--Split button dropdowns-->
-                                        <div class="btn-group">
+                                        <div class="btn-group mFilter">
                                             <label id="demo-checked-all-mail" for="select-all-mail" class="btn btn-default">
-                                                <input id="select-all-mail" class="magic-checkbox" type="checkbox">
+                                                <input id="select-all-mail" onclick="$('input[name*=\'m_check\']').attr('checked', this.checked);" class="magic-checkbox" type="checkbox">
                                                 <label for="select-all-mail"></label>
                                             </label>
                                             <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><i class="dropdown-caret"></i></button>
@@ -276,7 +544,7 @@
                                         </button>
 
                                         <!--Dropdown button (More Action)-->
-                                        <div class="btn-group dropdown">
+                                        <div class="btn-group mFilter dropdown">
                                             <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
                                                 More <i class="dropdown-caret"></i>
                                             </button>
@@ -289,7 +557,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-sm-5 toolbar-right">
+                                    <div class="col-sm-5 mFilter toolbar-right">
                                         <!--Pager buttons-->
                                         <span class="text-main mail_count"></span>
                                         <div class="btn-group btn-group">
@@ -315,7 +583,7 @@
 
 
                             <!--Mail footer-->
-                            <div class="panel-footer clearfix">
+                            <div class="panel-footer mFilter clearfix">
                                 <div class="pull-right">
                                     <span class="text-main mail_count"></span>
                                     <div class="btn-group btn-group">
@@ -347,16 +615,121 @@
 
 </div>
 <script type="text/javascript" language="javascript">
+    // Mails
     $(document.body).ready(function() {
+
+
+        $('#mailTrash').click(function() {
+            var checkbox = $('.magic-checkbox:checked');
+            if (checkbox.length > 0) {
+                alert('Are you sure you want to delete records?');
+                var checkbox_value = [];
+                $(checkbox).each(function() {
+                    checkbox_value.push($(this).val());
+                });
+                $.ajax({
+                    url: "<?php echo base_url(); ?>apanel/mails/m_delete",
+                    method: "POST",
+                    data: {
+                        c_box: checkbox_value
+                    },
+                    success: function() {
+                        fetchMails(1);
+                    }
+                })
+            } else {
+                alert('Select atleast one records');
+            }
+        });
+
+
+
+        $(document.body).on('change', '#inputAttach', function() {
+            var txt = '';
+            var fles = $('#inputAttach')[0].files;
+            txt += '<div class="row">'
+            for (var i = 0; i < fles.length; i++) {
+                txt += '<div class="col-lg-4">';
+
+                var file = fles[i];
+                txt += "<br><strong>" + (i + 1) + ". " + file.name.split('.').pop().toLowerCase() + "</strong><br>";
+                if ('name' in file) {
+                    txt += "name: " + file.name + "<br>";
+                }
+                if ('size' in file) {
+                    var isSize = '';
+                    if (file.size > 1000000) {
+                        txt += "size: " + ((file.size) / 1000000).toFixed(2) + " mb(s) <br>";
+                    } else if (file.size > 1000 && file.size < 1000000) {
+                        txt += "size: " + ((file.size) / 1000).toFixed(2) + " kb(s) <br>";
+                    } else {
+                        txt += "size: " + file.size.toFixed(2) + " bytesF <br>";
+                    }
+
+                }
+                txt += '</div>';
+                if (i % 3 == 2) {
+                    txt += '</div><div class="row">';
+                }
+            }
+            txt += '</div>';
+
+            $('#fList').html(txt);
+        });
+
+
+        $(document.body).on('click', '#mailSend', function() {
+            var id = $('#inputName').data('id');
+            var sub = $('#inputSubject').val();
+            var cont = $('#demo-mail-compose').val();
+            var tgs = $('#tagsinput').val();
+
+            var urlMail = $('#mailSend').data('url');
+            var fle = $('#inputAttach');
+            var fles = $('#inputAttach')[0].files;
+            var form_data = new FormData();
+
+            for (var x = 0; x < fles.length; x++) {
+                form_data.append("m_attachs[]", fles[x]);
+            }
+
+            form_data.append("rep_id", id);
+            form_data.append("m_cont", cont);
+            form_data.append("m_sub", sub);
+            form_data.append("m_tgs", tgs);
+
+
+            $.ajax({
+                type: "POST",
+                url: urlMail,
+                dataType: 'JSON',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                beforeSend: function() {
+                    $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Precessing...');
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Processed');
+                    setTimeout(location.reload.bind(location), 1000);
+                },
+                error: function() {
+                    $('#mailSend').html('<i class="demo-mail-send icon-lg icon-fw"></i> Error!');
+                    setTimeout(location.reload.bind(location), 1000);
+                },
+
+
+            });
+        });
         var c_page = 0;
         var n_page = 2;
-        // var d_class = 0;
         var d_class = "disabled";
         var n_class = "btn_next";
         var p_class = "btn_prev";
 
         function fetchMails(page) {
-
 
             $.ajax({
                 method: "POST",
@@ -364,22 +737,29 @@
                 dataType: "JSON",
                 success: function(response) {
                     console.log(response);
-                    $("#demo-mail-list").html(response['data']);
-                    $(".mail_count").html("<strong>" + response['n_count'] + "-" + response['a_count'] + "</strong> of <strong>" + response['t_count'] + "</strong>");
-                    c_page = response['p_nxt'];
-                    n_page = response['m_nxt'];
-                    $("#tMails").html("Inbox (" + response['t_count'] + ")");
+                    if (response['t_count'] != 0) {
+                        $('.mFilter').show();
+                        $("#demo-mail-list").html(response['data']);
+                        $(".mail_count").html("<strong>" + response['n_count'] + "-" + response['a_count'] + "</strong> of <strong>" + response['t_count'] + "</strong>");
+                        c_page = response['p_nxt'];
+                        n_page = response['m_nxt'];
+                        $("#tMails").html("Inbox (" + response['t_count'] + ")");
 
-                    if (response['a_count'] >= response['t_count']) {
-                        $(".pB").addClass(d_class).removeClass(n_class);
-                    } else {
-                        $(".pB").addClass(n_class).removeClass(d_class);
-                    }
-                    if (response['n_count'] == 1) {
-                        $(".pN").addClass(d_class).removeClass(p_class);
+                        if (response['a_count'] >= response['t_count']) {
+                            $(".pB").addClass(d_class).removeClass(n_class);
+                        } else {
+                            $(".pB").addClass(n_class).removeClass(d_class);
+                        }
+                        if (response['n_count'] == 1) {
+                            $(".pN").addClass(d_class).removeClass(p_class);
 
+                        } else {
+                            $(".pN").removeClass(d_class).addClass(p_class);
+                        }
                     } else {
-                        $(".pN").removeClass(d_class).addClass(p_class);
+                        $("#demo-mail-list").html(response['data']);
+                        $(".mFilter").hide();
+                        $("#tMails").html("Inbox (" + response['t_count'] + ")");
                     }
 
                 },

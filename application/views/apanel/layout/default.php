@@ -48,7 +48,7 @@
     <link href="<?= base_url() ?>assets/apanel/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 
-
+    <link href="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css" rel="stylesheet">
     <!--Demo [ DEMONSTRATION ]-->
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
@@ -86,6 +86,11 @@
             float: left !important;
         }
 
+        .media-body {
+            line-height: 1.47 !important;
+
+        }
+
         .form-group label,
         .form-label {
             font-weight: 600 !important;
@@ -97,12 +102,6 @@
             width: 100%;
         }
 
-        .media-body {
-            width: auto;
-            font-size: medium;
-            line-height: 2.5;
-
-        }
 
         .alert {
             padding: 5px 3em 5px 5px;
@@ -149,7 +148,33 @@
 
         <?php
             }
-        ?>
+        ?>.ovr_lay {
+
+            width: 178px;
+            margin-top: -120px;
+            height: 120px;
+            text-align: center;
+            opacity: 0;
+            position: absolute;
+            background: rgba(0, 0, 0, .5);
+            transition: all .5s;
+        }
+
+        .ovr_lay i {
+            font-size: 50px !important;
+            color: #fff;
+            transition: all .15s;
+        }
+
+        .ovr_lay i:hover {
+            transform: scale(1.05);
+            transition: all .15s;
+        }
+
+        .thumbnail:hover .ovr_lay {
+            opacity: 1;
+            transition: all .5s;
+        }
     </style>
 </head>
 
@@ -222,6 +247,7 @@
     <script src="<?= base_url() ?>assets/apanel/js/nifty.min.js"></script>
 
 
+    <script src="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
 
 
     <!--=================================================-->
