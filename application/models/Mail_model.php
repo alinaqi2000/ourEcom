@@ -35,6 +35,24 @@ class Mail_model extends CI_Model
         $this->db->where('m_id', $m_id);
         $this->db->update($this->table_name());
     }
+    function setAsUnRead($m_id)
+    {
+        $this->db->set('m_status', '0');
+        $this->db->where('m_id', $m_id);
+        $this->db->update($this->table_name());
+    }
+    function setAsStarred($m_id)
+    {
+        $this->db->set('m_label', '1');
+        $this->db->where('m_id', $m_id);
+        $this->db->update($this->table_name());
+    }
+    function setAsUnStarred($m_id)
+    {
+        $this->db->set('m_label', '0');
+        $this->db->where('m_id', $m_id);
+        $this->db->update($this->table_name());
+    }
     function getStatusValue($m_id)
     {
         $this->db->where('m_id', $m_id);
@@ -46,6 +64,14 @@ class Mail_model extends CI_Model
         $this->db->where('m_id', $m_id);
         $query = $this->db->get($this->table_name());
         return $query->row()->m_label;
+    }
+    function getUnReadMails($r_id)
+    {
+        $this->db->where('m_recipient', $r_id);
+        $this->db->where('m_status', '0');
+        $this->db->order_by('m_date', 'DESC');
+        $query = $this->db->get($this->table_name());
+        return $query->result();
     }
     function getMails($start = '', $offset = '')
     {
@@ -118,8 +144,8 @@ class Mail_model extends CI_Model
     }
 
 
-    var $select_column = array("m_id", "m_author", "m_subject", "m_content", "m_status", "m_tags", "m_attach", "m_label", "m_date");
-    var $order_column = array("m_id", "m_author", "m_subject", "m_content", "m_status", "m_tags", "m_label", "m_attach", "m_date");
+    var $select_column = array("m_id", "m_author", "m_recipient", "m_subject", "m_content", "m_status", "m_tags", "m_attach", "m_label", "m_date");
+    var $order_column = array("m_id", "m_author", "m_recipient", "m_subject", "m_content", "m_status", "m_tags", "m_label", "m_attach", "m_date");
 
     function make_query()
     {
@@ -136,6 +162,11 @@ class Mail_model extends CI_Model
             $this->db->order_by('m_order', 'DESC');
         }
     }
+    function get_filtered_data()
+    {
+        $this->make_query();
+        return $this->db->count_all_results();
+    }
     function make_datatables()
     {
         $this->make_query();
@@ -145,11 +176,36 @@ class Mail_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    function get_filtered_data()
+    function make_sent_query()
     {
-        $this->make_query();
+        $this->db->select($this->select_column);
+        $this->db->where('m_author', $this->cur_id());
+        $this->db->where('m_recipient <>' . $this->cur_id());
+        $this->db->from($this->table_name());
+        if (isset($_POST["search"]["value"])) {
+            $this->db->or_like("m_id", $_POST["search"]["value"]);
+        }
+        if (isset($_POST["order"])) {
+            $this->db->order_by($this->order_column[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else {
+            $this->db->order_by('m_order', 'DESC');
+        }
+    }
+    function make_sent_datatables()
+    {
+        $this->make_sent_query();
+        if ($_POST["length"] != -1) {
+            $this->db->limit($_POST['length'], $_POST['start']);
+        }
+        $query = $this->db->get();
+        return $query->result();
+    }
+    function get_sent_filtered_data()
+    {
+        $this->make_sent_query();
         return $this->db->count_all_results();
     }
+
     function get_all_data()
     {
         $this->db->select("*");

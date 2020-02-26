@@ -283,7 +283,15 @@ function getRecipientUserName($id)
     return $rslt;
 }
 
+function getRecipientIdBySlug($slug)
+{
+    $CI = get_instance();
 
+    $CI->db->where('site_login', $slug);
+    $query = $CI->db->get('tbl_siteadmin');
+    $rslt = $query->row()->site_id;
+    return $rslt;
+}
 function getCatIdBySlug($cat_slug)
 {
     $CI = get_instance();
@@ -322,8 +330,13 @@ function getPageIdBySlug($p_slug)
     $query = $CI->db->get('tbl_pages');
     return $query->row()->page_id;
 }
-function loadMAils($id, $a_id, $sub, $date, $status, $label, $file, $tags)
+function loadMAils($type, $id, $a_id, $rep_id, $sub, $date, $status, $label, $file, $tags, $fieldStar)
 {
+    if ($type == 'inbox') {
+        $name = getRecipientName($a_id);
+    } else {
+        $name = getRecipientName($rep_id);
+    }
     $n_date = explode(' ', $date);
     $read = "";
     $attach = "";
@@ -343,13 +356,16 @@ function loadMAils($id, $a_id, $sub, $date, $status, $label, $file, $tags)
     if ($label == 1) {
         $star = 'mail-starred';
     }
+    if ($label == 1 || $label == 0) {
+        $isStar = '<div class="mail-star"><a type="button" class="starredBtn" id="stars' . $id . '" data-value="' . $label . '" data-field="' . $fieldStar . '" data-id="' . $id . '" data-url="' . base_url(ADMIN . '/mails/updateLabel') . '"><i class="demo-psi-star"></i></a></div>';
+    }
     if (!empty($file)) {
         $attach = 'mail-attach';
         $atc_icon = '<div class="mail-attach-icon"><i class="demo-psi-paperclip"></i></div>';
     }
 
 
-    $rslt = '<li class="' . $read . ' ' . $star . ' ' . $attach . '"><div class="mail-control"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></label></div><div class="mail-star"><a href="#"><i class="demo-psi-star"></i></a></div><div class="mail-from"><a href="#">' . getRecipientName($a_id) . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div>' . $atc_icon . '<div class="mail-subject"><a href="' . base_url(ADMIN) . "/inbox/" . $id . '_' . getRecipientUserName($a_id) . '">' . $tgsClass . $sub . '</a></div></li>';
+    $rslt = '<li id="listItem' . $id . '" class="' . $read . ' ' . $star . ' ' . $attach . '"><div class="mail-control"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></label></div>' . $isStar . '<div class="mail-from"><a href="">' . $name . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div>' . $atc_icon . '<div class="mail-subject"><a href="' . base_url(ADMIN) . "/inbox/" . $a_id . '/' . $id . '">' . $tgsClass . $sub . '</a></div></li>';
     return $rslt;
 }
 function getPageTitleBySlug($p_slug)

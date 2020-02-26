@@ -16,16 +16,24 @@ class Mails extends MY_Admin
   {
 
     $this->data['page'] = 'mails';
-    $this->data['rows'] = $this->Mail_model->getMails();
+    $this->data['mode'] = 'inbox';
     $this->load->view('apanel/layout/default', $this->data);
   }
+  public function sent()
+  {
 
+    $this->data['page'] = 'mails';
+    $this->data['mode'] = 'sent';
+    $this->load->view('apanel/layout/default', $this->data);
+  }
   function fetchMails($count = 1)
   {
     $max = 5;
     $fetch_data = $this->Mail_model->make_datatables();
     $data = array();
     $t_num = count($fetch_data);
+    $fetch_Sdata = $this->Mail_model->getUnReadMails($this->session->userdata('site_id'));
+    $r_num = count($fetch_Sdata);
     $p_num = $count + 1;
     $m_num = $count - 1;
     if ($t_num > ($max * $count)) {
@@ -44,7 +52,7 @@ class Mails extends MY_Admin
       foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
 
         foreach ($fetch_data as $row) {
-          $sub_array = loadMAils($row->m_id, $row->m_author, $row->m_subject, $row->m_date, $row->m_status, $row->m_slabel, $row->m_attach, $row->m_tags);
+          $sub_array = loadMAils('inbox', $row->m_id, $row->m_author, $row->m_recipient, $row->m_subject, $row->m_date, $row->m_status, $row->m_label, $row->m_attach, $row->m_tags, 'm_label');
           $data[] = $sub_array;
         }
       }
@@ -53,6 +61,7 @@ class Mails extends MY_Admin
     }
     $output = array(
       'data' => $data,
+      'r_num' => $r_num,
       't_count' => $t_num,
       'a_count' => $a_num,
       'n_count' => $n_num,
@@ -67,9 +76,11 @@ class Mails extends MY_Admin
   function fetchSents($count = 1)
   {
     $max = 5;
-    $fetch_data = $this->Mail_model->make_datatables();
-
+    $fetch_data = $this->Mail_model->make_sent_datatables();
+    $data = array();
     $t_num = count($fetch_data);
+    $fetch_Rdata = $this->Mail_model->getUnReadMails($this->session->userdata('site_id'));
+    $r_num = count($fetch_Rdata);
     $p_num = $count + 1;
     $m_num = $count - 1;
     if ($t_num > ($max * $count)) {
@@ -87,15 +98,16 @@ class Mails extends MY_Admin
       foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
 
         foreach ($fetch_data as $row) {
-          $sub_array = loadMAils($row->m_id, $row->m_author, $row->m_subject, $row->m_date, $row->m_status, $row->m_slabel, $row->m_attach, $row->m_tags);
+          $sub_array = loadMAils('sent', $row->m_id, $row->m_author, $row->m_recipient, $row->m_subject, $row->m_date, $row->m_status, 2, $row->m_attach, $row->m_tags, 'm_label');
           $data[] = $sub_array;
         }
       }
     } else {
-      $data = '<li><h3>No mails yet.</h3></li>';
+      $data = '<li><h5>No mail(s) to show.</h5></li>';
     }
     $output = array(
       'data' => $data,
+      'r_num' => $r_num,
       't_count' => $t_num,
       'a_count' => $a_num,
       'n_count' => $n_num,
@@ -115,17 +127,71 @@ class Mails extends MY_Admin
     $this->data['mode'] = 'compose';
     $this->load->view('apanel/layout/default', $this->data);
   }
-  public function read($m_id)
+  public function read($a_id, $m_id)
   {
-    $mail_id = explode('_', $m_id);
-    $this->Mail_model->setAsRead($mail_id[0]);
-    $this->data['attachs'] = unserialize(urldecode($this->Mail_model->getAttach($mail_id[0])));
+    $this->data['attachs'] = unserialize(urldecode($this->Mail_model->getAttach($m_id)));
+    if ($a_id != $this->session->userdata('site_id')) {
+      $this->Mail_model->setAsRead($m_id);
+      $this->data['readType'] = 'inbox';
+    } else {
+      $this->data['readType'] = 'sent';
+    }
     // pr(unserialize(urldecode($this->Mail_model->getAttach($mail_id[0]))));
     // exit;
-    $this->data['row'] = $this->Mail_model->getMail($mail_id[0]);
+    $this->data['row'] = $this->Mail_model->getMail($m_id);
+    // echo $m_id;exit;
+    if (empty($this->Mail_model->getMail($m_id))) {
+      setMsg('error', 'No mail found.');
+      redirect(base_url(ADMIN) .  '/inbox', 'refresh');
+      exit;
+    }
     $this->data['page'] = 'mails';
     $this->data['mode'] = 'read';
     $this->load->view('apanel/layout/default', $this->data);
+  }
+  function m_read()
+  {
+    if ($this->input->post('c_box')) {
+      $id = $this->input->post('c_box');
+      // pr($id);exit;
+
+      for ($count = 0; $count < count($id); $count++) {
+        $this->Mail_model->setAsRead($id[$count]);
+      }
+    }
+  }
+  function m_un_read()
+  {
+    if ($this->input->post('c_box')) {
+      $id = $this->input->post('c_box');
+      // pr($id);exit;
+
+      for ($count = 0; $count < count($id); $count++) {
+        $this->Mail_model->setAsUnRead($id[$count]);
+      }
+    }
+  }
+  function m_starred()
+  {
+    if ($this->input->post('c_box')) {
+      $id = $this->input->post('c_box');
+      // pr($id);exit;
+
+      for ($count = 0; $count < count($id); $count++) {
+        $this->Mail_model->setAsStarred($id[$count]);
+      }
+    }
+  }
+  function m_un_starred()
+  {
+    if ($this->input->post('c_box')) {
+      $id = $this->input->post('c_box');
+      // pr($id);exit;
+
+      for ($count = 0; $count < count($id); $count++) {
+        $this->Mail_model->setAsUnStarred($id[$count]);
+      }
+    }
   }
   public function sendMail()
   {
@@ -191,7 +257,22 @@ class Mails extends MY_Admin
     exit;
   }
 
+  function updateLabel()
+  {
 
+    $m_id = $this->input->post('id');
+    $m_status = $this->input->post('field');
+    $getStatusValue = $this->Mail_model->getLabelValue($m_id);
+
+    if ($getStatusValue == 0) {
+      $value = 1;
+    } else {
+      $value = 0;
+    }
+    $this->Mail_model->updateOrder($m_id, $m_status, $value);
+    echo json_encode($value);
+    exit;
+  }
 
   function delete($del_id)
   {
@@ -210,22 +291,19 @@ class Mails extends MY_Admin
         if (unlink($got)) {
           if ($this->Mail_model->delete($del_id)) {
             setMsg('success', 'Mail deleted successfully');
-            redirect(base_url(ADMIN) .  '/inbox', 'refresh');
           } else {
             setMsg('error', 'Something went wrong, Please try later.');
-            redirect(base_url(ADMIN) .  '/inbox', 'refresh');
           }
         }
       }
     } else {
       if ($this->Mail_model->delete($del_id)) {
         setMsg('success', 'Mail deleted successfully');
-        redirect(base_url(ADMIN) .  '/inbox', 'refresh');
       } else {
         setMsg('error', 'Something went wrong, Please try later.');
-        redirect(base_url(ADMIN) .  '/inbox', 'refresh');
       }
     }
+    redirect(base_url(ADMIN) .  '/inbox', 'refresh');
   }
 
   function m_delete()

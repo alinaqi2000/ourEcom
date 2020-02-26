@@ -265,7 +265,7 @@
                                                 <a href="#" class="dropdown-toggle btn btn-trans" data-toggle="dropdown" aria-expanded="false"><i class="demo-psi-dot-vertical icon-lg"></i></a>
                                                 <ul class="dropdown-menu dropdown-menu-right" style="">
                                                     <li><a href="<?= base_url(ADMIN) . '/manage_admins/edit/' . $admin_id ?>"><i class="icon-lg icon-fw demo-psi-pen-5"></i> Edit</a></li>
-                                                    <li><a href="<?= base_url(ADMIN) . '/admin_delete/' . $admin_id ?>" onclick="return confirm('Are you sure, you want to delete <?= $admin_name ?> ?')"><i class="icon-lg icon-fw demo-pli-recycling"></i> Remove</a></li>
+                                                    <li><a type="button" onclick="bootbox.confirm('Are you sure, you want to delete <?= $admin_name ?> ?',function(result){ if(result){ return location.replace('<?= base_url(ADMIN) ?>/admin_delete/<?= $admin_id ?>'); } })"><i class="icon-lg icon-fw demo-pli-recycling"></i> Remove</a></li>
                                                     <!-- <li class="divider"></li>
                                                     <li><a href="#"><i class="icon-lg icon-fw demo-pli-mail"></i> Send a Message</a></li>
                                                     <li><a href="#"><i class="icon-lg icon-fw demo-pli-calendar-4"></i> View Details</a></li>

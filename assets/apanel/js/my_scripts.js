@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    // Sidebar setting remove
+    $('#demo-nifty-settings').remove();
 
     // Topbar Logo Toggle 
     $('#sideButton').click(function () {
@@ -111,6 +113,38 @@ $(document).ready(function () {
             }
         });
     });
+
+    // Starred Button ajax
+
+    $(document.body).on('click', '.starredBtn', function () {
+        var statusUrl = $(this).data('url');
+        var statusId = $(this).data('id');
+        var statusField = $(this).data('field');
+        var statusValue = $(this).data('value');
+        $.ajax({
+            url: statusUrl,
+            method: 'POST',
+            data: {
+                id: statusId,
+                field: statusField,
+                value: statusValue,
+            },
+            success: function (response) {
+                console.log(response);
+                if (response == '0') {
+                    $('#listItem' + statusId).removeClass('mail-starred');
+                    $('#stars' + statusId).attr('data-value', response);
+                } else {
+                    $('#listItem' + statusId).addClass('mail-starred');
+                    $('#stars' + statusId).attr('data-value', response);
+
+                }
+
+            }
+        });
+    });
+
+
 
     // Label Buttton ajax
 

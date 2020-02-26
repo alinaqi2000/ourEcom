@@ -28,13 +28,22 @@
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
 
     <link href="<?= base_url() ?>assets/apanel/plugins/animate-css/animate.min.css" rel="stylesheet">
-    <link href="<?= base_url('assets/' . ADMIN) ?>/plugins/summernote/summernote.min.css" rel="stylesheet">
+    <?php
+    if ($page == 'mails') {
+    ?>
+        <link href="<?= base_url('assets/' . ADMIN) ?>/plugins/summernote/summernote.min.css" rel="stylesheet">
+        <link href="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css" rel="stylesheet">
+
+    <?php
+    }
+    ?>
+    <script src="<?= base_url() ?>assets/apanel/js/jquery.min.js"></script>
 
 
 
     <!--=================================================-->
 
-    <script src="<?= base_url() ?>assets/apanel/js/jquery.min.js"></script>
+
 
 
     <!--Pace - Page Load Progress Par [OPTIONAL]-->
@@ -48,57 +57,105 @@
     <link href="<?= base_url() ?>assets/apanel/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
 
-    <link href="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.css" rel="stylesheet">
     <!--Demo [ DEMONSTRATION ]-->
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
 
+    <?php
+    if ($page == 'categories' || $page == 'pages') {
+    ?>
+        <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/apanel/css/dataTable.min.css" />
+        <script type="text/javascript" src="<?= base_url() ?>assets/apanel/js/dataTable.min.js"></script>
+
+    <?php
+    }
+    ?>
     <link id="dark_sheet" href="<?= $themeColor ?>" rel="stylesheet">
-
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-
 
 
     <style type="text/css">
+        a[type="button"]:hover {
+            cursor: pointer;
+        }
+
+        .mail-message i,
+        .mail-message p,
+        .mail-message span,
+        .mail-message h1,
+        .mail-message h2,
+        .mail-message h4,
+        .mail-message h5,
+        .mail-message h6,
+        .mail-message table,
+        .mail-message tr,
+        .mail-message td,
+        .mail-message div {
+            background-color: transparent !important;
+        }
+    </style>
+    <?php
+    if ($page == 'mails' && $mode == 'read') {
+        if ($this->session->userdata('themeMode') == 'light') {
+    ?>
+            <style type="text/css">
+                .page-header {
+
+                    color: #4d627b;
+                }
+            </style>
         <?php
-        if ($page != 'mails') {
+        } else {
+        ?>
+            <style type="text/css">
+                .page-header {
 
-        ?>.panel-body .form-group label,
-        .panel-body .form-group select,
-        .panel-body .form-group {
-            width: 100%;
-        }
-
-        .panel-body .form-group label {
-            margin-bottom: 1rem;
-        }
-
-        .panel-body .form-group {
-            margin-bottom: 2rem;
-        }
-
-        table thead th,
-        table tbody td {
-            text-align: center;
-        }
-
-        .float-left {
-            float: left !important;
-        }
-
-        .media-body {
-            line-height: 1.47 !important;
-
-        }
-
-        .form-group label,
-        .form-label {
-            font-weight: 600 !important;
-        }
-
+                    color: #d4d4d4;
+                }
+            </style>
         <?php
         }
-        ?>.w-100 {
+    }
+    if ($page != 'mails') {
+
+        ?>
+        <style type="text/css">
+            .panel-body .form-group label,
+            .panel-body .form-group select,
+            .panel-body .form-group {
+                width: 100%;
+            }
+
+            .panel-body .form-group label {
+                margin-bottom: 1rem;
+            }
+
+            .panel-body .form-group {
+                margin-bottom: 2rem;
+            }
+
+            table thead th,
+            table tbody td {
+                text-align: center;
+            }
+
+            .float-left {
+                float: left !important;
+            }
+
+            .media-body {
+                line-height: 1.47;
+
+            }
+
+            .form-group label,
+            .form-label {
+                font-weight: 600 !important;
+            }
+        </style>
+    <?php
+    }
+    ?>
+    <style type="text/css">
+        .w-100 {
             width: 100%;
         }
 
@@ -106,49 +163,59 @@
         .alert {
             padding: 5px 3em 5px 5px;
         }
-
+    </style>
+    <?php
+    if ($this->session->userdata('themeMode') == 'light' || empty($this->session->userdata('themeMode'))) {
+    ?>
+        <style type="text/css">
+            #moonImg {
+                display: none;
+            }
+        </style>
+    <?php
+    } else {
+    ?>
+        <style type="text/css">
+            #moonIcon {
+                display: none;
+            }
+        </style>
         <?php
-        if ($this->session->userdata('themeMode') == 'light' || empty($this->session->userdata('themeMode'))) {
-        ?>#moonImg {
-            display: none;
-        }
-
-        <?php
-        } else {
-        ?>#moonIcon {
-            display: none;
-        }
-
-        <?php
-        }
+    }
         ?><?php
             if ($this->session->userdata('sideMode') == 'open' || empty($this->session->userdata('sideMode'))) {
-            ?>#brandLogo {
-            width: 200px;
-            height: auto;
-            margin: 10px;
-        }
-
-        #brandFav {
-            display: none;
-        }
-
-        <?php
-            } else {
-        ?>#brandLogo {
-            width: 200px;
-            height: auto;
-            margin: 10px;
-            display: none;
-        }
-
-        #brandFav {
-            display: initial;
-        }
-
-        <?php
+            ?>
+        <style type="text/css">
+            #brandLogo {
+                width: 200px;
+                height: auto;
+                margin: 10px;
             }
-        ?>.ovr_lay {
+
+            #brandFav {
+                display: none;
+            }
+        </style>
+    <?php
+            } else {
+    ?>
+        <style type="text/css">
+            #brandLogo {
+                width: 200px;
+                height: auto;
+                margin: 10px;
+                display: none;
+            }
+
+            #brandFav {
+                display: initial;
+            }
+        </style>
+    <?php
+            }
+    ?>
+    <style type="text/css">
+        .ovr_lay {
 
             width: 178px;
             margin-top: -120px;
@@ -166,13 +233,32 @@
             transition: all .15s;
         }
 
-        .ovr_lay i:hover {
-            transform: scale(1.05);
-            transition: all .15s;
-        }
-
         .thumbnail:hover .ovr_lay {
             opacity: 1;
+            transition: all .5s;
+        }
+
+        .thumbnail img {
+            transition: all .5s;
+        }
+
+        .thumbnail i {
+            transition: all .5s;
+        }
+
+        .thumbnail img {
+            height: inherit !important;
+        }
+
+        .thumbnail:hover img {
+            transform: scale(1.1);
+            filter: blur(1px);
+            transition: all .5s;
+        }
+
+        .thumbnail:hover .fle-icon {
+            transform: scale(1.1);
+            filter: blur(1px);
             transition: all .5s;
         }
     </style>
@@ -238,7 +324,17 @@
     <!--jQuery [ REQUIRED ]-->
 
 
-    <script src="<?= base_url() ?>assets/apanel/js/my_scripts.js"></script>
+
+    <script src="<?= base_url('assets/' . ADMIN) ?>/plugins/bootbox/bootbox.min.js"></script>
+    <?php
+    if ($page == 'mails') {
+    ?>
+        <script src="<?= base_url() ?>assets/apanel/js/mail_scripts.js"></script>
+        <script src="<?= base_url() ?>assets/apanel/js/demo/mail.js"></script>
+        <script src="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <?php
+    }
+    ?>
     <!--BootstrapJS [ RECOMMENDED ]-->
     <script src="<?= base_url() ?>assets/apanel/js/bootstrap.min.js"></script>
 
@@ -247,7 +343,6 @@
     <script src="<?= base_url() ?>assets/apanel/js/nifty.min.js"></script>
 
 
-    <script src="<?= base_url() ?>assets/apanel/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
 
 
     <!--=================================================-->
@@ -255,12 +350,11 @@
 
 
     <!--Specify page [ SAMPLE ]-->
-    <script src="<?= base_url() ?>assets/apanel/js/demo/dashboard.js"></script>
-    <script src="<?= base_url() ?>assets/apanel/js/demo/mail.js"></script>
+    <!-- <script src="<?= base_url() ?>assets/apanel/js/demo/dashboard.js"></script> -->
 
     <script src="<?= base_url() ?>assets/apanel/js/demo/nifty-demo.min.js"></script>
 
-
+    <script src="<?= base_url() ?>assets/apanel/js/my_scripts.js"></script>
 
 
 

@@ -45,7 +45,7 @@ class Categories extends MY_Admin
       $sub_array[] = getStatusButton($row->cat_status, $row->cat_id, 'cat_status', base_url(ADMIN . '/categories/updateStatus'));
 
       $sub_array[] = '<a href="' . base_url('apanel/categories/edit/' . $row->cat_id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> &nbsp;
-      <a onclick="return confirm(\' Are you sure, you want to delete? \')" href="' . base_url('apanel/categories/delete/' . $row->cat_id) . '" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</a>';
+      <a class="btn btn-sm btn-danger" type="button" onclick="bootbox.confirm(\' Are you sure, you want to delete? \',function(result){ if(result){ return location.replace(\'' . base_url('apanel/categories/delete/' . $row->cat_id) . '\'); } })"><i class="ti-trash"></i> Delete</a>';
 
       $data[] = $sub_array;
     }

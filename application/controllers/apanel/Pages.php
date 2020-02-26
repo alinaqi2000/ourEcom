@@ -33,7 +33,7 @@ class Pages extends MY_Admin
       $sub_array[] = getStatusButton($row->page_status, $row->page_id, 'page_status', base_url(ADMIN . '/pages/updateStatus'));
 
       $sub_array[] = '<a href="' . base_url('apanel/pages/edit/' . $row->page_id) . '" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a> &nbsp;
-      <a onclick="return confirm(\' Are you sure, you want to delete? \')" href="' . base_url('apanel/pages/delete/' . $row->page_id) . '" class="btn btn-sm btn-danger"><i class="ti-trash"></i> Delete</a>';
+      <a class="btn btn-sm btn-danger" type="button" onclick="bootbox.confirm(\' Are you sure, you want to delete? \',function(result){ if(result){ return location.replace(\'' . base_url('apanel/pages/delete/' . $row->page_id) . '\'); } })"><i class="ti-trash"></i> Delete</a>';
 
       $data[] = $sub_array;
     }

@@ -1,0 +1,15 @@
+.head{
+	text-align: center;
+	background-color: grey;
+	color: red;
+	width:50%;
+}
+.border{
+	border: 5px solid red;
+}
+th{
+	background-color: grey;
+}
+td{
+	background-color: #e7e7e7;
+}
