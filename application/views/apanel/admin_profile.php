@@ -29,7 +29,7 @@
 
                 <div class="panel-body">
                     <div class="col-md-12">
-                       
+
                     </div>
                     <!-- Inline Form  -->
                     <!--===================================================-->
@@ -46,8 +46,18 @@
                         <div class="col-md-8 mar-btm">
                             <?= formTextArea('Admin Description Text', 'admin_text', $site_admin_data['admin_text']); ?>
                         </div>
+
                         <div class="col-md-8 mar-btm">
                             <?= formImageFile('Admin Avatar', 'admin_image', $site_admin_data['admin_image'], '64 x 64px', 'apanel/admin') ?>
+                            <?php
+                            if (!empty($site_admin_data['admin_image'])) {
+                            ?>
+                                <div class="col-md-4 mar-btm">
+                                    <button class="btn btn-danger" name="delImage" type="submit">Remove Avatar <i class="fa fa-times"></i></button>
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                         <div class="col-md-8 mar-btm">
                             <button class="btn btn-primary" type="submit"><i class="ti-save"></i> Save</button>

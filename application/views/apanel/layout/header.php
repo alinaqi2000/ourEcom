@@ -58,9 +58,22 @@
             </ul>
             <ul class="nav navbar-top-links">
                 <li>
-                    <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
-                        <i class="ion-email icon-lg icon-fw"></i>
-                    </a>
+                    <?php
+                    if ($getUnread > 0) {
+                    ?>
+                        <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
+                            <i class="ion-email-unread icon-lg icon-fw"></i>
+                        </a>
+                    <?php
+                    } else {
+                    ?>
+                        <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
+                            <i class="ion-email icon-lg icon-fw"></i>
+                        </a>
+                    <?php
+                    }
+                    ?>
+
                 </li>
                 <li>
                     <a title="Manage Admins" href="<?= base_url(ADMIN . "/manage_admins") ?>">

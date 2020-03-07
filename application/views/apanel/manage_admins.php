@@ -55,18 +55,22 @@
                         <!-- Inline Form  -->
                         <!--===================================================-->
                         <form action="" id="form1" method="post" class="form-horizontal" enctype="multipart/form-data">
-                            <div class="col-sm-8 col-sm-offset-1">
-                                <div class="form-group">
-                                    <?= formText('Admin Name', 'admin_name', $admin_data['admin_name']); ?>
-                                    <?= formText('Admin Username', 'site_login', $row->site_login); ?>
-                                    <label for="field">Admin Type</label>
-                                    <select name="site_type" id="p_menu" class="form-control">
-                                        <option value="super_admin" <?= ($row->site_type == 'super_admin' ? 'selected="selected"' : ''); ?>>Super</option>
-                                        <option value="local_admin" <?= ($row->site_type == 'local_admin' ? 'selected="selected"' : ''); ?>>Local</option>
-                                    </select>
+                            <div class="col-sm-8">
+                                <div class="col-sm-12">
+
+
+                                    <div class="form-group">
+                                        <?= formText('Admin Name', 'admin_name', $admin_data['admin_name']); ?>
+                                        <?= formText('Admin Username', 'site_login', $row->site_login); ?>
+                                        <label for="field">Admin Type</label>
+                                        <select name="site_type" id="p_menu" class="form-control">
+                                            <option value="super_admin" <?= ($row->site_type == 'super_admin' ? 'selected="selected"' : ''); ?>>Super</option>
+                                            <option value="local_admin" <?= ($row->site_type == 'local_admin' ? 'selected="selected"' : ''); ?>>Local</option>
+                                        </select>
+                                    </div>
+                                    <?= formText('Admin Portfolio', 'admin_portfolio', $admin_data['admin_portfolio']); ?>
+                                    <?= formTextArea('Admin Description Text', 'admin_text', $admin_data['admin_text']); ?>
                                 </div>
-                                <?= formText('Admin Portfolio', 'admin_portfolio', $admin_data['admin_portfolio']); ?>
-                                <?= formTextArea('Admin Description Text', 'admin_text', $admin_data['admin_text']); ?>
                                 <?php
                                 if ($mode == 'edit') {
                                 ?>
@@ -84,11 +88,17 @@
                                 }
                                 ?>
                                 <?= formImageFile('Admin Avatar', 'admin_image', $admin_data['admin_image'], '64 x 64px', 'apanel/admin') ?>
+                                <?php
+                                if (!empty($admin_data['admin_image'])) {
+                                ?>
+                                    <div class="form-group">
 
+                                        <button class="btn btn-danger" name="delImage" type="submit">Remove Avatar <i class="fa fa-times"></i></button>
 
-
-
-                                <div class="form-group">
+                                    </div>
+                                <?php
+                                }
+                                ?> <div class="form-group">
                                     <button type="submit" class="btn btn-primary"> <i class="ti-save"></i> Save</button>
                                     &nbsp; <a href="<?= base_url(ADMIN) . '/manage_admins' ?>" class="btn btn-default"> <i class="ti-left-arrow"></i> Cancel</a>
                                 </div>
