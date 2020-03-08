@@ -47,7 +47,7 @@
                                 if ($mode != 'read' && $mode != 'compose') {
                                 ?>
                                     <a type="button" id="mailTrash" data-url="<?php echo base_url(); ?>apanel/mails/m_delete" class="list-group-item">
-                                        <i class="demo-pli-trash icon-lg icon-fw"></i> Trash
+                                        <i class="demo-pli-trash icon-lg icon-fw"></i> Delete
                                     </a>
                                 <?php
                                 }
@@ -232,7 +232,7 @@
                                 <!--===================================================-->
 
                                 <div class="mar-btm pad-btm bord-btm">
-                                    <h1 class="page-header text-overflow">
+                                    <h1 class="page-header">
                                         <?php
                                         if (!empty($row->m_tags)) {
                                         ?>
@@ -351,7 +351,7 @@
                                             $info = "This mail was sent on " . $row->m_date . ". If you want to delete all it's content then click on remove button.";
                                             ?>
                                             <button class="btn btn-default btn-active-success add-popover" data-toggle="popover" data-container="body" data-placement="bottom" data-original-title="<?= $infTitle ?>" data-content="<?= $info ?>"><i class="demo-pli-information icon-lg"></i></button>
-                                            <a type="button" onclick="bootbox.confirm('Are you sure, you want to delete this mail and all it\'s content for everyone?',function(result){ if(result){ return location.replace('<?= base_url(ADMIN) ?>/mails/delete/<?= $row->m_id ?>'); } })" class="btn btn-default"><i class="demo-pli-trash icon-lg"></i> Remove</a>
+                                            <a type="button" onclick="bootbox.confirm('Are you sure, you want to delete this mail permanently for you?',function(result){ if(result){ return location.replace('<?= base_url(ADMIN) ?>/mails/delete/<?= $row->m_id ?>'); } })" class="btn btn-default"><i class="demo-pli-trash icon-lg"></i> Remove</a>
                                         </div>
                                     </div>
                                     <!-- <div class="col-sm-5 toolbar-right">
@@ -432,10 +432,10 @@
                                                                 $icon = 'demo-pli-file-html';
                                                             } elseif ($attach_type[1] == 'zip' || $attach_type[1] == 'octet-stream') {
                                                                 $icon = 'demo-pli-file-zip';
-                                                            } elseif ($attach_type[1] == 'mp3') {
+                                                            } elseif ($attach_type[1] == 'mp3' || $attach_type[1] == 'x-ms-wma') {
                                                                 $icon = 'demo-pli-file-music';
                                                             } elseif ($attach_type[1] == 'mp4') {
-                                                                $icon = 'demo-pli-file-video';
+                                                                $icon = 'demo-pli-video';
                                                             } elseif ($attach_type[1] == 'docx' || $attach_type[1] == 'doc' || $attach_type[1] == 'ppt' || $attach_type[1] == 'pptx') {
                                                                 $icon = 'demo-pli-file-word';
                                                             } elseif ($attach_type[1] == 'pdf') {
@@ -494,7 +494,7 @@
                         <?php
                         } elseif ($mode == 'inbox' || $mode == 'sent') {
                         ?>
-                            <div class="fluid">
+                            <div class="fluid min-400">
                                 <div id="demo-email-list">
                                     <div class="row">
                                         <div class="col-sm-7 toolbar-left">
@@ -512,7 +512,7 @@
                                             </div>
 
                                             <!--Refresh button-->
-                                            <button id="demo-mail-ref-btn" data-toggle="panel-overlay" data-target="#demo-email-list" class="btn btn-default" type="button">
+                                            <button id="demo-mail-ref-btn" title="Refresh" data-toggle="panel-overlay" data-target="#demo-email-list" class="btn btn-default" type="button">
                                                 <i class="demo-psi-repeat-2"></i>
                                             </button>
                                             <?php
@@ -525,10 +525,16 @@
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a data-url="<?= base_url(ADMIN . '/mails/m_read') ?>" id="mailRead" type="button">Mark as read</a></li>
+                                                        <li><a data-url="<?= base_url(ADMIN . '/mails/m_starred') ?>" id="mailStarred" type="button">Mark as Starred</a></li>
+                                                        <li><a data-url="<?= base_url(ADMIN . '/mails/m_un_starred') ?>" id="mailUnStarred" type="button">Clear Starred</a></li>
+
                                                         <!-- <li><a data-url="<?= base_url(ADMIN . '/mails/m_un_read') ?>" id="mailUnRead" type="button">Mark as unread</a></li> -->
                                                         <li class="divider"></li>
-                                                        <li><a data-url="<?= base_url(ADMIN . '/mails/m_starred') ?>" id="mailStarred" type="button">Star</a></li>
-                                                        <li><a data-url="<?= base_url(ADMIN . '/mails/m_un_starred') ?>" id="mailUnStarred" type="button">Clear Star</a></li>
+                                                        <li><a id="showAllMails" type="button">Load All</a></li>
+                                                        <li><a id="showRead" type="button">Only Read</a></li>
+                                                        <li><a id="showUnRead" type="button">Only UnRead</a></li>
+                                                        <li><a id="showStarred" type="button">Only Starred</a></li>
+                                                        <li><a id="showUnStarred" type="button">Only UnStarred</a></li>
                                                     </ul>
                                                 </div>
                                         </div>

@@ -23,22 +23,35 @@ class Mail_model extends CI_Model
         $query = $this->db->get($this->table_name());
         return $query->row();
     }
+    function getMailCode($m_id)
+    {
+        $this->db->where('m_id', $m_id);
+        $query = $this->db->get($this->table_name());
+        return $query->row()->m_code;
+    }
     function getAttach($m_id)
     {
         $this->db->where('m_id', $m_id);
         $query = $this->db->get($this->table_name());
         return $query->row()->m_attach;
     }
-    function setAsRead($m_id)
+    function searchCode($m_code, $m_id)
+    {
+        $this->db->where('m_code', $m_code);
+        $this->db->where('m_id <>', $m_id);
+        $query = $this->db->get($this->table_name());
+        return $query->row();
+    }
+    function setAsRead($m_code)
     {
         $this->db->set('m_status', '1');
-        $this->db->where('m_id', $m_id);
+        $this->db->where('m_code', $m_code);
         $this->db->update($this->table_name());
     }
-    function setAsUnRead($m_id)
+    function setAsUnRead($m_code)
     {
         $this->db->set('m_status', '0');
-        $this->db->where('m_id', $m_id);
+        $this->db->where('m_code', $m_code);
         $this->db->update($this->table_name());
     }
     function setAsStarred($m_id)
@@ -67,6 +80,7 @@ class Mail_model extends CI_Model
     }
     function getUnReadMails($r_id)
     {
+        $this->db->where('m_owner', $r_id);
         $this->db->where('m_recipient', $r_id);
         $this->db->where('m_status', '0');
         $this->db->order_by('m_date', 'DESC');
@@ -146,12 +160,22 @@ class Mail_model extends CI_Model
 
     var $select_column = array("m_id", "m_author", "m_recipient", "m_subject", "m_content", "m_status", "m_tags", "m_attach", "m_label", "m_date");
     var $order_column = array("m_id", "m_author", "m_recipient", "m_subject", "m_content", "m_status", "m_tags", "m_label", "m_attach", "m_date");
-
-    function make_query()
+    // var $owner = $this->session->userdata('site_id');
+    function make_query($owner, $mode)
     {
         $this->db->select($this->select_column);
+        if ($mode == 'starred') {
+            $this->db->where('m_label', '1');
+        } elseif ($mode == 'unstarred') {
+            $this->db->where('m_label', '0');
+        } elseif ($mode == 'unread') {
+            $this->db->where('m_status', '0');
+        } elseif ($mode == 'read') {
+            $this->db->where('m_status', '1');
+        }
         $this->db->where('m_author <>' . $this->cur_id());
         $this->db->where('m_recipient', $this->cur_id());
+        $this->db->where('m_owner', $owner);
         $this->db->from($this->table_name());
         if (isset($_POST["search"]["value"])) {
             $this->db->or_like("m_id", $_POST["search"]["value"]);
@@ -162,25 +186,22 @@ class Mail_model extends CI_Model
             $this->db->order_by('m_order', 'DESC');
         }
     }
-    function get_filtered_data()
+
+    function make_datatables($owner, $mode = '')
     {
-        $this->make_query();
-        return $this->db->count_all_results();
-    }
-    function make_datatables()
-    {
-        $this->make_query();
+        $this->make_query($owner, $mode);
         if ($_POST["length"] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
     }
-    function make_sent_query()
+    function make_sent_query($owner)
     {
         $this->db->select($this->select_column);
         $this->db->where('m_author', $this->cur_id());
         $this->db->where('m_recipient <>' . $this->cur_id());
+        $this->db->where('m_owner', $owner);
         $this->db->from($this->table_name());
         if (isset($_POST["search"]["value"])) {
             $this->db->or_like("m_id", $_POST["search"]["value"]);
@@ -191,25 +212,13 @@ class Mail_model extends CI_Model
             $this->db->order_by('m_order', 'DESC');
         }
     }
-    function make_sent_datatables()
+    function make_sent_datatables($owner)
     {
-        $this->make_sent_query();
+        $this->make_sent_query($owner);
         if ($_POST["length"] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
-    }
-    function get_sent_filtered_data()
-    {
-        $this->make_sent_query();
-        return $this->db->count_all_results();
-    }
-
-    function get_all_data()
-    {
-        $this->db->select("*");
-        $this->db->from($this->table_name());
-        return $this->db->count_all_results();
     }
 }

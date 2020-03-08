@@ -330,6 +330,10 @@ function getPageIdBySlug($p_slug)
     $query = $CI->db->get('tbl_pages');
     return $query->row()->page_id;
 }
+function loadGall($id, $title, $image)
+{
+    return '<div class="col-6 col-sm-6 col-xs-12 col-md-4 col-lg-3" data-aos="fade-up" style="margin-bottom: 20px;"><a href="' . base_url() . 'uploads/gallery/' . $image . '" class="d-block photo-item" data-fancybox="gallery"><img src="' . base_url() . 'uploads/gallery/' . $image . '" alt="Image" class="img-fluid"><div class="photo-text-more"><span class="icon fa fa-search"></div></a><div class="w-100 gCheckbox" style="display:none;border-bottom:1px solid #ddd;padding:10px 0px;"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></div></div>';
+}
 function loadMAils($type, $id, $a_id, $rep_id, $sub, $date, $status, $label, $file, $tags, $fieldStar)
 {
     if ($type == 'inbox') {
@@ -365,7 +369,7 @@ function loadMAils($type, $id, $a_id, $rep_id, $sub, $date, $status, $label, $fi
     }
 
 
-    $rslt = '<li id="listItem' . $id . '" class="' . $read . ' ' . $star . ' ' . $attach . '"><div class="mail-control"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></label></div>' . $isStar . '<div class="mail-from"><a href="">' . $name . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div>' . $atc_icon . '<div class="mail-subject"><a href="' . base_url(ADMIN) . "/inbox/" . $a_id . '/' . $id . '">' . $tgsClass . $sub . '</a></div></li>';
+    $rslt = '<li id="listItem' . $id . '" class="' . $read . ' ' . $star . ' ' . $attach . '"><div class="mail-control"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></label></div>' . $isStar . '<div class="mail-from"><a href="' . base_url(ADMIN) . "/inbox/" . $a_id . '/' . $id . '">' . $name . '</a></div><div class="mail-time">' . $n_date[1] . ' ' . $n_date[2] . ', ' . $n_date[3] . '</div>' . $atc_icon . '<div class="mail-subject"><a href="' . base_url(ADMIN) . "/inbox/" . $a_id . '/' . $id . '">' . $tgsClass . $sub . '</a></div></li>';
     return $rslt;
 }
 function getPageTitleBySlug($p_slug)
@@ -441,7 +445,7 @@ function upload_file($path, $field_name)
     $stamp = time();
     // $ray = preg_split('/(,|;|-|_|&|#|:)/', $tmp);
     $config['upload_path'] = $path;
-    $config['allowed_types'] = 'pdf|doc|docx|ppt|pptx|txt|mp4|mp3|jpg|png|gif|jpeg|zip|rar|html|php|htm|css|js|sql';
+    $config['allowed_types'] = 'pdf|doc|docx|ppt|pptx|txt|mp4|x-ms-wma|mp3|jpg|png|gif|jpeg|zip|rar|html|php|htm|css|js|sql';
     $config['max_size'] = 2100;
     $config['file_name'] = 'file_' . $stamp;
 

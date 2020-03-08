@@ -2,140 +2,7 @@
 $(document.body).ready(function () {
 
 
-    $('#mailTrash').click(function () {
-        var del_url = $(this).data('url');
-        var checkbox = $('.magic-checkbox:checked');
-        if (checkbox.length > 0) {
 
-            bootbox.confirm("<h5>Selected mail(s) will be deleted permanently for everyone, Do you want to delete ?</h5>", function (result) {
-                if (result) {
-                    var checkbox_value = [];
-                    $(checkbox).each(function () {
-                        checkbox_value.push($(this).val());
-                    });
-                    $.ajax({
-                        url: del_url,
-                        method: "POST",
-                        data: {
-                            c_box: checkbox_value
-                        },
-                        success: function () {
-                            fetchMails(1);
-                            $.niftyNoty({
-                                type: 'success',
-                                message: '<div style="font-size:medium;width:auto;">Mail(s) deleted successfully.</div>',
-                                container: 'floating',
-                                timer: 5000
-                            });
-                        }
-                    });
-                }
-
-            });
-        } else {
-            bootbox.alert("<h5>Select atleast one record</h5>", function () {
-            });
-        }
-    });
-
-    // Read
-    $(document.body).on('click', '#mailRead', function () {
-        var del_url = $(this).data('url');
-        var checkbox = $('.magic-checkbox:checked');
-        if (checkbox.length > 0) {
-            var checkbox_value = [];
-            $(checkbox).each(function () {
-                checkbox_value.push($(this).val());
-            });
-            $.ajax({
-                url: del_url,
-                method: "POST",
-                data: {
-                    c_box: checkbox_value
-                },
-                success: function () {
-                    fetchMails(1);
-                }
-            });
-
-        } else {
-            bootbox.alert("<h5>Select atleast one record</h5>", function () {
-            });
-        }
-    });
-    // Un Read
-    $(document.body).on('click', '#mailUnRead', function () {
-        var del_url = $(this).data('url');
-        var checkbox = $('.magic-checkbox:checked');
-        if (checkbox.length > 0) {
-            var checkbox_value = [];
-            $(checkbox).each(function () {
-                checkbox_value.push($(this).val());
-            });
-            $.ajax({
-                url: del_url,
-                method: "POST",
-                data: {
-                    c_box: checkbox_value
-                },
-                success: function () {
-                    fetchMails(1);
-                }
-            });
-
-        } else {
-            bootbox.alert("<h5>Select atleast one record</h5>", function () {
-            });
-        }
-    });
-    $(document.body).on('click', '#mailStarred', function () {
-        var del_url = $(this).data('url');
-        var checkbox = $('.magic-checkbox:checked');
-        if (checkbox.length > 0) {
-            var checkbox_value = [];
-            $(checkbox).each(function () {
-                checkbox_value.push($(this).val());
-            });
-            $.ajax({
-                url: del_url,
-                method: "POST",
-                data: {
-                    c_box: checkbox_value
-                },
-                success: function () {
-                    fetchMails(1);
-                }
-            });
-
-        } else {
-            bootbox.alert("<h5>Select atleast one record</h5>", function () {
-            });
-        }
-    });
-    $(document.body).on('click', '#mailUnStarred', function () {
-        var del_url = $(this).data('url');
-        var checkbox = $('.magic-checkbox:checked');
-        if (checkbox.length > 0) {
-            var checkbox_value = [];
-            $(checkbox).each(function () {
-                checkbox_value.push($(this).val());
-            });
-            $.ajax({
-                url: del_url,
-                method: "POST",
-                data: {
-                    c_box: checkbox_value
-                },
-                success: function () {
-                    fetchMails(1);
-                }
-            });
-
-        } else {
-            bootbox.alert("<h5>Select atleast one record</h5>", function () {
-            });
-        }
-    });
     $(document.body).on('change', '#inputAttach', function () {
         var txt = '';
         var fles = $('#inputAttach')[0].files;
@@ -183,6 +50,8 @@ $(document.body).ready(function () {
 
         for (var x = 0; x < fles.length; x++) {
             form_data.append("m_attachs[]", fles[x]);
+            // console.log(fles[x]);
+
         }
 
         form_data.append("rep_id", id);
@@ -200,7 +69,7 @@ $(document.body).ready(function () {
             processData: false,
             data: form_data,
             beforeSend: function () {
-                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Precessing...');
+                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Processing...');
             },
             success: function (response) {
                 console.log(response);
@@ -216,28 +85,29 @@ $(document.body).ready(function () {
         });
     });
     var c_page = 0;
+    var c_mode = 'normal';
     var n_page = 2;
     var d_class = "disabled";
     var n_class = "btn_next";
     var p_class = "btn_prev";
-
-    function fetchMails(page) {
+    var showpage = 1;
+    function fetchMails(page, mode = '') {
         var fetchUrl = $("#typeMails").data('url');
         $.ajax({
             method: "POST",
-            url: fetchUrl + page,
+            url: fetchUrl + page + '/' + mode,
             dataType: "JSON",
             success: function (response) {
                 console.log(response);
                 if (response['t_count'] != 0) {
                     $('.mFilter').show();
+                    $("#mailTrash").show();
                     $("#demo-mail-list").html(response['data']);
                     $(".mail_count").html("<strong>" + response['n_count'] + "-" + response['a_count'] + "</strong> of <strong>" + response['t_count'] + "</strong>");
                     c_page = response['p_nxt'];
                     n_page = response['m_nxt'];
-
-
-
+                    c_mode = response['mode'];
+                    showpage = response['c_page'];
                     if (response['a_count'] >= response['t_count']) {
                         $(".pB").addClass(d_class).removeClass(n_class);
                     } else {
@@ -252,6 +122,7 @@ $(document.body).ready(function () {
                 } else {
                     $("#demo-mail-list").html(response['data']);
                     $(".mFilter").hide();
+                    $("#mailTrash").hide();
                 }
                 if (response['r_num'] > 0) {
                     $("#tMails").html("Inbox (" + response['r_num'] + ")");
@@ -271,15 +142,164 @@ $(document.body).ready(function () {
         });
     }
 
-    fetchMails(1);
+    fetchMails(showpage, c_mode);
+
+    $(document.body).on("click", "#showAllMails", function () {
+        fetchMails(1, 'normal');
+    });
+    $(document.body).on("click", "#showStarred", function () {
+        fetchMails(showpage, 'starred');
+    });
+    $(document.body).on("click", "#showUnStarred", function () {
+        fetchMails(showpage, 'unstarred');
+    });
+    $(document.body).on("click", "#showRead", function () {
+        fetchMails(showpage, 'read');
+    });
+    $(document.body).on("click", "#showUnRead", function () {
+        fetchMails(showpage, 'unread');
+    });
     $(document.body).on("click", "#demo-mail-ref-btn", function () {
-        fetchMails(1);
+        fetchMails(1, 'normal');
     });
     $(document.body).on("click", ".btn_next", function () {
-        fetchMails(c_page);
+        fetchMails(c_page, c_mode);
     });
     $(document.body).on("click", ".btn_prev", function () {
-        fetchMails(n_page);
+        fetchMails(n_page, c_mode);
+    });
+    $('#mailTrash').click(function () {
+        var del_url = $(this).data('url');
+        var checkbox = $('.magic-checkbox:checked');
+        if (checkbox.length > 0) {
+
+            bootbox.confirm("<h5>Selected mail(s) will be deleted permanently for you, Do you want to delete ?</h5>", function (result) {
+                if (result) {
+                    var checkbox_value = [];
+                    $(checkbox).each(function () {
+                        checkbox_value.push($(this).val());
+                    });
+                    $.ajax({
+                        url: del_url,
+                        method: "POST",
+                        data: {
+                            c_box: checkbox_value
+                        },
+                        success: function () {
+                            fetchMails(1, c_mode);
+                            $.niftyNoty({
+                                type: 'success',
+                                message: '<div style="font-size:medium;width:auto;">Mail(s) deleted successfully.</div>',
+                                container: 'floating',
+                                timer: 5000
+                            });
+                        }
+                    });
+                }
+
+            });
+        } else {
+            bootbox.alert("<h5>Select atleast one record</h5>", function () {
+            });
+        }
     });
 
+    // Read
+    $(document.body).on('click', '#mailRead', function () {
+        var del_url = $(this).data('url');
+        var checkbox = $('.magic-checkbox:checked');
+        if (checkbox.length > 0) {
+            var checkbox_value = [];
+            $(checkbox).each(function () {
+                checkbox_value.push($(this).val());
+            });
+            $.ajax({
+                url: del_url,
+                method: "POST",
+                data: {
+                    c_box: checkbox_value
+                },
+                success: function () {
+                    fetchMails(showpage, c_mode);
+                }
+            });
+
+        } else {
+            bootbox.alert("<h5>Select atleast one record</h5>", function () {
+            });
+        }
+    });
+    // Un Read
+    $(document.body).on('click', '#mailUnRead', function () {
+        var del_url = $(this).data('url');
+        var checkbox = $('.magic-checkbox:checked');
+        if (checkbox.length > 0) {
+            var checkbox_value = [];
+            $(checkbox).each(function () {
+                checkbox_value.push($(this).val());
+            });
+            $.ajax({
+                url: del_url,
+                method: "POST",
+                data: {
+                    c_box: checkbox_value
+                },
+                success: function () {
+                    fetchMails(showpage, c_mode);
+                }
+            });
+
+        } else {
+            bootbox.alert("<h5>Select atleast one record</h5>", function () {
+            });
+        }
+    });
+    $(document.body).on('click', '#mailStarred', function () {
+        var del_url = $(this).data('url');
+        var checkbox = $('.magic-checkbox:checked');
+        if (checkbox.length > 0) {
+            var checkbox_value = [];
+            $(checkbox).each(function () {
+                checkbox_value.push($(this).val());
+            });
+            $.ajax({
+                url: del_url,
+                method: "POST",
+                data: {
+                    c_box: checkbox_value
+                },
+                success: function () {
+                    fetchMails(showpage, c_mode);
+                }
+            });
+
+        } else {
+            bootbox.alert("<h5>Select atleast one record</h5>", function () {
+            });
+        }
+    });
+    $(document.body).on('click', '#mailUnStarred', function () {
+        var del_url = $(this).data('url');
+        var checkbox = $('.magic-checkbox:checked');
+        if (checkbox.length > 0) {
+            var checkbox_value = [];
+            $(checkbox).each(function () {
+                checkbox_value.push($(this).val());
+            });
+            $.ajax({
+                url: del_url,
+                method: "POST",
+                data: {
+                    c_box: checkbox_value
+                },
+                success: function () {
+                    fetchMails(showpage, c_mode);
+                }
+            });
+
+        } else {
+            bootbox.alert("<h5>Select atleast one record</h5>", function () {
+            });
+        }
+    });
 });

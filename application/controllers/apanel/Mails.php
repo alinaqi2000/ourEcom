@@ -26,13 +26,14 @@ class Mails extends MY_Admin
     $this->data['mode'] = 'sent';
     $this->load->view('apanel/layout/default', $this->data);
   }
-  function fetchMails($count = 1)
+  function fetchMails($count, $mode = '')
   {
-    $max = 5;
-    $fetch_data = $this->Mail_model->make_datatables();
+    $max = 10;
+    $uID = $this->session->userdata('site_id');
+    $fetch_data = $this->Mail_model->make_datatables($uID, $mode);
     $data = array();
     $t_num = count($fetch_data);
-    $fetch_Sdata = $this->Mail_model->getUnReadMails($this->session->userdata('site_id'));
+    $fetch_Sdata = $this->Mail_model->getUnReadMails($uID);
     $r_num = count($fetch_Sdata);
     $p_num = $count + 1;
     $m_num = $count - 1;
@@ -61,6 +62,8 @@ class Mails extends MY_Admin
     }
     $output = array(
       'data' => $data,
+      'mode' => $mode,
+      'c_page' => $count,
       'r_num' => $r_num,
       't_count' => $t_num,
       'a_count' => $a_num,
@@ -73,13 +76,14 @@ class Mails extends MY_Admin
     echo json_encode($output);
     exit;
   }
-  function fetchSents($count = 1)
+  function fetchSents($count, $mode)
   {
-    $max = 5;
-    $fetch_data = $this->Mail_model->make_sent_datatables();
+    $max = 10;
+    $uID = $this->session->userdata('site_id');
+    $fetch_data = $this->Mail_model->make_sent_datatables($uID, $mode);
     $data = array();
     $t_num = count($fetch_data);
-    $fetch_Rdata = $this->Mail_model->getUnReadMails($this->session->userdata('site_id'));
+    $fetch_Rdata = $this->Mail_model->getUnReadMails($uID);
     $r_num = count($fetch_Rdata);
     $p_num = $count + 1;
     $m_num = $count - 1;
@@ -107,6 +111,8 @@ class Mails extends MY_Admin
     }
     $output = array(
       'data' => $data,
+      'mode' => $mode,
+      'c_page' => $count,
       'r_num' => $r_num,
       't_count' => $t_num,
       'a_count' => $a_num,
@@ -130,8 +136,9 @@ class Mails extends MY_Admin
   public function read($a_id, $m_id)
   {
     $this->data['attachs'] = unserialize(urldecode($this->Mail_model->getAttach($m_id)));
+    $m_code = $this->Mail_model->getMailCode($m_id);
     if ($a_id != $this->session->userdata('site_id')) {
-      $this->Mail_model->setAsRead($m_id);
+      $this->Mail_model->setAsRead($m_code);
       $this->data['readType'] = 'inbox';
     } else {
       $this->data['readType'] = 'sent';
@@ -156,7 +163,8 @@ class Mails extends MY_Admin
       // pr($id);exit;
 
       for ($count = 0; $count < count($id); $count++) {
-        $this->Mail_model->setAsRead($id[$count]);
+        $m_code = $this->Mail_model->getMailCode($id[$count]);
+        $this->Mail_model->setAsRead($m_code);
       }
     }
   }
@@ -167,7 +175,8 @@ class Mails extends MY_Admin
       // pr($id);exit;
 
       for ($count = 0; $count < count($id); $count++) {
-        $this->Mail_model->setAsUnRead($id[$count]);
+        $m_code = $this->Mail_model->getMailCode($id[$count]);
+        $this->Mail_model->setAsUnRead($m_code);
       }
     }
   }
@@ -195,12 +204,24 @@ class Mails extends MY_Admin
   }
   public function sendMail()
   {
+    $ct = time() + rand(11111, 99999);
     $vals['m_date'] = date(DATE_RFC2822, time());
     $vals['m_author'] = trim($this->session->userdata('site_id'));
     $vals['m_recipient'] = trim($this->input->post('rep_id'));
     $vals['m_subject'] = trim($this->input->post('m_sub'));
     $vals['m_content'] = trim($this->input->post('m_cont'));
     $vals['m_tags'] = trim($this->input->post('m_tgs'));
+    $vals['m_owner'] = trim($this->session->userdata('site_id'));
+    $vals['m_code'] = $ct;
+
+    $n_vals['m_date'] = date(DATE_RFC2822, time());
+    $n_vals['m_author'] = trim($this->session->userdata('site_id'));
+    $n_vals['m_recipient'] = trim($this->input->post('rep_id'));
+    $n_vals['m_subject'] = trim($this->input->post('m_sub'));
+    $n_vals['m_content'] = trim($this->input->post('m_cont'));
+    $n_vals['m_tags'] = trim($this->input->post('m_tgs'));
+    $n_vals['m_owner'] = trim($this->input->post('rep_id'));
+    $n_vals['m_code'] = $ct;
     // echo $vals['m_tags'];
     // exit;
     // $vals['m_attach'] = trim($this->input->post('m_attach'));
@@ -226,8 +247,9 @@ class Mails extends MY_Admin
           }
         }
         $vals['m_attach'] = serialize($gotFiles);
+        $n_vals['m_attach'] = serialize($gotFiles);
       }
-      if ($row = $this->Mail_model->sendmail($vals)) {
+      if ($row = $this->Mail_model->sendmail($vals) && $row = $this->Mail_model->sendmail($n_vals)) {
         setMsg('success', 'Mail sent successfully');
       }
     } else {
@@ -276,31 +298,37 @@ class Mails extends MY_Admin
 
   function delete($del_id)
   {
-
-
-    // pr($id);exit;
-
-
-    $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($del_id)));
-    $gotCount = count($gotAttach);
-    if ($gotCount > 0 && !empty($gotAttach)) {
-      foreach ($gotAttach as $files) {
-        // echo $files['file'];
-        // exit;
-        $got = "./uploads/apanel/mailAttachments/" . $files['file'];
-        if (unlink($got)) {
-          if ($this->Mail_model->delete($del_id)) {
-            setMsg('success', 'Mail deleted successfully');
-          } else {
-            setMsg('error', 'Something went wrong, Please try later.');
-          }
-        }
-      }
-    } else {
+    $m_code = $this->Mail_model->getMailCode($del_id);
+    $n_code = $this->Mail_model->searchCode($m_code, $del_id);
+    $s_code = count($n_code);
+    if ($s_code > 0) {
       if ($this->Mail_model->delete($del_id)) {
         setMsg('success', 'Mail deleted successfully');
       } else {
         setMsg('error', 'Something went wrong, Please try later.');
+      }
+    } else {
+      $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($del_id)));
+      $gotCount = count($gotAttach);
+      if ($gotCount > 0 && !empty($gotAttach)) {
+        foreach ($gotAttach as $files) {
+          // echo $files['file'];
+          // exit;
+          $got = "./uploads/apanel/mailAttachments/" . $files['file'];
+          if (unlink($got)) {
+            if ($this->Mail_model->delete($del_id)) {
+              setMsg('success', 'Mail deleted successfully');
+            } else {
+              setMsg('error', 'Something went wrong, Please try later.');
+            }
+          }
+        }
+      } else {
+        if ($this->Mail_model->delete($del_id)) {
+          setMsg('success', 'Mail deleted successfully');
+        } else {
+          setMsg('error', 'Something went wrong, Please try later.');
+        }
       }
     }
     redirect(base_url(ADMIN) .  '/inbox', 'refresh');
@@ -313,19 +341,26 @@ class Mails extends MY_Admin
       // pr($id);exit;
 
       for ($count = 0; $count < count($id); $count++) {
-        $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($id[$count])));
-        $gotCount = count($gotAttach);
-        if ($gotCount > 0  && !empty($gotAttach)) {
-          foreach ($gotAttach as $files) {
-            // echo $files['file'];
-            // exit;
-            $got = "./uploads/apanel/mailAttachments/" . $files['file'];
-            if (unlink($got)) {
-              $this->Mail_model->delete($id[$count]);
-            }
-          }
-        } else {
+        $m_code = $this->Mail_model->getMailCode($id[$count]);
+        $n_code = $this->Mail_model->searchCode($m_code, $id[$count]);
+        $s_code = count($n_code);
+        if ($s_code > 0) {
           $this->Mail_model->delete($id[$count]);
+        } else {
+          $gotAttach = unserialize(urldecode($this->Mail_model->getAttach($id[$count])));
+          $gotCount = count($gotAttach);
+          if ($gotCount > 0  && !empty($gotAttach)) {
+            foreach ($gotAttach as $files) {
+              // echo $files['file'];
+              // exit;
+              $got = "./uploads/apanel/mailAttachments/" . $files['file'];
+              if (unlink($got)) {
+                $this->Mail_model->delete($id[$count]);
+              }
+            }
+          } else {
+            $this->Mail_model->delete($id[$count]);
+          }
         }
       }
     }

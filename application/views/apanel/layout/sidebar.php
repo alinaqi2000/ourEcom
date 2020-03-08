@@ -110,6 +110,12 @@
                                 <span class="menu-title">Categories</span>
                             </a>
                         </li>
+                        <li class="<?= $this->uri->segment(2) == 'gallery' ? 'active-sub' : ''; ?>">
+                            <a href="<?= base_url(ADMIN . '/gallery') ?>">
+                                <i class="ti-gallery"></i>
+                                <span class="menu-title">Gallery</span>
+                            </a>
+                        </li>
                         <li class="<?= ($this->uri->segment(2) == 'site_settings' || $this->uri->segment(2) == 'site_social' || $this->uri->segment(2) == 'site_contact') ? 'active-sub' : ''; ?>">
                             <a href="javascript:void(0);">
                                 <i class="ion-settings"></i>

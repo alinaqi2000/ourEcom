@@ -61,10 +61,20 @@
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo.min.css" rel="stylesheet">
 
     <?php
-    if ($page == 'categories' || $page == 'pages') {
+    if ($page == 'categories' || $page == 'pages' || $page == 'gallery') {
     ?>
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/apanel/css/dataTable.min.css" />
         <script type="text/javascript" src="<?= base_url() ?>assets/apanel/js/dataTable.min.js"></script>
+
+    <?php
+    }
+    if ($page == 'gallery') {
+    ?>
+        <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/aos.css">
+        <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/fancybox.min.css">
+        <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/magnific-popup.css">
+        <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/style.css">
+        <link href="<?= base_url() ?>assets/apanel/plugins/dropzone/dropzone.min.css" rel="stylesheet">
 
     <?php
     }
@@ -73,6 +83,10 @@
 
 
     <style type="text/css">
+        .min-400 {
+            min-height: 400px;
+        }
+
         a[type="button"]:hover {
             cursor: pointer;
         }
@@ -354,6 +368,24 @@
 
     <script src="<?= base_url() ?>assets/apanel/js/demo/nifty-demo.min.js"></script>
 
+    <?php
+    if ($page == 'gallery') {
+    ?>
+        <script src="<?= base_url() ?>assets/apanel/js/new/jquery.magnific-popup.min.js"></script>
+        <script src="<?= base_url() ?>assets/apanel/js/new/aos.js"></script>
+
+        <script src="<?= base_url() ?>assets/apanel/js/new/jquery.fancybox.min.js"></script>
+
+        <script src="<?= base_url() ?>assets/apanel/js/new/main.js"></script>
+
+        <script src="<?= base_url() ?>assets/apanel/plugins/dropzone/dropzone.min.js"></script>
+
+        <script src="<?= base_url() ?>assets/apanel/js/gallery_scripts.js"></script>
+
+        <!-- <script src="<?= base_url() ?>assets/apanel/js/demo/form-file-upload.js"></script> -->
+    <?php
+    }
+    ?>
     <script src="<?= base_url() ?>assets/apanel/js/my_scripts.js"></script>
 
 

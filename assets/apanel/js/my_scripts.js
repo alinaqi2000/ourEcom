@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document.body).ready(function () {
     // Sidebar setting remove
     $('#demo-nifty-settings').remove();
 
@@ -234,6 +234,7 @@ $(document).ready(function () {
             });
         }
     });
+
     $(document.body).on('click', '.selectAdmin', function () {
         var id = $(this).data('id');
         var name = $(this).data('name');
@@ -242,9 +243,7 @@ $(document).ready(function () {
         $('#loadAdmins').fadeOut(250);
 
     });
-
-
-
+    
 
 
 
