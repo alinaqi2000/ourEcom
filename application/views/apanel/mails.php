@@ -178,6 +178,7 @@
                                     <button id="mailSend" data-url="<?= base_url(ADMIN . '/mails/sendMail') ?>" type="submit" class="btn btn-primary">
                                         <i class="demo-psi-mail-send icon-lg icon-fw"></i> Send Mail
                                     </button>
+                                    <span style="margin: 12px;display:none;" id="cond"></span>
 
                                     <!--Save draft button-->
                                     <!-- <button id="mail-save-btn" type="button" class="btn btn-default">

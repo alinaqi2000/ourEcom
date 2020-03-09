@@ -60,14 +60,13 @@ jQuery(document).ready(function ($) {
 
     fetchGalls(1);
 
-    $(document.body).on("click", "#demo-mail-ref-btn", function () {
-        fetchGalls(1);
-    });
     $(document.body).on("click", ".btn_next", function () {
         fetchGalls(c_page);
+        $('#dGall').hide();
     });
     $(document.body).on("click", ".btn_prev", function () {
         fetchGalls(n_page);
+        $('#dGall').hide();
     });
     $('#editGall').on("click", function () {
         $('.gCheckbox').toggle();

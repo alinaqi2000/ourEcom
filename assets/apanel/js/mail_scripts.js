@@ -40,49 +40,67 @@ $(document.body).ready(function () {
     $(document.body).on('click', '#mailSend', function () {
         var id = $('#inputName').data('id');
         var sub = $('#inputSubject').val();
+        var max_sub = $('#inputSubject').val().length;
         var cont = $('#demo-mail-compose').val();
-        var tgs = $('#tagsinput').val();
+        var max_cnt = $('#demo-mail-compose').val().length;
 
-        var urlMail = $('#mailSend').data('url');
-        var fle = $('#inputAttach');
-        var fles = $('#inputAttach')[0].files;
-        var form_data = new FormData();
+        if (max_sub < 255) {
+            if (max_cnt < 600000) {
 
-        for (var x = 0; x < fles.length; x++) {
-            form_data.append("m_attachs[]", fles[x]);
-            // console.log(fles[x]);
+                var tgs = $('#tagsinput').val();
 
+                var urlMail = $('#mailSend').data('url');
+                var fle = $('#inputAttach');
+                var fles = $('#inputAttach')[0].files;
+                var form_data = new FormData();
+
+                for (var x = 0; x < fles.length; x++) {
+                    form_data.append("m_attachs[]", fles[x]);
+                    // console.log(fles[x]);
+
+                }
+
+                form_data.append("rep_id", id);
+                form_data.append("m_cont", cont);
+                form_data.append("m_sub", sub);
+                form_data.append("m_tgs", tgs);
+
+
+                $.ajax({
+                    type: "POST",
+                    url: urlMail,
+                    dataType: 'JSON',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    beforeSend: function () {
+                        $('#cond').show();
+                        $('#cond').html('Processing...');
+                    },
+                    success: function (response) {
+                        // console.log(response);
+                        $('#cond').show();
+                        $('#cond').html('Processed');
+                        setTimeout(location.reload.bind(location), 1000);
+                    },
+                    error: function () {
+                        $('#cond').show();
+                        $('#cond').html('Error!');
+                        setTimeout(location.reload.bind(location), 1000);
+                    },
+
+
+                });
+            } else {
+                $('#cond').show();
+                $('#cond').html('Characters limit(600000) exceed in mail Content. Current size : <b>' + max_cnt + '</b>');
+            }
+        } else {
+            $('#cond').show();
+            $('#cond').html('Characters limit exceed in mail Subject!');
         }
 
-        form_data.append("rep_id", id);
-        form_data.append("m_cont", cont);
-        form_data.append("m_sub", sub);
-        form_data.append("m_tgs", tgs);
-
-
-        $.ajax({
-            type: "POST",
-            url: urlMail,
-            dataType: 'JSON',
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_data,
-            beforeSend: function () {
-                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Processing...');
-            },
-            success: function (response) {
-                console.log(response);
-                $('#mailSend').html('<i class="demo-psi-mail-send icon-lg icon-fw"></i> Processed');
-                setTimeout(location.reload.bind(location), 1000);
-            },
-            error: function () {
-                $('#mailSend').html('<i class="demo-mail-send icon-lg icon-fw"></i> Error!');
-                setTimeout(location.reload.bind(location), 1000);
-            },
-
-
-        });
     });
     var c_page = 0;
     var c_mode = 'normal';

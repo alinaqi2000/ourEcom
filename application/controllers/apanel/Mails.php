@@ -228,6 +228,7 @@ class Mails extends MY_Admin
     if (($vals['m_recipient'] != 0) && !empty($vals['m_subject'])) {
 
       if (isset($_FILES["m_attachs"]["name"]) && $_FILES["m_attachs"]["name"] != "") {
+
         $filesCount = count($_FILES['m_attachs']['name']);
         for ($i = 0; $i < $filesCount; $i++) {
           // $name =  $_FILES["m_attach"]["name"][$i];
@@ -249,8 +250,18 @@ class Mails extends MY_Admin
         $vals['m_attach'] = serialize($gotFiles);
         $n_vals['m_attach'] = serialize($gotFiles);
       }
-      if ($row = $this->Mail_model->sendmail($vals) && $row = $this->Mail_model->sendmail($n_vals)) {
-        setMsg('success', 'Mail sent successfully');
+
+      if ($row1 = $this->Mail_model->sendmail($vals) && $row2 = $this->Mail_model->sendmail($n_vals)) {
+        if ($row1 == 1 && $row2 == 1) {
+          setMsg('success', 'Mail sent successfully');
+        } else {
+          setMsg('error', 'Something went wrong!, Try again.');
+          $filesCount = count($_FILES['m_attachs']['name']);
+          for ($i = 0; $i < $filesCount; $i++) {
+            $got = "./uploads/apanel/mailAttachments/" . $_FILES['m_attachs']['name'][$i];
+            unlink($got);
+          }
+        }
       }
     } else {
       setMsg('error', 'Please fill in all the fields');

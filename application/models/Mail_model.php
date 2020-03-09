@@ -102,9 +102,12 @@ class Mail_model extends CI_Model
 
     function sendmail($vals)
     {
+        $rslt = 0;
         $this->db->set($vals);
-        $this->db->insert($this->table_name());
-        return $vals;
+        if ($this->db->insert($this->table_name())) {
+            $rslt = 1;
+        }
+        return $rslt;
     }
     function save($vals, $m_id = '')
     {
