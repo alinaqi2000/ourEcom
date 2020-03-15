@@ -10,11 +10,35 @@ class Mails extends MY_Admin
     $this->load->model('Master_model');
     $this->load->model('Mail_model');
     $this->load->model('Admin_model');
+
+    $name = 'maxMails_' . $this->session->userdata('site_id');
+    $getsMax = get_cookie($name);
+    $this->data['cokie'] = $getsMax;
   }
 
   public function index()
   {
 
+    $name = 'maxMails_' . $this->session->userdata('site_id');
+    $getsMax = get_cookie($name);
+    if (empty($getsMax) || $getsMax == 'undefined' || $getsMax == 'normal') {
+      $getsMax = 25;
+    }
+
+    // echo $getsMax;
+    // exit;
+    $this->data['cokie'] = $getsMax;
+    if ($getsMax != 10 && $getsMax != 25 && $getsMax != 50 && $getsMax != 100) {
+
+      $cookie = array(
+        'name'   => $name,
+        'value'  => '25',
+        'expire' => 2592000,
+        'secure' => FALSE
+      );
+
+      $this->input->set_cookie($cookie);
+    }
     $this->data['page'] = 'mails';
     $this->data['mode'] = 'inbox';
     $this->load->view('apanel/layout/default', $this->data);
@@ -26,9 +50,27 @@ class Mails extends MY_Admin
     $this->data['mode'] = 'sent';
     $this->load->view('apanel/layout/default', $this->data);
   }
-  function fetchMails($count, $mode = '')
+  function fetchMails($count = 1, $max, $mode = '')
   {
-    $max = 10;
+    $this->load->helper('cookie');
+    $name = 'maxMails_' . $this->session->userdata('site_id');
+    $getMax = get_cookie($name);
+
+    if ($max != $getMax) {
+      delete_cookie($name);
+      $cookie = array(
+        'name'   => $name,
+        'value'  =>  $max,
+        'expire' => 2592000,
+        'secure' => FALSE
+      );
+      $this->input->set_cookie($cookie);
+      $count = 1;
+    }
+
+
+
+
     $uID = $this->session->userdata('site_id');
     $fetch_data = $this->Mail_model->make_datatables($uID, $mode);
     $data = array();
@@ -61,8 +103,10 @@ class Mails extends MY_Admin
       $data = '<li><h5>No mail(s) to show.</h5></li>';
     }
     $output = array(
+      'mxe' => $getMax,
       'data' => $data,
       'mode' => $mode,
+      'max' => $max,
       'c_page' => $count,
       'r_num' => $r_num,
       't_count' => $t_num,
@@ -76,9 +120,26 @@ class Mails extends MY_Admin
     echo json_encode($output);
     exit;
   }
-  function fetchSents($count, $mode)
+  function fetchSents($count = 1, $max, $mode = '')
   {
-    $max = 10;
+    $name = 'maxMails_' . $this->session->userdata('site_id');
+    $this->load->helper('cookie');
+    $getMax = get_cookie($name);
+
+    if ($max != $getMax) {
+      delete_cookie($name);
+      $cookie = array(
+        'name'   => $name,
+        'value'  =>  $max,
+        'expire' => 2592000,
+        'secure' => FALSE
+      );
+      $this->input->set_cookie($cookie);
+      $count = 1;
+    }
+
+
+
     $uID = $this->session->userdata('site_id');
     $fetch_data = $this->Mail_model->make_sent_datatables($uID, $mode);
     $data = array();
@@ -112,6 +173,7 @@ class Mails extends MY_Admin
     $output = array(
       'data' => $data,
       'mode' => $mode,
+      'max' => $max,
       'c_page' => $count,
       'r_num' => $r_num,
       't_count' => $t_num,

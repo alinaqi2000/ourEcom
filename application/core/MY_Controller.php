@@ -111,9 +111,11 @@ class MY_Admin extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-
+    $name = 'maxMails_' . $this->session->userdata('site_id');
+    // delete_cookie($name);
     // Site Information
     $site = $this->getSiteSettings();
+    // copy('./uploads/gallery/image_1583909993_6268.png','./uploads/image.png');
     if (empty($this->session->userdata('themeMode'))) {
       $this->data['themeColor'] = base_url('assets/apanel/css/theme-mint.min.css');
     } else {
@@ -121,8 +123,10 @@ class MY_Admin extends CI_Controller
     }
     if ($this->session->userdata('sideMode') == 'open' || empty($this->session->userdata('sideMode'))) {
       $this->data['sideMode'] = "mainnav-lg";
+      $this->data['sideIcon'] = " ti-view-list";
     } else {
       $this->data['sideMode'] = "mainnav-sm";
+      $this->data['sideIcon'] = " ti-view-list-alt";
     }
 
     $info_data = unserialize(urldecode($site->site_info_data));
@@ -178,7 +182,10 @@ class MY_Admin extends CI_Controller
    */
   public function isLogged()
   {
+
     if (!($this->session->userdata('site_id')) > 0 && !($this->session->userdata('site_type') == 'super_admin' || $this->session->userdata('site_type') == 'local_admin')) {
+      $gotCurrent = current_url();
+      $this->session->set_userdata('gotUrl', $gotCurrent);
       redirect('apanel/logout', 'refresh');
       exit;
     }
@@ -186,6 +193,8 @@ class MY_Admin extends CI_Controller
   public function isLoggedAdmin()
   {
     if (!($this->session->userdata('site_type') == 'super_admin')) {
+      $gotCurrent = current_url();
+      $this->session->set_userdata('gotUrl', $gotCurrent);
       redirect('apanel/logout', 'refresh');
       exit;
     }

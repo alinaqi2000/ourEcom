@@ -332,7 +332,12 @@ function getPageIdBySlug($p_slug)
 }
 function loadGall($id, $title, $image)
 {
-    return '<div class="col-6 col-sm-6 col-xs-12 col-md-4 col-lg-3" data-aos="fade-up" style="margin-bottom: 20px;"><a href="' . base_url() . 'uploads/gallery/' . $image . '" class="d-block photo-item" data-fancybox="gallery"><img src="' . base_url() . 'uploads/gallery/' . $image . '" alt="Image" class="img-fluid"><div class="photo-text-more"><span class="icon fa fa-search"></div></a><div class="w-100 gCheckbox" style="display:none;border-bottom:1px solid #ddd;padding:10px 0px;"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></div></div>';
+    return '<div class="col-4 col-sm-6 col-xs-6 col-md-4 col-lg-3" data-aos="fade-up" style="margin-bottom: 20px;"><a href="' . base_url() . 'uploads/gallery/' . $image . '" class="d-block photo-item" data-fancybox="gallery"><img src="' . base_url() . 'uploads/gallery/' . $image . '" alt="Image" class="img-fluid"><div class="photo-text-more"><span class="icon fa fa-search"></div></a><div class="w-100 gCheckbox" style="display:none;border-bottom:1px solid #ddd;padding:10px 0px;"><input id="m_check_' . $id . '" name="m_check" class="magic-checkbox" value="' . $id . '" type="checkbox"><label for="m_check_' . $id . '"></div></div>';
+}
+function loadGallPop($id, $title, $image)
+{
+    // return '<div class="col-3 col-sm-3 col-xs-6 col-md-3 col-lg-2"  style="margin-bottom: 10px;"><a href="' . base_url() . 'uploads/gallery/' . $image . '" class="d-block photo-item" data-fancybox="gallery"><img src="' . base_url() . 'uploads/gallery/' . $image . '" alt="Image" class="img-fluid"><div class="photo-text-more"><span class="icon fa fa-search"></div></a><div class="w-100 gCheckbox" style="border-bottom:1px solid #ddd;padding:10px 0px;"><input id="demo-radio-' . $id . '" class="magic-radio" type="radio" name="memberType" value="free" data-bv-field="memberType"><label for="demo-radio-' . $id . '">' . $title . '</label></div></div>';
+    return '<div class="col-3 col-sm-3 col-xs-6 col-md-3 col-lg-2" style="margin-bottom: 10px;"><label for="demo-radio-' . $id . '"  class="d-block selectGal"><img src="' . base_url() . 'uploads/gallery/' . $image . '" alt="Image" class="img-fluid"><input id="demo-radio-' . $id . '" class="magic-radio" data-path="' . base_url() . 'uploads/gallery/" data-file="' . $image . '" type="radio" name="memberType" value="free" data-bv-field="memberType"><label>' . $title . '</label></label></div>';
 }
 function loadMAils($type, $id, $a_id, $rep_id, $sub, $date, $status, $label, $file, $tags, $fieldStar)
 {
@@ -495,30 +500,44 @@ function upload_image($path, $field_name, $image_width = '', $image_height = '')
     }
 }
 
-function formImageFile($label, $name, $value, $resolution = '1024px x 728px', $directory = 'media')
+function formImageFile($label, $name, $value, $resolution = '1024px x 728px', $directory = 'media', $gallery='', $remove = "")
 {
 ?> <label class="col-md-12 mar-btm form-label"><?= $label; ?></label>
-    <input type="hidden" name="<?= $name; ?>" value="<?= $value; ?>">
+    <input type="hidden" id="typeImg" name="imgType" value="browse">
+    <input type="hidden" id="newImg" name="<?= $name; ?>" value="<?= $value; ?>">
     <div class="form-group">
 
         <div class="" style="border: 1px solid #e7e7e7;border-radius:3px;padding:12px;">
-            <div class="col-md-6 float-left">
-                <img src="<?= getImageSrc("./uploads/" . $directory . "/" . $value); ?>" style="max-height: 175px;max-width: 190px;" />
+            <div class="col-md-6  float-left">
+                <img id="recImg" src="<?= getImageSrc("./uploads/" . $directory . "/" . $value); ?>" style="max-height: 175px;max-width: 190px;" />
             </div>
             <div class="col-md-6 float-left">
-                <div class="col-md-7 float-left">
-                    <span class="pull-left btn btn-primary btn-file">
-                        Browse...
-                        <input type="file" name="<?= $name; ?>" id="<?= $name; ?>">
+                <div class="col-md-12 float-left">
+                    <span class="pull-left btn btn-primary btn-file" style="margin:4px;">
+                        Browse <i class="fa fa-desktop"></i>
+                        <input type="file" name="<?= $name; ?>" id="browseType">
                     </span>
-                </div>
+                    <?php
+                    if ($gallery == 'hasGallery') {
+                    ?>
+                        <button title="Choose from site gallery" class="btn galShow btn-primary" style="margin: 4px;" type="button">Gallery <i class="ti-gallery"></i></button>
+                    <?php
+                    }
+                    if (!empty($value) && $remove == 'hasRemove') {
+                    ?>
+                        <button class="btn btn-danger" style="margin: 4px;" name="delImage">Remove Image <i class="fa fa-times"></i></button>
 
+                    <?php
+                    }
+                    ?>
+                </div>
                 <p style="padding:10px;" class="float-left">
                     <em>Best Resolution:</em> <strong><?= $resolution; ?></strong><br>
                     <em>Allowed Formats:</em> <strong>JPG, JPEG, PNG, GIF</strong>
                 </p>
             </div>
             <div class="clearfix"></div>
+
         </div>
 
     </div>

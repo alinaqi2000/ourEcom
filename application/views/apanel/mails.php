@@ -1,7 +1,7 @@
 <div id="content-container">
     <div id="page-head">
     </div>
-
+    <input type="hidden" id="mailCookie" data-cokie="<?= $cokie ?>" value="<?= $cokie ?>">
 
     <!--Page content-->
     <!--===================================================-->
@@ -31,13 +31,13 @@
 
                             <p class="pad-hor mar-top text-main text-bold text-sm text-uppercase">Folders</p>
                             <div class="list-group bg-trans pad-btm bord-btm">
-                                <a href="<?= base_url(ADMIN . '/inbox') ?>" id="t_MAislUnRead" class="list-group-item">
+                                <a href="<?= base_url(ADMIN . '/inbox') ?>" id="t_MAislUnRead" class="list-group-item <?= $mode == 'inbox' ? 'active' : ''; ?>">
                                     <i class="demo-pli-mail-unread icon-lg icon-fw"></i> <span id="tMails"></span>
                                 </a>
                                 <!-- <a href="#" class="list-group-item">
                                 <i class="demo-pli-pen-5 icon-lg icon-fw"></i> Draft
                             </a> -->
-                                <a href="<?= base_url(ADMIN . '/sent') ?>" class="list-group-item">
+                                <a href="<?= base_url(ADMIN . '/sent') ?>" class="list-group-item <?= $mode == 'sent' ? 'active' : ''; ?>">
                                     <i class="demo-pli-mail-send icon-lg icon-fw"></i> <span id="tSents">Sent</span>
                                 </a>
                                 <!-- <a href="#" class="list-group-item mail-nav-unread">
@@ -175,10 +175,10 @@
                                 <div class="pad-ver">
 
                                     <!--Send button-->
-                                    <button id="mailSend" data-url="<?= base_url(ADMIN . '/mails/sendMail') ?>" type="submit" class="btn btn-primary">
+                                    <button id="mailSend" data-url="<?= base_url(ADMIN . '/mails/sendMail') ?>" style="float: left" type="submit" class="btn btn-primary">
                                         <i class="demo-psi-mail-send icon-lg icon-fw"></i> Send Mail
                                     </button>
-                                    <span style="margin: 12px;display:none;" id="cond"></span>
+                                    <span style="margin: 7px 12px;display:none;float:left;" id="cond"></span>
 
                                     <!--Save draft button-->
                                     <!-- <button id="mail-save-btn" type="button" class="btn btn-default">
@@ -537,6 +537,17 @@
                                                         <li><a id="showStarred" type="button">Only Starred</a></li>
                                                         <li><a id="showUnStarred" type="button">Only UnStarred</a></li>
                                                     </ul>
+
+                                                </div>
+                                                <!--Dropdown button (More Action)-->
+                                                <div class="btn-group mFilter">
+
+                                                    <select id="mailMax" class="form-control">
+                                                        <option value="10" <?= $cokie == '10' ? 'selected' : ''; ?>>10</option>
+                                                        <option value="25" <?= $cokie == '25' ? 'selected' : ''; ?>>25</option>
+                                                        <option value="50" <?= $cokie == '50' ? 'selected' : ''; ?>>50</option>
+                                                        <option value="100" <?= $cokie == '100' ? 'selected' : ''; ?>>100</option>
+                                                    </select>
                                                 </div>
                                         </div>
                                         <div class="col-sm-5 mFilter toolbar-right">
@@ -550,10 +561,35 @@
                                                     <i class="demo-psi-arrow-right"></i>
                                                 </button>
                                             </div>
+
                                         </div>
                                     <?php
                                             } else {
+
                                     ?>
+                                        <div class="btn-group mFilter dropdown">
+                                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                                More <i class="dropdown-caret"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class="divider"></li>
+                                                <li><a id="showAllMails" type="button">Load All</a></li>
+                                                <li><a id="showRead" type="button">Only Read</a></li>
+                                                <li><a id="showUnRead" type="button">Only UnRead</a></li>
+                                            </ul>
+                                        </div>
+                                        <!--Dropdown button (More Action)-->
+                                        <div class="btn-group mFilter">
+                                            <?php
+                                                $name = 'maxMails_' . $this->session->userdata('site_id');
+                                            ?>
+                                            <select id="mailMax" class="form-control">
+                                                <option value="10" <?= $cokie == '10' ? 'selected' : ''; ?>>10</option>
+                                                <option value="25" <?= $cokie == '25' ? 'selected' : ''; ?>>25</option>
+                                                <option value="50" <?= $cokie == '50' ? 'selected' : ''; ?>>50</option>
+                                                <option value="100" <?= $cokie == '100' ? 'selected' : ''; ?>>100</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="col-sm-5 mFilter toolbar-right">
                                         <!--Pager buttons-->
@@ -566,6 +602,7 @@
                                                 <i class="demo-psi-arrow-right"></i>
                                             </button>
                                         </div>
+
                                     </div>
                                 <?php
                                             }

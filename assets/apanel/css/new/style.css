@@ -6,6 +6,19 @@
   }
 }
 
+.selectGal:hover {
+  cursor: pointer;
+}
+
+.brdrSelect {
+  border-radius: 10px;
+  border: 3px solid #009688;
+}
+
+.modal-body {
+  padding: 50px;
+}
+
 .main-content .container-fluid {
   margin-left: 0;
   margin-right: 0;
@@ -76,7 +89,7 @@
   font-size: 12px;
 }
 
-.main-content .photos .photo-item img {
+.main-content .photos img {
   width: 100%;
   -o-object-fit: cover;
   object-fit: cover;
@@ -85,8 +98,11 @@
 }
 
 @media (max-width: 575.98px) {
-  .main-content .photos .photo-item img {
-    height: 200px;
+  .main-content .photos img {
+    height: 75px;
+  }
+  .modal-body {
+    padding: 15px;
   }
 }
 

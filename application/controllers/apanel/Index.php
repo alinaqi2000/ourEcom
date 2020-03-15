@@ -83,7 +83,14 @@ class Index extends MY_Admin
 							$this->session->set_userdata('site_type', 'local_admin');
 						}
 
-						redirect('apanel/home', 'refresh');
+						if (!$this->session->userdata('gotUrl')) {
+							$gotUrl = base_url(ADMIN . '/home');
+						} else {
+							$gotUrl = $this->session->userdata('gotUrl');
+							$this->session->unset_userdata('gotUrl');
+						}
+
+						redirect($gotUrl, 'refresh');
 					} else {
 						setMsg('error', 'Invalid Username or Password');
 						redirect('apanel/login', 'refresh');
@@ -242,15 +249,21 @@ class Index extends MY_Admin
 			if ($vals = $this->input->post()) {
 				if (is_array($vals)) {
 
-					if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-						$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-						if (!empty($image['file_name'])) {
-							$vals['admin_image'] = $image['file_name'];
-						} else {
-							setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
-							redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+					if ($vals['imgType'] == 'gallery') {
+
+						copy('./uploads/gallery/' . $vals['admin_image'], './uploads/apanel/admin/' . $vals['admin_image']);
+					} elseif ($vals['imgType'] == 'browse') {
+						if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+							$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+							if (!empty($image['file_name'])) {
+								$vals['admin_image'] = $image['file_name'];
+							} else {
+								setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+							}
 						}
 					}
+					unset($vals['imgType']);
+					unset($vals['passY']);
 					$new_vals['site_type'] = $vals['site_type'];
 					$new_vals['site_login'] = $vals['site_login'];
 					$new_vals['site_pswd'] = md5($vals['site_pswd']);
@@ -298,7 +311,7 @@ class Index extends MY_Admin
 								}
 								$new_vals['site_type'] = $vals['site_type'];
 								$new_vals['site_login'] = $vals['site_login'];
-
+								unset($vals['imgType']);
 								unset($vals['site_login']);
 								unset($vals['site_type']);
 								$new_vals['site_admin_data'] = serialize($vals);
@@ -326,7 +339,7 @@ class Index extends MY_Admin
 									}
 									$new_vals['site_type'] = $vals['site_type'];
 									$new_vals['site_login'] = $vals['site_login'];
-
+									unset($vals['imgType']);
 									unset($vals['site_login']);
 									unset($vals['site_type']);
 									$new_vals['site_admin_data'] = serialize($vals);
@@ -358,15 +371,20 @@ class Index extends MY_Admin
 							unset($vals['site_pswd']);
 							if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
 
-								if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-									$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-									if (!empty($image['file_name'])) {
-										$vals['admin_image'] = $image['file_name'];
-									} else {
-										setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
-										redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+								if ($vals['imgType'] == 'gallery') {
+
+									copy('./uploads/gallery/' . $vals['admin_image'], './uploads/apanel/admin/' . $vals['admin_image']);
+								} elseif ($vals['imgType'] == 'browse') {
+									if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+										$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+										if (!empty($image['file_name'])) {
+											$vals['admin_image'] = $image['file_name'];
+										} else {
+											setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+										}
 									}
 								}
+								unset($vals['imgType']);
 								$new_vals['site_type'] = $vals['site_type'];
 								$new_vals['site_login'] = $vals['site_login'];
 
@@ -390,15 +408,20 @@ class Index extends MY_Admin
 								unset($vals['site_pswd']);
 								if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $edit_id))) {
 
-									if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-										$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-										if (!empty($image['file_name'])) {
-											$vals['admin_image'] = $image['file_name'];
-										} else {
-											setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
-											redirect(base_url(ADMIN) .  '/manage_admins', 'refresh');
+									if ($vals['imgType'] == 'gallery') {
+
+										copy('./uploads/gallery/' . $vals['admin_image'], './uploads/apanel/admin/' . $vals['admin_image']);
+									} elseif ($vals['imgType'] == 'browse') {
+										if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+											$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+											if (!empty($image['file_name'])) {
+												$vals['admin_image'] = $image['file_name'];
+											} else {
+												setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+											}
 										}
 									}
+									unset($vals['imgType']);
 									$new_vals['site_type'] = $vals['site_type'];
 									$new_vals['site_login'] = $vals['site_login'];
 
@@ -460,7 +483,7 @@ class Index extends MY_Admin
 			// exit;
 			if (isset($_REQUEST['delImage'])) {
 				if (is_array($vals)) {
-					$this->input->get_post('some_data');
+					// $this->input->get_post('some_data');
 
 					if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $st_id))) {
 
@@ -469,7 +492,7 @@ class Index extends MY_Admin
 							unset($vals['admin_image']);
 							unlink($got);
 						}
-
+						unset($vals['imgType']);
 						$new_vals['site_login'] = $vals['site_login'];
 						unset($vals['site_login']);
 						$new_vals['site_admin_data'] = serialize($vals);
@@ -485,15 +508,20 @@ class Index extends MY_Admin
 			} else {
 				if (is_array($vals)) {
 					if (empty($this->Admin_model->isAlreadyExistEdit($vals['site_login'], $st_id))) {
+						if ($vals['imgType'] == 'gallery') {
 
-						if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
-							$image = upload_image('./uploads/apanel/admin/', 'admin_image');
-							if (!empty($image['file_name'])) {
-								$vals['admin_image'] = $image['file_name'];
-							} else {
-								setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+							copy('./uploads/gallery/' . $vals['admin_image'], './uploads/apanel/admin/' . $vals['admin_image']);
+						} elseif ($vals['imgType'] == 'browse') {
+							if (isset($_FILES["admin_image"]["name"]) && $_FILES["admin_image"]["name"] != "") {
+								$image = upload_image('./uploads/apanel/admin/', 'admin_image');
+								if (!empty($image['file_name'])) {
+									$vals['admin_image'] = $image['file_name'];
+								} else {
+									setMsg('error', 'Please upload a valid document file >> ' . strip_tags($image['error']));
+								}
 							}
 						}
+						unset($vals['imgType']);
 						$new_vals['site_login'] = $vals['site_login'];
 						unset($vals['site_login']);
 						$new_vals['site_admin_data'] = serialize($vals);

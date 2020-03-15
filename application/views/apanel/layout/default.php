@@ -61,14 +61,14 @@
     <link href="<?= base_url() ?>assets/apanel/css/demo/nifty-demo.min.css" rel="stylesheet">
 
     <?php
-    if ($page == 'categories' || $page == 'pages' || $page == 'gallery') {
+    if ($page == 'categories' || $page == 'pages') {
     ?>
         <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/apanel/css/dataTable.min.css" />
         <script type="text/javascript" src="<?= base_url() ?>assets/apanel/js/dataTable.min.js"></script>
 
     <?php
     }
-    if ($page == 'gallery') {
+    if ($page == 'gallery' || $page ==  'admin_profile' || $page ==  'manage_admins') {
     ?>
         <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/aos.css">
         <link rel="stylesheet" href="<?= base_url() ?>assets/apanel/css/new/fancybox.min.css">
@@ -329,7 +329,11 @@
     </div>
     <!--===================================================-->
     <!-- END OF CONTAINER -->
-
+    <?php
+    if ($page == 'admin_profile' || 'manage_admins') {
+        include_once('pop_ups/galleryPopUp.php');
+    }
+    ?>
     <?= showMsg(); ?>
     <!--JAVASCRIPT-->
     <!--=================================================-->
@@ -369,7 +373,7 @@
     <script src="<?= base_url() ?>assets/apanel/js/demo/nifty-demo.min.js"></script>
 
     <?php
-    if ($page == 'gallery') {
+    if ($page == 'gallery' || $page ==  'admin_profile' || $page ==  'manage_admins') {
     ?>
         <script src="<?= base_url() ?>assets/apanel/js/new/jquery.magnific-popup.min.js"></script>
         <script src="<?= base_url() ?>assets/apanel/js/new/aos.js"></script>
@@ -381,14 +385,41 @@
         <script src="<?= base_url() ?>assets/apanel/plugins/dropzone/dropzone.min.js"></script>
 
         <script src="<?= base_url() ?>assets/apanel/js/gallery_scripts.js"></script>
+        <?php
+        if ($page == 'gallery') {
+        ?>
 
+            <!-- <script>
+                jQuery(document).ready(function($) {
+                    fetchGalls(1);
+                });
+            </script> -->
+        <?php
+        }
+        ?>
         <!-- <script src="<?= base_url() ?>assets/apanel/js/demo/form-file-upload.js"></script> -->
     <?php
     }
     ?>
     <script src="<?= base_url() ?>assets/apanel/js/my_scripts.js"></script>
 
-
+    <?php
+    if ($page != 'mails') {
+    ?>
+        <script>
+            $(document.body).ready(function() {
+                // Prevents form submittion on enter
+                $(window).keydown(function(event) {
+                    if (event.keyCode == 13) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+            });
+        </script>
+    <?php
+    }
+    ?>
 
 
 

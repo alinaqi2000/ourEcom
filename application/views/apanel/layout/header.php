@@ -25,7 +25,7 @@
                 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
                 <li class="tgl-menu-btn">
                     <a class="navbar-toggle" id="sideButton" data-mode="<?= $this->session->userdata('sideMode') ?>" data-url="<?= base_url('apanel/index/side_mode') ?>" href="javascript:void(0);">
-                        <i class="demo-pli-list-view"></i>
+                        <i class="<?= $sideIcon ?>" id="sideIcon"></i>
                     </a>
                 </li>
                 <li class="tgl-menu-btn">
@@ -61,14 +61,14 @@
                     <?php
                     if ($getUnread > 0) {
                     ?>
-                        <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
-                            <i class="ion-email-unread icon-lg icon-fw"></i>
+                        <a title="Mails" href="<?= base_url(ADMIN . "/inbox") ?>">
+                            <i id="mailsNoti" class="ion-email-unread icon-lg icon-fw"></i>
                         </a>
                     <?php
                     } else {
                     ?>
-                        <a title="Manage Admins" href="<?= base_url(ADMIN . "/inbox") ?>">
-                            <i class="ion-email icon-lg icon-fw"></i>
+                        <a title="Mails" href="<?= base_url(ADMIN . "/inbox") ?>">
+                            <i  id="mailsNoti" class="ion-email icon-lg icon-fw"></i>
                         </a>
                     <?php
                     }

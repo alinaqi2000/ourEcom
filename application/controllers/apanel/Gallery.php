@@ -18,9 +18,14 @@ class Gallery extends MY_Admin
     $this->data['rows'] = $this->Gallery_model->getGallery();
     $this->load->view('apanel/layout/default', $this->data);
   }
-  function fetchGall($count = 1)
+  function fetchGall($count = 1, $mode = '')
   {
-    $max = 8;
+    if ($mode == 'pop') {
+      $max = 12;
+    } else {
+      $max = 20;
+    }
+
     $fetch_data = $this->Gallery_model->make_datatables();
     $data = array();
     $t_num = count($fetch_data);
@@ -42,7 +47,14 @@ class Gallery extends MY_Admin
       foreach (array(array_chunk($fetch_data, $max)[$count - 1]) as $fetch_data) {
 
         foreach ($fetch_data as $row) {
-          $sub_array = loadGall($row->g_id, $row->g_title, $row->g_image);
+          if ($mode == 'pop') {
+            $sub_array = loadGallPop($row->g_id, $row->g_title, $row->g_image);
+          } else {
+            $sub_array = loadGall($row->g_id, $row->g_title, $row->g_image);
+          }
+
+
+
           $data[] = $sub_array;
         }
       }
@@ -51,6 +63,7 @@ class Gallery extends MY_Admin
     }
     $output = array(
       'data' => $data,
+      'c_mode' => $mode,
       't_count' => $t_num,
       'a_count' => $a_num,
       'n_count' => $n_num,

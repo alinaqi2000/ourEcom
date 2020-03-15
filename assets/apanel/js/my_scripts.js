@@ -1,4 +1,6 @@
 $(document.body).ready(function () {
+
+
     // Sidebar setting remove
     $('#demo-nifty-settings').remove();
 
@@ -23,11 +25,14 @@ $(document.body).ready(function () {
                         $('.layOut').removeClass("mainnav-sm");
                         $('#brandLogo').show();
                         $('#brandFav').hide();
+                        $('#sideIcon').removeClass('ti-view-list-alt');
+                        $('#sideIcon').addClass('ti-view-list');
                         // window.location.reload();
                     } else {
                         $('.layOut').addClass("mainnav-sm");
                         $('.layOut').removeClass("mainnav-lg");
-
+                        $('#sideIcon').addClass('ti-view-list-alt');
+                        $('#sideIcon').removeClass('ti-view-list');
                         $('#brandLogo').hide();
                         $('#brandFav').show();
                         // window.location.reload();
@@ -243,7 +248,6 @@ $(document.body).ready(function () {
         $('#loadAdmins').fadeOut(250);
 
     });
-    
 
 
 

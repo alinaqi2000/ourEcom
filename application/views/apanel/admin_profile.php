@@ -48,16 +48,8 @@
                         </div>
 
                         <div class="col-md-8 mar-btm">
-                            <?= formImageFile('Admin Avatar', 'admin_image', $site_admin_data['admin_image'], '64 x 64px', 'apanel/admin') ?>
-                            <?php
-                            if (!empty($site_admin_data['admin_image'])) {
-                            ?>
-                                <div class="col-md-4 mar-btm">
-                                    <button class="btn btn-danger" name="delImage" type="submit">Remove Avatar <i class="fa fa-times"></i></button>
-                                </div>
-                            <?php
-                            }
-                            ?>
+                            <?= formImageFile('Admin Avatar', 'admin_image', $site_admin_data['admin_image'], '64 x 64px', 'apanel/admin', 'hasGallery', 'hasRemove') ?>
+
                         </div>
                         <div class="col-md-8 mar-btm">
                             <button class="btn btn-primary" type="submit"><i class="ti-save"></i> Save</button>
@@ -83,3 +75,23 @@
     </div>
     <!--===================================================-->
     <!--END CONTENT CONTAINER-->
+    <script>
+        jQuery(document).ready(function($) {
+            c_mode = $("#demo-gallery").data('mode');
+
+            var int = setInterval(check(), 100);
+
+            function chkObject(elemId) {
+                return $('elemId') ? true : false;
+            }
+
+            function check() {
+                if (chkObject('#loadGals') == true) {
+                    fetchGalls(1, c_mode);
+                    int = window.clearInterval(int)
+                }
+
+
+            }
+        });
+    </script>

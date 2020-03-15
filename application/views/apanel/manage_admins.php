@@ -87,18 +87,8 @@
                                     formText('Admin Password', 'site_pswd', $row->site_pswd);
                                 }
                                 ?>
-                                <?= formImageFile('Admin Avatar', 'admin_image', $admin_data['admin_image'], '64 x 64px', 'apanel/admin') ?>
-                                <?php
-                                if (!empty($admin_data['admin_image'])) {
-                                ?>
-                                    <div class="form-group">
-
-                                        <button class="btn btn-danger" name="delImage" type="submit">Remove Avatar <i class="fa fa-times"></i></button>
-
-                                    </div>
-                                <?php
-                                }
-                                ?> <div class="form-group">
+                                <?= formImageFile('Admin Avatar', 'admin_image', $admin_data['admin_image'], '64 x 64px', 'apanel/admin', 'hasGallery', 'hasRemove') ?>
+                                <div class="form-group">
                                     <button type="submit" class="btn btn-primary"> <i class="ti-save"></i> Save</button>
                                     &nbsp; <a href="<?= base_url(ADMIN) . '/manage_admins' ?>" class="btn btn-default"> <i class="ti-left-arrow"></i> Cancel</a>
                                 </div>
@@ -127,6 +117,26 @@
                             $('#passY').val('0');
                         }
                     });
+                });
+            </script>
+            <script>
+                jQuery(document).ready(function($) {
+                    c_mode = $("#demo-gallery").data('mode');
+
+                    var int = setInterval(check(), 100);
+
+                    function chkObject(elemId) {
+                        return $('elemId') ? true : false;
+                    }
+
+                    function check() {
+                        if (chkObject('#loadGals') == true) {
+                            fetchGalls(1, c_mode);
+                            int = window.clearInterval(int)
+                        }
+
+
+                    }
                 });
             </script>
         <?php

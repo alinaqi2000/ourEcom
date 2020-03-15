@@ -199,9 +199,14 @@ class Mail_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    function make_sent_query($owner)
+    function make_sent_query($owner, $mode)
     {
         $this->db->select($this->select_column);
+        if ($mode == 'unread') {
+            $this->db->where('m_status', '0');
+        } elseif ($mode == 'read') {
+            $this->db->where('m_status', '1');
+        }
         $this->db->where('m_author', $this->cur_id());
         $this->db->where('m_recipient <>' . $this->cur_id());
         $this->db->where('m_owner', $owner);
@@ -215,9 +220,9 @@ class Mail_model extends CI_Model
             $this->db->order_by('m_order', 'DESC');
         }
     }
-    function make_sent_datatables($owner)
+    function make_sent_datatables($owner, $mode)
     {
-        $this->make_sent_query($owner);
+        $this->make_sent_query($owner, $mode);
         if ($_POST["length"] != -1) {
             $this->db->limit($_POST['length'], $_POST['start']);
         }

@@ -70,11 +70,10 @@
 
 
                         </form>
+
                         <!--===================================================-->
                         <!-- End Inline Form  -->
-                        <div id="repp">
 
-                        </div>
                     </div>
                 </div>
 
@@ -119,7 +118,7 @@
                 <!--Data Table-->
                 <!--===================================================-->
 
-                <div class="panel">
+                <div class="panel ">
                     <div class="panel-body">
 
 
@@ -139,7 +138,7 @@
                         <!--End Data Table-->
 
 
-                        <div class="pad-all" style="width:100%;float:left;">
+                        <div class="pad-all" id="loadGals" style="width:100%;float:left;">
 
                             <div class="main-content">
                                 <div class="col-md-12">
@@ -160,7 +159,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mFilter toolbar-right">
-                                                <!--Pager buttons-->
+
                                                 <span class="text-main mail_count"></span>
                                                 <div class="btn-group btn-group">
                                                     <button class="btn btn-default pN btn_prev" type="button">
@@ -173,7 +172,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="photos" id="demo-gallery" data-url="<?= base_url('apanel/gallery/fetchGall/') ?>">
+                                    <div class="photos" id="demo-gallery" data-mode="normal" data-url="<?= base_url('apanel/gallery/fetchGall/') ?>">
 
 
                                     </div>
@@ -186,7 +185,7 @@
                             </a> -->
 
 
-                            <div class="col-sm-12 mFilter toolbar-right">
+                            <div class="col-sm-12 mFilter  float-left text-center toolbar-right">
                                 <!--Pager buttons-->
                                 <span class="text-main mail_count"></span>
                                 <div class="btn-group btn-group">
@@ -206,8 +205,25 @@
             <!--===================================================-->
             <!--End page content-->
 
+            <script>
+                jQuery(document).ready(function($) {
+                    c_mode = $("#demo-gallery").data('mode');
+                    var int = setInterval(check(), 100);
+
+                    function chkObject(elemId) {
+                        return $('elemId') ? true : false;
+                    }
+
+                    function check() {
+                        if (chkObject('#loadGals') == true) {
+                            fetchGalls(1, c_mode);
+                            int = window.clearInterval(int)
+                        }
 
 
+                    }
+                });
+            </script>
         <?php
 
         }
