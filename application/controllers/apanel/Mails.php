@@ -304,11 +304,20 @@ class Mails extends MY_Admin
             $gotFiles[$i]['file'] = $image['file_name'];
             $gotFiles[$i]['size'] = $_FILES['m_attach']['size'];
             $gotFiles[$i]['type'] = $_FILES['m_attach']['type'];
+            $y = 1;
           } else {
-            setMsg('error', strip_tags($image['error']));
-            redirect(base_url(ADMIN) .  '/compose', 'refresh');
+            $y = 0;
           }
         }
+        if ($y == 0) {
+          for ($i = 0; $i < $filesCount; $i++) {
+            $got = "./uploads/apanel/mailAttachments/" . $_FILES['m_attachs']['name'][$i];
+            unlink($got);
+          }
+          setMsg('error', strip_tags($image['error']));
+          redirect(base_url(ADMIN) .  '/compose', 'refresh');
+        }
+
         $vals['m_attach'] = serialize($gotFiles);
         $n_vals['m_attach'] = serialize($gotFiles);
       }

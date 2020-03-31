@@ -237,7 +237,7 @@
             text-align: center;
             opacity: 0;
             position: absolute;
-            background: rgba(0, 0, 0, .5);
+            background: rgba(52, 59, 71, .8);
             transition: all .5s;
         }
 

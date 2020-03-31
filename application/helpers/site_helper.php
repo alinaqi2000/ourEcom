@@ -525,7 +525,7 @@ function formImageFile($label, $name, $value, $resolution = '1024px x 728px', $d
                     }
                     if (!empty($value) && $remove == 'hasRemove') {
                     ?>
-                        <button class="btn btn-danger" style="margin: 4px;" name="delImage">Remove Image <i class="fa fa-times"></i></button>
+                        <button class="btn btn-danger" style="margin: 4px;" name="delImage">Remove <i class="fa fa-times"></i></button>
 
                     <?php
                     }

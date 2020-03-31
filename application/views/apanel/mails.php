@@ -522,7 +522,7 @@
                                                 <!--Dropdown button (More Action)-->
                                                 <div class="btn-group mFilter dropdown">
                                                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
-                                                        More <i class="dropdown-caret"></i>
+                                                        Actions <i class="dropdown-caret"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
                                                         <li><a data-url="<?= base_url(ADMIN . '/mails/m_read') ?>" id="mailRead" type="button">Mark as read</a></li>
@@ -530,7 +530,16 @@
                                                         <li><a data-url="<?= base_url(ADMIN . '/mails/m_un_starred') ?>" id="mailUnStarred" type="button">Clear Starred</a></li>
 
                                                         <!-- <li><a data-url="<?= base_url(ADMIN . '/mails/m_un_read') ?>" id="mailUnRead" type="button">Mark as unread</a></li> -->
-                                                        <li class="divider"></li>
+                                                    </ul>
+
+                                                </div>
+                                                <!--Dropdown button (More Action)-->
+                                                <div class="btn-group mFilter dropdown">
+                                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
+                                                        Filters <i class="dropdown-caret"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+
                                                         <li><a id="showAllMails" type="button">Load All</a></li>
                                                         <li><a id="showRead" type="button">Only Read</a></li>
                                                         <li><a id="showUnRead" type="button">Only UnRead</a></li>
@@ -569,7 +578,7 @@
                                     ?>
                                         <div class="btn-group mFilter dropdown">
                                             <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" type="button">
-                                                More <i class="dropdown-caret"></i>
+                                                Filters <i class="dropdown-caret"></i>
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li class="divider"></li>

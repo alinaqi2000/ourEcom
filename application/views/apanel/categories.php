@@ -309,7 +309,7 @@
                             type: "POST"
                         },
                         "columnDefs": [{
-                            "targets": [7],
+                            "targets": [5,6,7],
                             "orderable": false,
                         }, ],
                     });

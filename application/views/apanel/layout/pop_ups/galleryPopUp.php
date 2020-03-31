@@ -18,7 +18,7 @@
                 <div class=" panel-body">
 
 
-                    <div class="pad-all animated" style="width:100%;float:left">
+                    <div class="pad-all animated" style="width:100%;float:left;z-index: 9999;">
                         <div class="col-md-12" style="padding: 12px 20px">
                             <div class="row">
 
@@ -32,8 +32,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="main-content" style="width:100%;float:left;">
-                            <div class="col-md-12" style="">
+                        <div class="main-content" style="width:100%;float:left;z-index: 9999;">
+                            <div class="col-md-12">
 
 
 
@@ -50,7 +50,7 @@
                                     </div>
                                 </div>
 
-                                <div class="photos" style="width: 100%;float:left;" data-mode="pop" id="demo-gallery" data-url="<?= base_url('apanel/gallery/fetchGall/') ?>">
+                                <div class="photos" style="width: 100%;float:left;z-index:99999999" data-mode="pop" id="demo-gallery" data-url="<?= base_url('apanel/gallery/fetchGall/') ?>">
 
 
                                 </div>

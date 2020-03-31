@@ -208,7 +208,7 @@ $(document.body).ready(function () {
     $(document.body).on('click', '.close', function () {
         $('#alrt').removeClass('in');
         $('#alrt').addClass('fadeOut');
-        $('#floating-top-right').fadeOut(2000);
+        $('#floating-top-right').fadeOut(1000);
 
     });
 

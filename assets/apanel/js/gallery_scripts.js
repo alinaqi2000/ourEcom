@@ -145,6 +145,7 @@ jQuery(document).ready(function ($) {
     });
     $(document.body).on('click', '.galShow', function () {
         $('#galPop').addClass('fadeIn');
+        $('#galPop').focus();
         $('.pad-all').addClass('zoomInDown');
 
         fetchGalls(1, c_mode);

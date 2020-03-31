@@ -200,7 +200,7 @@
                                     <?php
                                     $page_name = $this->uri->segment(2);
                                     $pager = $this->input->get('pager');
-                                    $paging = getPagingSm("tbl_siteadmin", 'site_id <> 1', '', 1, $page_name, '?', $pager, '', 'next', 'previous');
+                                    $paging = getPagingSm("tbl_siteadmin", 'site_id <> 1', '', 1, $page_name, '?', 1, '', 'next', 'previous');
 
                                     if (count($paging[0]) > 0) {
 
