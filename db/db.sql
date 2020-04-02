@@ -46,9 +46,9 @@ CREATE TABLE `tbl_categories` (
 --
 
 INSERT INTO `tbl_categories` (`cat_id`, `cat_parent1`, `cat_parent2`, `cat_icon`, `cat_menu`, `cat_title`, `cat_slug`, `cat_type`, `cat_link`, `cat_label`, `cat_order`, `cat_status`, `cat_date`) VALUES
-(29, 0, 0, 'icon-shirt', 1, 'Men\'s Fashion', 'men-s-fashions', '0', '', 1, 1, 1, '2020-02-26 09:05:07'),
-(30, 29, 0, '', 1, 'Summer Collection', 'summer-collection', '1', '', 1, 1, 1, '2020-03-08 10:18:12'),
-(34, 29, 30, '', 1, 'T-Shirts', 't-shirts', '2', '', 2, 2, 1, '2020-03-08 06:32:23');
+(29, 0, 0, 'icon-shirt', 1, 'Men\'s Fashion', 'men-s-fashions', '0', '', 1, 1, 1, '2020-03-15 15:26:29'),
+(30, 29, 0, '', 1, 'Summer Collection', 'summer-collection', '1', '', 1, 1, 1, '2020-03-25 08:51:52'),
+(34, 29, 30, '', 1, 'T-Shirts', 't-shirts', '2', '', 2, 2, 1, '2020-03-15 15:23:26');
 
 -- --------------------------------------------------------
 
@@ -217,8 +217,7 @@ CREATE TABLE `tbl_mails` (
 INSERT INTO `tbl_mails` (`m_id`, `m_owner`, `m_code`, `m_author`, `m_recipient`, `m_date`, `m_label`, `m_status`, `m_subject`, `m_tags`, `m_content`, `m_attach`, `m_order`) VALUES
 (1, 13, 1584234521, 13, 1, 'Sat, 14 Mar 2020 20:15:30 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:15:30'),
 (2, 1, 1584234521, 13, 1, 'Sat, 14 Mar 2020 20:15:30 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:15:30'),
-(3, 13, 1584251151, 13, 15, 'Sat, 14 Mar 2020 20:23:04 +0500', 0, 0, 'Hello', '', '<p><br></p>', NULL, '2020-03-14 15:23:04'),
-(4, 15, 1584251151, 13, 15, 'Sat, 14 Mar 2020 20:23:04 +0500', 0, 0, 'Hello', '', '<p><br></p>', NULL, '2020-03-14 15:23:04'),
+(3, 13, 1584251151, 13, 15, 'Sat, 14 Mar 2020 20:23:04 +0500', 0, 1, 'Hello', '', '<p><br></p>', NULL, '2020-03-14 15:23:04'),
 (5, 13, 1584212413, 13, 1, 'Sat, 14 Mar 2020 20:23:33 +0500', 0, 1, 'asdasd', '', '', NULL, '2020-03-14 15:23:33'),
 (6, 1, 1584212413, 13, 1, 'Sat, 14 Mar 2020 20:23:33 +0500', 1, 1, 'asdasd', '', '', NULL, '2020-03-14 15:23:33'),
 (7, 13, 1584286413, 13, 1, 'Sat, 14 Mar 2020 20:24:03 +0500', 0, 1, 'Hello!', '', '', NULL, '2020-03-14 15:24:03'),
@@ -245,9 +244,9 @@ INSERT INTO `tbl_mails` (`m_id`, `m_owner`, `m_code`, `m_author`, `m_recipient`,
 (29, 13, 1584295980, 13, 1, 'Sat, 14 Mar 2020 20:50:07 +0500', 0, 1, 'asdasd', '', '', NULL, '2020-03-14 15:50:07'),
 (30, 1, 1584295980, 13, 1, 'Sat, 14 Mar 2020 20:50:07 +0500', 1, 1, 'asdasd', '', '', NULL, '2020-03-14 15:50:07'),
 (31, 13, 1584292796, 13, 1, 'Sat, 14 Mar 2020 20:50:37 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:50:37'),
-(32, 1, 1584292796, 13, 1, 'Sat, 14 Mar 2020 20:50:37 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:50:37'),
+(32, 1, 1584292796, 13, 1, 'Sat, 14 Mar 2020 20:50:37 +0500', 1, 1, 'Hello', '', '', NULL, '2020-03-14 15:50:37'),
 (33, 13, 1584235278, 13, 1, 'Sat, 14 Mar 2020 20:51:17 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:51:17'),
-(34, 1, 1584235278, 13, 1, 'Sat, 14 Mar 2020 20:51:17 +0500', 1, 1, 'Hello', '', '', NULL, '2020-03-14 15:51:17'),
+(34, 1, 1584235278, 13, 1, 'Sat, 14 Mar 2020 20:51:17 +0500', 0, 1, 'Hello', '', '', NULL, '2020-03-14 15:51:17'),
 (35, 13, 1584263680, 13, 1, 'Sat, 14 Mar 2020 20:52:22 +0500', 0, 1, 'asdd', '', '<p>asdasdasd</p>', NULL, '2020-03-14 15:52:22'),
 (36, 1, 1584263680, 13, 1, 'Sat, 14 Mar 2020 20:52:22 +0500', 1, 1, 'asdd', '', '<p>asdasdasd</p>', NULL, '2020-03-14 15:52:22'),
 (37, 13, 1584291401, 13, 1, 'Sat, 14 Mar 2020 20:52:22 +0500', 0, 1, 'asdd', '', '<p>asdasdasd</p>', NULL, '2020-03-14 15:52:22'),
@@ -260,7 +259,12 @@ INSERT INTO `tbl_mails` (`m_id`, `m_owner`, `m_code`, `m_author`, `m_recipient`,
 (51, 1, 1584322278, 1, 13, 'Sun, 15 Mar 2020 13:28:33 +0500', 0, 1, 'asdad', '', '', NULL, '2020-03-15 08:28:33'),
 (52, 13, 1584322278, 1, 13, 'Sun, 15 Mar 2020 13:28:33 +0500', 0, 1, 'asdad', '', '', NULL, '2020-03-15 08:28:33'),
 (57, 13, 1584312121, 13, 1, 'Sun, 15 Mar 2020 13:35:27 +0500', 0, 1, 'asdasdasd', '', '<p>asdasd</p>', NULL, '2020-03-15 08:35:27'),
-(58, 1, 1584312121, 13, 1, 'Sun, 15 Mar 2020 13:35:27 +0500', 0, 1, 'asdasdasd', '', '<p>asdasd</p>', NULL, '2020-03-15 08:35:27');
+(58, 1, 1584312121, 13, 1, 'Sun, 15 Mar 2020 13:35:27 +0500', 0, 1, 'asdasdasd', '', '<p>asdasd</p>', NULL, '2020-03-15 08:35:27'),
+(60, 1, 1584380217, 15, 1, 'Sun, 15 Mar 2020 20:41:41 +0500', 1, 1, 'asdasdasd', '', '<p>asdsadasd</p>', NULL, '2020-03-15 15:41:41'),
+(61, 13, 1585920796, 13, 1, 'Thu, 02 Apr 2020 21:33:45 +0500', 0, 1, 'Hello', '', '<p>asdads</p>', NULL, '2020-04-02 16:33:45'),
+(62, 1, 1585920796, 13, 1, 'Thu, 02 Apr 2020 21:33:45 +0500', 0, 1, 'Hello', '', '<p>asdads</p>', NULL, '2020-04-02 16:33:45'),
+(63, 13, 1585889041, 13, 1, 'Thu, 02 Apr 2020 21:34:22 +0500', 0, 1, 'Hello Ali', 'vip,imp', '<p>asdasdasdad</p><p>asd</p><p>asda</p><p>asdsd</p><p><br></p><p><br></p><p>asdasdasdads</p>', 'a:2:{i:0;a:3:{s:4:\"file\";s:19:\"file_1585845262.jpg\";s:4:\"size\";i:25530;s:4:\"type\";s:10:\"image/jpeg\";}i:1;a:3:{s:4:\"file\";s:20:\"file_15858452621.jpg\";s:4:\"size\";i:16340;s:4:\"type\";s:10:\"image/jpeg\";}}', '2020-04-02 16:34:22'),
+(64, 1, 1585889041, 13, 1, 'Thu, 02 Apr 2020 21:34:22 +0500', 1, 1, 'Hello Ali', 'vip,imp', '<p>asdasdasdad</p><p>asd</p><p>asda</p><p>asdsd</p><p><br></p><p><br></p><p>asdasdasdads</p>', 'a:2:{i:0;a:3:{s:4:\"file\";s:19:\"file_1585845262.jpg\";s:4:\"size\";i:25530;s:4:\"type\";s:10:\"image/jpeg\";}i:1;a:3:{s:4:\"file\";s:20:\"file_15858452621.jpg\";s:4:\"size\";i:16340;s:4:\"type\";s:10:\"image/jpeg\";}}', '2020-04-02 16:34:22');
 
 -- --------------------------------------------------------
 
@@ -427,11 +431,11 @@ CREATE TABLE `tbl_siteadmin` (
 --
 
 INSERT INTO `tbl_siteadmin` (`site_id`, `site_type`, `site_login`, `site_pswd`, `site_info_data`, `site_admin_data`, `site_contact_data`, `site_theme_data`, `site_social_data`, `site_og_data`, `site_contact_map`) VALUES
-(1, 'super_admin', 'alinaqi2000', '6e586d764f582c117f0ef15dad2605bd', 'a:6:{s:9:\"site_name\";s:7:\"ourEcom\";s:9:\"site_desc\";s:0:\"\";s:16:\"site_footer_text\";s:38:\"© 2019 ourEcom. All Rights Reserved. \";s:9:\"site_logo\";s:25:\"image_1581669144_2113.png\";s:8:\"sec_logo\";s:25:\"image_1581149617_2176.png\";s:12:\"site_favicon\";s:26:\"image_1581149617_21761.png\";}', 'a:4:{s:10:\"admin_name\";s:18:\"Ali Naqi Al-Musawi\";s:15:\"admin_portfolio\";s:31:\"Junior Full Stack Web Developer\";s:10:\"admin_text\";s:0:\"\";s:11:\"admin_image\";s:25:\"image_1583919023_1586.jpg\";}', 'a:4:{s:13:\"contact_email\";s:21:\"alinaqi2000@gmail.com\";s:13:\"contact_phone\";s:16:\" 92 306 156 1246\";s:13:\"contact_hours\";s:27:\"Mon - Sun / 9:00AM - 8:00PM\";s:15:\"contact_address\";s:49:\"Rehmat Park, University Road, Sargodha, Pakistan.\";}', 'a:11:{s:12:\"general_text\";s:10:\"text-white\";s:14:\"secondary_text\";s:9:\"text-dark\";s:11:\"primary_btn\";s:16:\"btn-outline-info\";s:16:\"primary_timeline\";s:6:\"danger\";s:9:\"header_bg\";s:16:\" bg-happy-fisher\";s:11:\"header_text\";s:17:\"header-text-light\";s:12:\"sidebar_text\";s:17:\"sidebar-text-dark\";s:10:\"sidebar_bg\";s:8:\"bg-white\";s:14:\"sidebar_banner\";s:25:\"image_1570957659_6879.jpg\";s:7:\"dash_bg\";s:16:\" bg-happy-fisher\";s:9:\"footer_bg\";s:8:\"bg-white\";}', 'a:7:{s:9:\"social_fb\";s:36:\"https://www.facebook.com/alinaqi2000\";s:10:\"social_twt\";s:31:\"https://twitter.com/alinaqi2000\";s:11:\"social_inst\";s:33:\"https://instagram.com/alinaqi2000\";s:12:\"social_linkd\";s:57:\"https://www.linkedin.com/in/ali-naqi-al-musawi-531742100/\";s:9:\"social_yt\";s:56:\"https://www.youtube.com/channel/UC5ZnxASDnkuZ3JVR5xVn7fg\";s:12:\"social_gmail\";s:21:\"alinaqi2000@gmail.com\";s:10:\"social_pin\";s:0:\"\";}', 'a:6:{s:13:\"site_og_title\";s:25:\"Prime Cargo International\";s:12:\"site_og_type\";s:7:\"website\";s:13:\"site_og_image\";s:73:\"http://localhost/paperbirdpackaging/uploads/logo/Image_15474478326709.png\";s:18:\"site_og_image_type\";s:10:\"image/jpeg\";s:14:\"site_og_locale\";s:5:\"en_US\";s:19:\"site_og_description\";s:25:\"Prime Cargo International\";}', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d845.2902674943832!2d72.68641282917709!3d32.064891998824564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDAzJzUzLjYiTiA3MsKwNDEnMTMuMSJF!5e0!3m2!1sen!2s!4v1575704271212!5m2!1sen!2s\" width=\"100%\" height=\"450\" frameborder=\"0\" style=\"border:0;\" allowfullscreen=\"\"></iframe>'),
+(1, 'super_admin', 'alinaqi2000', '21232f297a57a5a743894a0e4a801fc3', 'a:7:{s:9:\"site_name\";s:7:\"ourEcom\";s:9:\"site_desc\";s:0:\"\";s:16:\"site_footer_text\";s:38:\"© 2019 ourEcom. All rights reserved. \";s:7:\"imgType\";s:6:\"browse\";s:9:\"site_logo\";s:25:\"image_1581669144_2113.png\";s:8:\"sec_logo\";s:25:\"image_1581149617_2176.png\";s:12:\"site_favicon\";s:26:\"image_1581149617_21761.png\";}', 'a:4:{s:10:\"admin_name\";s:18:\"Ali Naqi Al-Musawi\";s:15:\"admin_portfolio\";s:31:\"Junior Full Stack Web Developer\";s:10:\"admin_text\";s:0:\"\";s:11:\"admin_image\";s:25:\"image_1583919023_1586.jpg\";}', 'a:4:{s:13:\"contact_email\";s:21:\"alinaqi2000@gmail.com\";s:13:\"contact_phone\";s:16:\" 92 306 156 1246\";s:13:\"contact_hours\";s:27:\"Mon - Sun / 9:00AM - 8:00PM\";s:15:\"contact_address\";s:49:\"Rehmat Park, University Road, Sargodha, Pakistan.\";}', 'a:11:{s:12:\"general_text\";s:10:\"text-white\";s:14:\"secondary_text\";s:9:\"text-dark\";s:11:\"primary_btn\";s:16:\"btn-outline-info\";s:16:\"primary_timeline\";s:6:\"danger\";s:9:\"header_bg\";s:16:\" bg-happy-fisher\";s:11:\"header_text\";s:17:\"header-text-light\";s:12:\"sidebar_text\";s:17:\"sidebar-text-dark\";s:10:\"sidebar_bg\";s:8:\"bg-white\";s:14:\"sidebar_banner\";s:25:\"image_1570957659_6879.jpg\";s:7:\"dash_bg\";s:16:\" bg-happy-fisher\";s:9:\"footer_bg\";s:8:\"bg-white\";}', 'a:7:{s:9:\"social_fb\";s:36:\"https://www.facebook.com/alinaqi2000\";s:10:\"social_twt\";s:31:\"https://twitter.com/alinaqi2000\";s:11:\"social_inst\";s:33:\"https://instagram.com/alinaqi2000\";s:12:\"social_linkd\";s:57:\"https://www.linkedin.com/in/ali-naqi-al-musawi-531742100/\";s:9:\"social_yt\";s:56:\"https://www.youtube.com/channel/UC5ZnxASDnkuZ3JVR5xVn7fg\";s:12:\"social_gmail\";s:21:\"alinaqi2000@gmail.com\";s:10:\"social_pin\";s:0:\"\";}', 'a:6:{s:13:\"site_og_title\";s:25:\"Prime Cargo International\";s:12:\"site_og_type\";s:7:\"website\";s:13:\"site_og_image\";s:73:\"http://localhost/paperbirdpackaging/uploads/logo/Image_15474478326709.png\";s:18:\"site_og_image_type\";s:10:\"image/jpeg\";s:14:\"site_og_locale\";s:5:\"en_US\";s:19:\"site_og_description\";s:25:\"Prime Cargo International\";}', '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d845.2902674943832!2d72.68641282917709!3d32.064891998824564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDAzJzUzLjYiTiA3MsKwNDEnMTMuMSJF!5e0!3m2!1sen!2s!4v1575704271212!5m2!1sen!2s\" width=\"100%\" height=\"450\" frameborder=\"0\" style=\"border:0;\" allowfullscreen=\"\"></iframe>'),
 (8, 'super_admin', 'ehmerhaider', '7acc2c9a827c0feaf0cfea12a9698d7c', NULL, 'a:5:{s:10:\"admin_name\";s:12:\"Ehmer Haider\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:30:\"I\'m a freelance Web Developer.\";s:8:\"delImage\";s:0:\"\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL),
 (13, 'super_admin', 'saad_khan', '138249968a5da172f00792609f89b1fa', NULL, 'a:5:{s:10:\"admin_name\";s:9:\"Saad Khan\";s:15:\"admin_portfolio\";s:20:\"Site Content Manager\";s:10:\"admin_text\";s:36:\"I\'m a freelance Web Content Manager.\";s:11:\"admin_image\";s:25:\"image_1583784527_7187.png\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL),
 (14, 'super_admin', 'mianhaseeb', 'c0e2f06469caa8e2998aba4e7d399dcd', NULL, 'a:5:{s:10:\"admin_name\";s:11:\"Mian Haseeb\";s:15:\"admin_portfolio\";s:16:\"Site Super Admin\";s:10:\"admin_text\";s:36:\"I\'m a freelance Web Content Manager.\";s:11:\"admin_image\";s:0:\"\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL),
-(15, 'super_admin', 'ashraftitan', '508924b0eac2ba101ada28841c931e44', NULL, 'a:5:{s:10:\"admin_name\";s:6:\"Ashraf\";s:15:\"admin_portfolio\";s:23:\"Site Marketing Director\";s:10:\"admin_text\";s:39:\" I\'m a freelance Web Marketing Director\";s:8:\"delImage\";s:0:\"\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL);
+(15, 'super_admin', 'ashraftitan', '508924b0eac2ba101ada28841c931e44', NULL, 'a:5:{s:10:\"admin_name\";s:16:\"Chaudhary Ashraf\";s:15:\"admin_portfolio\";s:23:\"Site Marketing Director\";s:10:\"admin_text\";s:39:\" I\'m a freelance Web Marketing Director\";s:11:\"admin_image\";s:25:\"image_1583919023_3827.jpg\";s:5:\"passY\";s:1:\"0\";}', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -626,7 +630,7 @@ ALTER TABLE `tbl_listings`
 -- AUTO_INCREMENT for table `tbl_mails`
 --
 ALTER TABLE `tbl_mails`
-  MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `m_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `tbl_orders`

@@ -43,7 +43,7 @@ $(document.body).ready(function () {
         var max_sub = $('#inputSubject').val().length;
         var cont = $('#demo-mail-compose').val();
         var max_cnt = $('#demo-mail-compose').val().length;
-        filename.split('.').pop();
+        // filename.split('.').pop();
         if (max_sub > 0 && id > 0) {
             if (max_sub < 255) {
                 if (max_cnt < 600000) {
