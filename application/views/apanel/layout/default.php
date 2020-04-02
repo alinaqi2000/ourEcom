@@ -300,7 +300,7 @@
 
 
         <div class="boxed">
-            <?= $this->load->view('apanel/' . $page); ?>
+            <?php $this->load->view('apanel/' . $page); ?>
             <?php
             if ($this->uri->segment(2) != 'login') {
                 include_once("sidebar.php");
